@@ -1,0 +1,14 @@
+# Optional Postgres (not started by `make dev`).
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: resolv
+      POSTGRES_PASSWORD: resolv
+      POSTGRES_DB: resolv
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
