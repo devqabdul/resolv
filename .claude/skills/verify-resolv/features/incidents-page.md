@@ -2,7 +2,7 @@
 
 - id: incidents-page
 - proven: no
-- anchors: backend/app/api/incidents.py, frontend/app
+- anchors:
 
 ## What it is
 

@@ -2,7 +2,7 @@
 
 - id: d3-approval
 - proven: no
-- anchors: backend/app/api/approvals.py, backend/app/services/approvals.py, backend/app/api/demo.py
+- anchors:
 
 ## What it is
 

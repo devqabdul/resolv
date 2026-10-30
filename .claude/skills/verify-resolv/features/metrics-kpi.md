@@ -2,7 +2,7 @@
 
 - id: metrics-kpi
 - proven: no
-- anchors: backend/app/api/metrics.py, backend/app/services/metrics.py, frontend/app/layout.tsx
+- anchors:
 
 ## What it is
 

@@ -2,7 +2,7 @@
 
 - id: replay-cache
 - proven: no
-- anchors: backend/app/config.py:LLM_MODE, backend/app/agent/runner.py
+- anchors:
 
 ## What it is
 

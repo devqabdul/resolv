@@ -2,7 +2,7 @@
 
 - id: evidence-page
 - proven: no
-- anchors: backend/app/api/metrics.py, backend/evals/run.py, frontend/app
+- anchors:
 
 ## What it is
 

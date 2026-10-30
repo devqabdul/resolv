@@ -2,7 +2,7 @@
 
 - id: notifications
 - proven: no
-- anchors: backend/app/api/audit.py, backend/app/workers/scheduler.py, frontend/app/layout.tsx
+- anchors:
 
 ## What it is
 

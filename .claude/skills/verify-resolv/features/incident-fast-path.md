@@ -2,7 +2,7 @@
 
 - id: incident-fast-path
 - proven: no
-- anchors: backend/app/agent/runner.py, backend/app/api/tickets.py, backend/app/api/incidents.py
+- anchors:
 
 ## What it is
 

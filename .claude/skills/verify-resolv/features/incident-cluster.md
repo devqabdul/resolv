@@ -2,7 +2,7 @@
 
 - id: incident-cluster
 - proven: no
-- anchors: backend/app/api/incidents.py, backend/app/workers/scheduler.py, backend/app/api/demo.py, backend/mock_paytm/store.py:def bank_outage
+- anchors:
 
 ## What it is
 

@@ -2,7 +2,7 @@
 
 - id: d1-auto-resolve
 - proven: no
-- anchors: backend/app/agent/runner.py, backend/app/agent/tools.py, backend/app/api/demo.py, backend/app/services/tickets.py, backend/mock_paytm/routers/refunds.py
+- anchors:
 
 ## What it is
 

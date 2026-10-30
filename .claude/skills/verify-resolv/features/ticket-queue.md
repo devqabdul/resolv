@@ -2,7 +2,7 @@
 
 - id: ticket-queue
 - proven: no
-- anchors: backend/app/api/tickets.py, backend/app/services/tickets.py, frontend/app/page.tsx
+- anchors:
 
 ## What it is
 

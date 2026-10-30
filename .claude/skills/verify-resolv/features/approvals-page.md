@@ -2,7 +2,7 @@
 
 - id: approvals-page
 - proven: no
-- anchors: backend/app/api/approvals.py, frontend/app
+- anchors:
 
 ## What it is
 

@@ -2,7 +2,7 @@
 
 - id: evals-report
 - proven: no
-- anchors: backend/evals/run.py, backend/app/api/metrics.py
+- anchors:
 
 ## What it is
 

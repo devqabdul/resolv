@@ -2,7 +2,7 @@
 
 - id: demo-drawer
 - proven: no
-- anchors: backend/app/api/demo.py, frontend/app/page.tsx
+- anchors:
 
 ## What it is
 

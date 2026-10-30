@@ -2,7 +2,7 @@
 
 - id: sla-guard
 - proven: no
-- anchors: backend/app/services/sla.py, backend/app/workers/scheduler.py
+- anchors:
 
 ## What it is
 

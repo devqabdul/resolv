@@ -2,7 +2,7 @@
 
 - id: override
 - proven: no
-- anchors: backend/app/api/tickets.py, backend/app/services/approvals.py, backend/evals
+- anchors:
 
 ## What it is
 

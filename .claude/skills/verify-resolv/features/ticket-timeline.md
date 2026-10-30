@@ -2,7 +2,7 @@
 
 - id: ticket-timeline
 - proven: no
-- anchors: backend/app/api/tickets.py, backend/app/api/audit.py, backend/app/services/audit.py, frontend/app
+- anchors:
 
 ## What it is
 
