@@ -9,3 +9,4 @@ __pycache__
 .superpowers/
 .skill-contract/runs/
 .verify/
+.verify-run/
