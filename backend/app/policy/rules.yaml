@@ -1,0 +1,61 @@
+version: 1
+currency: INR
+limits:
+  auto_refund_max_inr: 5000
+  auto_compensation_max_inr: 1000
+  approval_queue_sla_minutes: 30
+rbi_tat:                       # RBI harmonised TAT for failed transactions (Sept 2019 circular)
+  upi:      { auto_reversal_days: 1, compensation_per_day_inr: 100 }
+  imps:     { auto_reversal_days: 1, compensation_per_day_inr: 100 }
+  wallet:   { auto_reversal_days: 1, compensation_per_day_inr: 100 }
+  card:     { auto_reversal_days: 5, compensation_per_day_inr: 100 }
+human_only_ticket_types: [dispute_chargeback, fraud_suspected, account_blocked]
+low_confidence_threshold: 0.6   # below this the gate forces ROUTE
+actions:
+  initiate_reversal:
+    money_moving: true
+    requires:
+      - txn.exists
+      - txn.status == DEBITED_NOT_CREDITED
+      - txn.refund_status in [NONE, FAILED]
+      - params.amount_inr <= txn.amount_inr
+    auto_if: params.amount_inr <= limits.auto_refund_max_inr
+  credit_compensation:
+    money_moving: true
+    requires:
+      - txn.exists
+      - clock.days_late > 0
+    recompute: params.amount_inr = clock.compensation_due_inr   # gate overrides LLM arithmetic
+    auto_if: params.amount_inr <= limits.auto_compensation_max_inr
+  retrigger_settlement:
+    money_moving: false
+    # (decision: T4) block list; the docs/02 §7.1 flow list `[.. in [..]]` is not valid YAML
+    requires:
+      - settlement.exists
+      - settlement.status in [FAILED, ON_HOLD_KYC]
+    auto_if: merchant.kyc_status == VERIFIED
+  retrigger_kyc:
+    money_moving: false
+    # (decision: T4) block list; the docs/02 §7.1 flow list `[.. in [..]]` is not valid YAML
+    requires:
+      - kyc.exists
+      - kyc.status in [REJECTED, PENDING]
+    auto: true
+    block_if: kyc.rejection_reason in [FRAUD_SUSPECTED, SANCTIONS_HIT]   # route instead, never explain
+  cancel_mandate:
+    money_moving: false
+    requires: [mandate.exists, mandate.status == ACTIVE]
+    auto_if: ticket.channel in [in_app_chat, merchant_portal]
+  send_reply:      { money_moving: false, auto: true }
+  notify_customer: { money_moving: false, auto: true }
+  create_internal_note: { money_moving: false, auto: true }
+sla:
+  first_response_minutes: 15
+  resolution_hours: { P1: 4, P2: 24, P3: 72 }
+  nudge_before_breach_minutes: 15
+pii:
+  mask: [phone, email, account_number, upi_vpa, card_number, aadhaar, pan]
+incidents:
+  window_minutes: 60
+  threshold: 10
+  signature_fields: [ticket_type, issuer_bank_or_merchant_id, failure_reason]
