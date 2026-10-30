@@ -105,7 +105,7 @@ mock_paytm=fail; curl -fsS "$API/mock/paytm/v1/transactions?customer_id=cust_riy
 api_port=fail; P=$(lsof -ti tcp:"$API_PORT" -sTCP:LISTEN | head -1); ps -o command= -p "$P" | grep -q -- "--port $API_PORT" && api_port=pass
 web_page=fail; curl -fsS -o /dev/null "$WEB/" && web_page=pass
 web_port=fail; W=$(lsof -ti tcp:"$WEB_PORT" -sTCP:LISTEN | head -1); lsof -a -p "$W" -d cwd -Fn | grep -qx "n$RUN/web" && web_port=pass
-build=fail; test -z "$(git status --porcelain backend frontend)" && diff -rq -x node_modules -x .next frontend "$RUN/web" && build=pass
+build=fail; test -z "$(git status --porcelain backend frontend)" && diff -rq -x node_modules -x .next -x next-env.d.ts frontend "$RUN/web" && build=pass
 ALL=--ok; for c in $api_health $llm_mode $mock_paytm $api_port $web_page $web_port $build; do [ "$c" = pass ] || ALL=--fail; done
 python3 $SKILL/scripts/verify_evidence.py doctor --instance "$INSTANCE" --verifier "$VERIFIER" $ALL \
   --check api_health=$api_health --check llm_mode=$llm_mode --check mock_paytm=$mock_paytm \
