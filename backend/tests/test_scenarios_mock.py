@@ -86,3 +86,25 @@ def test_scenario(
         # The tool_call audit redacts reply text; the draft lives in the `decision` event.
         text = next(e.payload_json for e in ev if e.kind == "decision")["customer_reply_draft"]
         assert rfd.arn and rfd.arn.startswith("arn_") and rfd.arn in text and "ETA" in text
+
+
+@pytest.mark.parametrize("engine", ["langgraph", "runner"])
+def test_hinglish_after_d1_quotes_prev_refund(
+    engine: str, paytm: PaytmClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Demo order without a reset: D1's new refund must not replace `rfd_riya_prev`."""
+    monkeypatch.setattr(settings, "AGENT_ENGINE", engine)
+    demo.reset()
+    demo.seed()
+    runner.run(demo.scenario("d1_failed_upi"))
+    d1_rfd = paytm.get_transaction("txn_48213_a").refund_id
+    d1_arn = paytm.get_refund(d1_rfd).arn
+    tid = demo.scenario("hinglish_refund_status")
+    runner.run(tid)
+
+    with session.SessionLocal() as db:
+        t = db.get(Ticket, tid)
+        ev = db.scalars(select(AuditEvent).where(AuditEvent.ticket_id == tid)).all()
+    text = next(e.payload_json for e in ev if e.kind == "decision")["customer_reply_draft"]
+    assert t.status == "RESOLVED"
+    assert d1_arn and "arn_riyaprev01" in text and d1_arn not in text
