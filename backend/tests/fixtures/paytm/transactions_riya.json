@@ -1,0 +1,4 @@
+[
+  {"id": "txn_48213_a", "customer_id": "cust_riya", "merchant_id": "mer_urban_kart", "amount_inr": 2499, "method": "upi", "status": "DEBITED_NOT_CREDITED", "issuer_bank": "HDFC", "failure_reason": "BANK_SWITCH_TIMEOUT", "created_at": "2026-10-28T10:00:00Z", "refund_status": "NONE", "refund_id": null},
+  {"id": "txn_riya_prev", "customer_id": "cust_riya", "merchant_id": "mer_urban_kart", "amount_inr": 899, "method": "upi", "status": "DEBITED_NOT_CREDITED", "issuer_bank": "HDFC", "failure_reason": "BANK_SWITCH_TIMEOUT", "created_at": "2026-08-28T10:00:00Z", "refund_status": "COMPLETED", "refund_id": "rfd_riya_prev"}
+]

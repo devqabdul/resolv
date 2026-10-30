@@ -1,0 +1,3 @@
+[
+  {"id": "stl_chai_01", "merchant_id": "mer_chai_point", "amount_inr": 18450, "status": "ON_HOLD_KYC", "expected_at": "2026-10-29T10:00:00Z", "reason": "Merchant KYC pending verification"}
+]
