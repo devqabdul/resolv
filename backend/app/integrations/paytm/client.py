@@ -155,3 +155,14 @@ class PaytmClient:
     def notify_customer(self, customer_id: str, channel: str, text: str) -> Delivered:
         body = {"customer_id": customer_id, "channel": channel, "text": text}
         return self._req(Delivered, "POST", "/notifications", json=body)
+
+    # Demo controls (docs/02 §6.2 /admin/*); deliberately NOT ToolRegistry tools.
+    def admin_reset(self) -> dict[str, Any]:
+        return self._json("POST", "/admin/reset")
+
+    def admin_seed(self) -> dict[str, Any]:
+        return self._json("POST", "/admin/seed")
+
+    def admin_bank_outage(self, issuer_bank: str, count: int, minutes: int) -> dict[str, Any]:
+        body = {"issuer_bank": issuer_bank, "count": count, "minutes": minutes}
+        return self._json("POST", "/admin/scenarios/bank_outage", json=body)

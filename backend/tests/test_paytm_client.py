@@ -23,9 +23,10 @@ def reg(tmp_path, monkeypatch):
     session.init_db(eng)
     monkeypatch.setattr(session, "SessionLocal", sessionmaker(bind=eng, expire_on_commit=False))
     http = TestClient(app, base_url=B)
-    http.post("/admin/reset")
-    http.post("/admin/seed")
-    return build_registry(PaytmClient(B, client=http))
+    client = PaytmClient(B, client=http)
+    client.admin_reset()
+    client.admin_seed()
+    return build_registry(client)
 
 
 def test_reversal_flow_and_audit(reg):
@@ -55,6 +56,11 @@ def test_missing_idempotency_key_raises(reg):
     ]:
         with pytest.raises(ValueError):
             reg.call(name, "tkt_2", None, **kw)
+
+
+def test_admin_bank_outage(reg):
+    http = TestClient(app, base_url=B)
+    assert PaytmClient(B, client=http).admin_bank_outage("AXIS", 5, 20)["created"] == 5
 
 
 def test_non_mock_base_url_refused():
