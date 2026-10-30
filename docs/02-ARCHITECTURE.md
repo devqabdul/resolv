@@ -161,6 +161,7 @@ class AgentState(TypedDict, total=False):
     verify_ok: bool
     outcome: Literal["RESOLVED","ROUTED","ESCALATED","AWAITING_APPROVAL","INCIDENT_LINKED","FAILED"]
     errors: list[str]
+    low_confidence: bool              # (decision: T7) set by understand; threshold = rules.yaml low_confidence_threshold
 ```
 
 ### 3.2 Node contracts
