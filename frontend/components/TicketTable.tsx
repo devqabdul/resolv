@@ -1,5 +1,6 @@
 'use client';
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTickets } from "@/lib/api";
 import { slaCountdown } from "@/lib/format";
@@ -8,6 +9,7 @@ import StatusBadge from "./StatusBadge";
 import TypeBadge from "./TypeBadge";
 
 export default function TicketTable() {
+  const router = useRouter();
   const { data, error } = useTickets({ limit: 50 });
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
@@ -32,7 +34,7 @@ export default function TicketTable() {
           {data.items.map((t) => {
             const sla = slaCountdown(t.sla_due_at, now);
             return (
-              <tr key={t.id} data-testid="ticket-row" data-ticket-id={t.id} data-status={t.status} className="border-t border-light hover:bg-light">
+              <tr key={t.id} data-testid="ticket-row" data-ticket-id={t.id} data-status={t.status} className="cursor-pointer border-t border-light hover:bg-light" onClick={() => router.push(`/tickets/${t.id}`)}>
                 <td className="px-3 py-2 font-semibold">
                   <Link href={`/tickets/${t.id}`} className="text-navy underline decoration-cyan">{t.id}</Link>
                   <div className="max-w-xs truncate text-sm font-normal text-ink/60">{t.masked_text}</div>

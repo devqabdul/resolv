@@ -5,7 +5,7 @@ export const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:80
 
 export type TicketStatus =
   | "NEW" | "PROCESSING" | "RESOLVED" | "AWAITING_APPROVAL"
-  | "ROUTED" | "ESCALATED" | "INCIDENT_LINKED" | "FAILED";
+  | "ROUTED" | "ESCALATED" | "INCIDENT_LINKED" | "CLOSED" | "FAILED";
 
 export interface Ticket {
   id: string;
