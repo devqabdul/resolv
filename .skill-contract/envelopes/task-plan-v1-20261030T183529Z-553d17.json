@@ -1,0 +1,1595 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "predicate": {
+    "assertions": [
+      {
+        "assertedBy": {
+          "skill": "spec-first-planning"
+        },
+        "command": [
+          "{python}",
+          "{skill_dir:spec-first-planning}/assets/spec_lint.py",
+          "docs/spec-resolv-build.md"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "2c49dc0266dc795ad5b9d06a1b1e25f5545e2417c5efab73322fd2542c8599a6"
+            },
+            "name": "docs/spec-resolv-build.md"
+          }
+        ],
+        "test": "spec-lint"
+      },
+      {
+        "assertedBy": {
+          "skill": "spec-first-planning"
+        },
+        "command": [
+          "{python}",
+          "{skill_dir:spec-first-planning}/assets/spec_to_tasks.py",
+          "docs/spec-resolv-build.md"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "2c49dc0266dc795ad5b9d06a1b1e25f5545e2417c5efab73322fd2542c8599a6"
+            },
+            "name": "docs/spec-resolv-build.md"
+          }
+        ],
+        "test": "coverage-total"
+      }
+    ],
+    "generatedAtTime": "2026-10-30T18:35:29Z",
+    "id": "task-plan-v1-20261030T183529Z-553d17",
+    "payload": {
+      "constraints": [
+        {
+          "id": "B1",
+          "text": "Maximise what judges see working: D1\u2013D5 run end to end from the cockpit in `LLM_MODE=replay`, with the canonical facts in CLAUDE.md (D1 \u20b92,499 reversal plus \u20b9200 compensation, D3 \u20b912,000 to NEEDS_APPROVAL, D2 AXIS/UPI_SWITCH_DOWN threshold 10 in 60 min).",
+          "type": "goal"
+        },
+        {
+          "id": "B2",
+          "text": "One-day build. The run implements only T4\u2013T27 of docs/06 in 06 order, minus the non-goals. Nothing beyond 06's file lists.",
+          "type": "boundary"
+        },
+        {
+          "id": "T1",
+          "text": "The LLM never moves money. Model output is a `Decision`; every proposed action passes `app/policy/engine.py` and executes only through `ToolRegistry.call()` after `AUTO_EXECUTE` or a human approval (CLAUDE.md hard rule 1).",
+          "type": "invariant"
+        },
+        {
+          "id": "T2",
+          "text": "Enums, ids, table and column names, routes, file paths, env vars and action names are exactly as in docs/02. New fields are marked `(decision: \u2026)` (hard rule 3).",
+          "type": "invariant"
+        },
+        {
+          "id": "T3",
+          "text": "Every action execution computes `sha256(ticket_id + name + canonical params)` and checks `action_executions` first; a retry never double-refunds (hard rule 5).",
+          "type": "invariant"
+        },
+        {
+          "id": "T4",
+          "text": "LLM calls use `temperature=0`, structured output via tool-use and `max_tokens` \u2264 1500. Prompts live in `app/agent/prompts/*.md` (hard rule 8).",
+          "type": "invariant"
+        },
+        {
+          "id": "T5",
+          "text": "`LLM_MODE=mock` with the mounted mock Paytm runs the 7 scenarios with no network, and no test depends on the Anthropic API (hard rule 11).",
+          "type": "invariant"
+        },
+        {
+          "id": "T6",
+          "text": "SQLite via `create_all`/`reset` only. No migrations, no Postgres, no Celery or external queue, no services beyond the docs/02 \u00a72 layout.",
+          "type": "boundary"
+        },
+        {
+          "id": "T7",
+          "text": "Demo inputs are deterministic (fixed scenario ids, seeded `random.Random` for spike and eval data), so replay-cache keys match on stage (pre-mortem: users).",
+          "type": "invariant"
+        },
+        {
+          "id": "T8",
+          "text": "During a 120-ticket spike, incident-matched tickets make 0 LLM calls and `/api/health` answers in < 300 ms (pre-mortem: system).",
+          "type": "boundary"
+        },
+        {
+          "id": "T9",
+          "text": "The agent loop is the docs/02 \u00a73 LangGraph `StateGraph` in `agent/graph.py`, and `AGENT_ENGINE=langgraph|runner` selects it or the sequential `agent/runner.py` fallback over the same pure nodes and \u00a73.2 edges; both engines run the 7 scenarios in mock mode (D5, D9).",
+          "type": "invariant"
+        },
+        {
+          "id": "S1",
+          "text": "No call to a real Paytm endpoint. `PAYTM_BASE_URL` points at `/mock/paytm/v1` or the standalone mock on `:8001`; any other value is refused (hard rule 2).",
+          "type": "invariant"
+        },
+        {
+          "id": "S2",
+          "text": "PII is masked by `app/policy/pii.py` before any LLM call. The UI shows `masked_text` by default, and raw phone, email, VPA or account numbers are never logged (hard rule 6).",
+          "type": "invariant"
+        },
+        {
+          "id": "S3",
+          "text": "No `eval()` or `exec()` anywhere, including the rules expression evaluator (hard rule 7).",
+          "type": "invariant"
+        },
+        {
+          "id": "S4",
+          "text": "The gate resolves `txn/refund/settlement/kyc/mandate` ids only from the `ContextBundle`; anything else is `BLOCKED unknown_reference` (hard rule 9).",
+          "type": "invariant"
+        },
+        {
+          "id": "O1",
+          "text": "Every tool call writes `tool_call` and `tool_result`, every node writes its docs/02 \u00a73.2 audit kind, and approvals, overrides, notifications and incident links are audited with `actor` (hard rule 4).",
+          "type": "invariant"
+        },
+        {
+          "id": "O2",
+          "text": "Each task stays inside its file list. No refactors, renames, dependency swaps or \"while I'm here\" changes (hard rule 10, D1).",
+          "type": "invariant"
+        },
+        {
+          "id": "O3",
+          "text": "Every acceptance check runs in-process from the repo root of an isolated clone, with no running server, no shell and no calls to Anthropic or Paytm (package installs by `uv` and `npm ci` are allowed). It names its test file (never `-k`), and tests pin `LLM_MODE=mock` themselves (pre-mortem: build/run).",
+          "type": "invariant"
+        },
+        {
+          "id": "U1",
+          "text": "The cockpit is projected. Large badges and numbers readable at 3 m, Tailwind only, palette navy #002E6E, cyan #00BAF2, light #F2F6FB, text #0B1F3A (D4).",
+          "type": "boundary"
+        },
+        {
+          "id": "U2",
+          "text": "Every cockpit page polls with `useSWR` `refreshInterval: 2000`, so a backend state change shows within 2 s.",
+          "type": "boundary"
+        }
+      ],
+      "coverage": {
+        "R1": [
+          "T1"
+        ],
+        "R10": [
+          "T10"
+        ],
+        "R11": [
+          "T11"
+        ],
+        "R12": [
+          "T12"
+        ],
+        "R13": [
+          "T13"
+        ],
+        "R14": [
+          "T14"
+        ],
+        "R15": [
+          "T15"
+        ],
+        "R16": [
+          "T16"
+        ],
+        "R17": [
+          "T17"
+        ],
+        "R18": [
+          "T18"
+        ],
+        "R19": [
+          "T19"
+        ],
+        "R2": [
+          "T2"
+        ],
+        "R20": [
+          "T20"
+        ],
+        "R21": [
+          "T21"
+        ],
+        "R22": [
+          "T22"
+        ],
+        "R23": [
+          "T23"
+        ],
+        "R24": [
+          "T24"
+        ],
+        "R25": [
+          "T25"
+        ],
+        "R26": [
+          "T26"
+        ],
+        "R3": [
+          "T3"
+        ],
+        "R4": [
+          "T4"
+        ],
+        "R5": [
+          "T5"
+        ],
+        "R6": [
+          "T6"
+        ],
+        "R7": [
+          "T7"
+        ],
+        "R8": [
+          "T8"
+        ],
+        "R9": [
+          "T9"
+        ]
+      },
+      "decisions": [
+        {
+          "answer": "Only those listed in docs/03 \u00a75 and docs/06 T1; no others",
+          "id": "D1",
+          "question": "Which dependencies may the run add?",
+          "source": "proposed default, confirm at grant"
+        },
+        {
+          "answer": "Exactly docs/02 \u00a75 and \u00a76.1. Additive fields are allowed and marked `(decision: \u2026)` in code and in docs/02; no migrations (SQLite `create_all`/`reset` only)",
+          "id": "D2",
+          "question": "May the run change public APIs, schemas or migrations?",
+          "source": "proposed default, confirm at grant"
+        },
+        {
+          "answer": "None beyond the docs/02 \u00a72 layout; no Postgres, no Celery, no external queue",
+          "id": "D3",
+          "question": "May the run add services or infrastructure?",
+          "source": "proposed default, confirm at grant"
+        },
+        {
+          "answer": "CLAUDE.md \"Conventions\" verbatim: ruff line 100, pydantic v2, SQLAlchemy 2.0 style, Next.js 15 App Router strict, Tailwind only, palette navy #002E6E cyan #00BAF2 light #F2F6FB text #0B1F3A, big badges",
+          "id": "D4",
+          "question": "Which style defaults apply?",
+          "source": "proposed default, confirm at grant"
+        },
+        {
+          "answer": "LangGraph `agent/graph.py` with `AGENT_ENGINE=runner` fallback; both must run the 7 scenarios in mock mode",
+          "id": "D5",
+          "question": "Which agent engine?",
+          "source": "proposed default, confirm at grant"
+        },
+        {
+          "answer": "`LLM_MODE=mock` only; no test may call Anthropic",
+          "id": "D6",
+          "question": "May tests call an LLM?",
+          "source": "proposed default, confirm at grant"
+        },
+        {
+          "answer": "No Playwright or E2E `*.ts` specs in this run. Proof is `npm ci` plus `next build` plus the verify skill driving the page",
+          "id": "D7",
+          "question": "How is frontend work proven?",
+          "source": "user decision 30 Oct"
+        },
+        {
+          "answer": "Only for naming and test-case selection, metadata only, never source code or customer data",
+          "id": "D8",
+          "question": "May the run consult System One (Jev)?",
+          "source": "proposed default, confirm at grant"
+        },
+        {
+          "answer": "LangGraph `agent/graph.py` is the engine and `AGENT_ENGINE=runner` is the fallback from CLAUDE.md \"When stuck\"; both engines must pass `tests/test_engines.py` and `tests/test_scenarios_mock.py` in mock mode, so OPT-A is built",
+          "id": "D9",
+          "question": "Is LangGraph required, or is the runner only a fallback?",
+          "source": "user decision 30 Oct, confirmed at grant"
+        },
+        {
+          "answer": "Only `scripts/warm_cache.sh`, written but not run, plus a replay fallback: a cache miss with no `ANTHROPIC_API_KEY` or no network uses `llm/mock.py` and logs `cache_miss`. The live warm-up and cache commit are attended",
+          "id": "D10",
+          "question": "T25 needs network and an API key for the live warm-up. What does this run build?",
+          "source": "docs/02 \u00a713, CLAUDE.md \"When stuck\""
+        },
+        {
+          "answer": "Yes. `notify()` always writes an in-app row and also posts to Slack when `SLACK_WEBHOOK_URL` is set; embeddings use fastembed behind `EMBEDDINGS_ENABLED`, with keyword retrieval when false. `fastembed==0.9.1` and `psycopg[binary]` are already in the backend's `optional` extra, so nothing is added. Postgres (T28) and Freshdesk (T29) stay Non-goals",
+          "id": "D11",
+          "question": "Are T18 Slack and T24 embeddings in scope?",
+          "source": "user decision 30 Oct, CLAUDE.md \"When stuck\" lists in-app and keyword retrieval as fallbacks"
+        },
+        {
+          "answer": "Each becomes a named in-process pytest file using FastAPI `TestClient` with the mounted mock, asserting the same JSON values. Tests drive `runner.run(ticket_id)` and `cluster()`/`guard()` synchronously instead of waiting on the background loops",
+          "id": "D12",
+          "question": "How do the curl and REPL Accepts in 06 become machine checks?",
+          "source": "run constraint O3"
+        },
+        {
+          "answer": "`backend/tests/conftest.py` (created with the LLM client task) sets `LLM_MODE=mock`, `DATABASE_URL` to a temp SQLite file, an empty `ANTHROPIC_API_KEY` and a fixed `DEMO_NOW_OVERRIDE` before the app is imported, calls `init_db()` itself, and builds `TestClient(app)` without the `with` block, so the lifespan never starts the `process_queue`, `cluster_incidents` or `sla_guard` loops and tests drive runs synchronously",
+          "id": "D13",
+          "question": "How do tests avoid `.env.example`'s `LLM_MODE=replay`?",
+          "source": "run constraint O3"
+        },
+        {
+          "answer": "`python -m evals.run` gains `--mode mock|replay` (default replay); the run's check uses `--mode mock` and commits the generated `evals/report.*`",
+          "id": "D14",
+          "question": "How does the eval runner work offline?",
+          "source": "docs/06 T22, D6"
+        },
+        {
+          "answer": "`GET /api/evals/report` adds `overrides_count`, the line count of `evals/overrides.jsonl` `(decision: T23)`",
+          "id": "D15",
+          "question": "Where does the T23 overrides count come from?",
+          "source": "docs/06 T23"
+        },
+        {
+          "answer": "Every page that reads the API is a client component (`'use client'` plus SWR), so `next build` makes no API call",
+          "id": "D16",
+          "question": "How does `next build` avoid needing the backend?",
+          "source": "run constraint O3"
+        }
+      ],
+      "required_truths": [
+        {
+          "check": "uv run --directory backend pytest -q tests/test_demo_api.py",
+          "confidence": 0.8,
+          "id": "RT1",
+          "maps_to": [
+            "B1",
+            "T1",
+            "T3",
+            "O1",
+            "S1"
+          ],
+          "parent": "OUTCOME",
+          "reqs": [
+            1,
+            2,
+            4,
+            5,
+            7,
+            24
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "Ticket `tkt_48213` ends RESOLVED in mock mode with an `initiate_reversal` of 2499, a `credit_compensation` of 200 and a reply, all audited"
+        },
+        {
+          "check": "uv run --directory backend pytest -q tests/test_gate_adversarial.py",
+          "confidence": 0.85,
+          "id": "RT2",
+          "maps_to": [
+            "T1",
+            "S3",
+            "S4"
+          ],
+          "parent": "RT1",
+          "reqs": [
+            1,
+            8
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "The gate decides every proposed action from `rules.yaml` with a tokenised evaluator, recomputes RBI TAT itself and blocks unknown references"
+        },
+        {
+          "check": "uv run --directory backend pytest -q tests/test_replay_fallback.py",
+          "confidence": 0.8,
+          "id": "RT3",
+          "maps_to": [
+            "T4",
+            "T5",
+            "S2",
+            "O3"
+          ],
+          "parent": "RT1",
+          "reqs": [
+            3,
+            4,
+            25
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "The LLM layer runs with no network in mock and replay at temperature 0 with prompts from `.md` files, and sees only masked text"
+        },
+        {
+          "check": "uv run --directory backend pytest -q tests/test_scenarios_mock.py",
+          "confidence": 0.75,
+          "id": "RT4",
+          "maps_to": [
+            "T9",
+            "T7",
+            "T5",
+            "B2"
+          ],
+          "parent": "RT1",
+          "reqs": [
+            5,
+            9
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "All 7 demo scenarios end in their expected status with the expected actions on both engines in mock mode, from deterministic seeded inputs"
+        },
+        {
+          "check": "uv run --directory backend pytest -q tests/test_override.py",
+          "confidence": 0.8,
+          "id": "RT5",
+          "maps_to": [
+            "T1",
+            "O1",
+            "T2"
+          ],
+          "parent": "OUTCOME",
+          "reqs": [
+            10,
+            11,
+            13,
+            18
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "The D3 approval and the D4 override execute through the same gate and act path, are audited with `human:<name>`, and the override is appended to `evals/overrides.jsonl`"
+        },
+        {
+          "check": "uv run --directory backend pytest -q tests/test_incident_fast_path.py",
+          "confidence": 0.7,
+          "id": "RT6",
+          "maps_to": [
+            "T8",
+            "T7",
+            "T6"
+          ],
+          "parent": "OUTCOME",
+          "reqs": [
+            14,
+            15,
+            19
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "An AXIS spike of 120 tickets yields one OPEN incident, later tickets attach with 0 `understanding` events, and health answers in < 300 ms"
+        },
+        {
+          "check": "uv run --directory backend pytest -q tests/test_eval_report.py",
+          "confidence": 0.75,
+          "id": "RT7",
+          "maps_to": [
+            "B1",
+            "O3"
+          ],
+          "parent": "OUTCOME",
+          "reqs": [
+            16,
+            20,
+            21,
+            22
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "The eval report (n \u2265 58, false-action rate, gate catch rate 5/5) and the KPI metrics are produced and served for the Evidence page"
+        },
+        {
+          "check": "npm --prefix frontend run build",
+          "confidence": 0.7,
+          "id": "RT8",
+          "maps_to": [
+            "U1",
+            "U2"
+          ],
+          "parent": "OUTCOME",
+          "reqs": [
+            12,
+            13,
+            17,
+            18,
+            19,
+            22,
+            23
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "The cockpit pages (Queue, ticket detail, Approvals, Incidents, Evidence, demo drawer, notifications) build with no backend running, poll every 2 s and use the projected palette"
+        },
+        {
+          "check": "python3 scripts/check_readme.py",
+          "confidence": 0.8,
+          "id": "RT9",
+          "maps_to": [
+            "O2",
+            "T6",
+            "T2",
+            "S1",
+            "B2"
+          ],
+          "parent": "OUTCOME",
+          "reqs": [
+            6,
+            17,
+            26
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "The run stays in scope (SQLite only, the 02 contract, in-app notifications always written with Slack only when `SLACK_WEBHOOK_URL` is set, embeddings only when `EMBEDDINGS_ENABLED` is true, no real Paytm) and leaves README run instructions a human can follow"
+        },
+        {
+          "check": "uv run --directory backend pytest -q tests/test_engines.py tests/test_scenarios_mock.py",
+          "confidence": 0.7,
+          "id": "RT10",
+          "maps_to": [
+            "T9",
+            "T2"
+          ],
+          "parent": "RT4",
+          "reqs": [
+            5,
+            9
+          ],
+          "status": "SPECIFICATION_READY",
+          "text": "The agent loop is the docs/02 \u00a73 LangGraph `StateGraph`, and `AGENT_ENGINE` selects the graph or the runner fallback, both passing the same 7-scenario test"
+        }
+      ],
+      "spec": "docs/spec-resolv-build.md",
+      "tasks": [
+        {
+          "features": [
+            "api-health"
+          ],
+          "id": "T1",
+          "independence": "parallel-safe",
+          "predicate": "with the backend running, /api/health stays ok, and calling engine.evaluate from the backend venv on the D1 decision returns three AUTO_EXECUTE results while a 12000 reversal returns NEEDS_APPROVAL with a reason naming 5,000",
+          "requirement_ids": [
+            "R1"
+          ],
+          "title": "The policy layer must evaluate a `Decision` against `rules.yaml` (copied verbatim from docs/02 \u00a77.1) with a tokenised `lhs op rhs` evaluator that uses no `eval`/`exec`, compute the RBI TAT clock in `rbi_tat.regulatory_clock`, mask the 7 PII classes in `pii.mask`, and return `AUTO_EXECUTE` for the D1 decision, `NEEDS_APPROVAL` for a 12000 reversal and `BLOCKED unknown_reference` for `txn_nope`",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_rbi_tat.py"
+              ],
+              "text": "`tests/test_rbi_tat.py` (executor writes it) asserts a UPI txn 3 days old gives days_late 2 and compensation 200."
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_engine_smoke.py"
+              ],
+              "text": "`tests/test_engine_smoke.py` (executor writes it) asserts the D1 decision (reversal 2499, compensation 200, reply) with Riya's context is all AUTO_EXECUTE, amount 12000 gives a NEEDS_APPROVAL reversal, txn id `txn_nope` gives BLOCKED unknown_reference, and a scan of `app/` finds no `eval(` or `exec(` call."
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "ruff",
+                "check",
+                "."
+              ],
+              "text": "ruff reports no lint errors in the backend."
+            }
+          ],
+          "where": "backend/app/policy/rules.yaml, backend/app/policy/rbi_tat.py, backend/app/policy/pii.py, backend/app/policy/engine.py, backend/tests/test_rbi_tat.py, backend/tests/test_engine_smoke.py"
+        },
+        {
+          "features": [
+            "mock-paytm-seed"
+          ],
+          "id": "T2",
+          "independence": "parallel-safe",
+          "predicate": "listing cust_riya transactions through the registry returns txn_48213_a and writes tool_call plus tool_result audit rows; a reversal without idempotency_key raises",
+          "requirement_ids": [
+            "R2"
+          ],
+          "title": "`PaytmClient` must cover every docs/02 \u00a76.2 endpoint with httpx (5 s timeout, 1 retry on 5xx), refuse a `PAYTM_BASE_URL` that is not the mounted or `:8001` mock, and `ToolRegistry.call()` must audit `tool_call` and `tool_result` and require an `idempotency_key` on `initiate_reversal` and `credit_compensation`",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_paytm_client.py"
+              ],
+              "text": "`tests/test_paytm_client.py` (executor writes it) uses TestClient against the mounted mock to list cust_riya transactions (txn_48213_a amount_inr 2499 status DEBITED_NOT_CREDITED), initiate a reversal (status INITIATED), read the refund back, assert tool_call and tool_result audit rows, and assert a non-mock `PAYTM_BASE_URL` is refused."
+            }
+          ],
+          "where": "backend/app/integrations/paytm/client.py, backend/app/integrations/paytm/schemas.py, backend/app/agent/tools.py, backend/tests/test_paytm_client.py"
+        },
+        {
+          "features": [
+            "api-health"
+          ],
+          "id": "T3",
+          "independence": "parallel-safe",
+          "predicate": "with the backend running, /api/health reports llm_mode mock, and calling LLMClient.structured from the backend venv on the D1 text returns a Decision with path RESOLVE",
+          "requirement_ids": [
+            "R3"
+          ],
+          "title": "`LLMClient.structured` must call Anthropic tool-use with `temperature=0` and `max_tokens=1500`, cache responses under `LLM_CACHE_DIR` keyed by sha256 of model, system, user and schema, and serve `LLM_MODE=mock` from `llm/mock.py` rules for the 7 scenarios and spike texts, with the four prompt files in `agent/prompts/` and a `tests/conftest.py` that pins `LLM_MODE=mock` for every test",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_llm_client.py"
+              ],
+              "text": "`tests/test_llm_client.py` (executor writes it) asserts mock mode returns a valid Decision for the D1 text, a stubbed SDK client receives temperature 0, max_tokens 1500 and a forced tool, and a second identical replay call logs cache_hit with no SDK call."
+            }
+          ],
+          "where": "backend/app/integrations/llm/client.py, backend/app/integrations/llm/cache.py, backend/app/integrations/llm/mock.py, backend/app/agent/prompts/, backend/tests/conftest.py, backend/tests/test_llm_client.py"
+        },
+        {
+          "depends_on": [
+            "T1",
+            "T2",
+            "T3"
+          ],
+          "features": [
+            "api-health"
+          ],
+          "id": "T4",
+          "independence": [
+            "T1",
+            "T2",
+            "T3"
+          ],
+          "predicate": "with the backend running, running ingest, understand and decide from the backend venv on the D1 ticket yields path RESOLVE, two money-moving actions and a reply draft, and the audit_events table holds pii_masked, understanding and decision rows",
+          "requirement_ids": [
+            "R4"
+          ],
+          "title": "`build_context` must fetch every input through `ToolRegistry` (last 10 txns over 30 d, refunds, settlements, KYC, mandates, last 3 past tickets, top-3 keyword KB snippets, regulatory clock, policy summary), and the `ingest`, `understand` and `decide` nodes must be pure `(state) -> state` functions that mask PII before any LLM call and audit `pii_masked`, `understanding` and `decision`",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_nodes_decide.py"
+              ],
+              "text": "`tests/test_nodes_decide.py` (executor writes it) asserts AgentState after decide for D1 has path RESOLVE, two money-moving actions and a reply draft, a `pii_masked` audit event, and no raw phone or VPA in the captured prompt."
+            }
+          ],
+          "where": "backend/app/services/context.py, backend/app/agent/state.py, backend/app/agent/nodes/ingest.py, backend/app/agent/nodes/understand.py, backend/app/agent/nodes/decide.py, backend/tests/test_nodes_decide.py"
+        },
+        {
+          "depends_on": [
+            "T4"
+          ],
+          "features": [
+            "mock-paytm-seed"
+          ],
+          "id": "T5",
+          "independence": [
+            "T4"
+          ],
+          "predicate": "after seeding the mock and running the runner twice on a D1 ticket from the backend venv, GET /mock/paytm/v1/transactions/txn_48213_a shows refund_status INITIATED and exactly one rfd_ refund exists for it",
+          "requirement_ids": [
+            "R5"
+          ],
+          "title": "The `gate`, `act`, `verify`, `close` and `handoff` nodes, the LangGraph `StateGraph` in `agent/graph.py` and the `agent/runner.py` fallback (selected by `AGENT_ENGINE=langgraph|runner` over the same nodes), `services/tickets.py` and the `process_queue` worker must run the docs/02 \u00a73.2 edges, store idempotency keys in `action_executions`, and execute the same decision twice with exactly 1 refund created",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_engines.py"
+              ],
+              "text": "`tests/test_engines.py` (executor writes it) asserts that the D1 ticket ends RESOLVED with `initiate_reversal` 2499 and `credit_compensation` 200 under `AGENT_ENGINE=langgraph` and again under `AGENT_ENGINE=runner`, and that `agent/graph.py` builds a LangGraph `StateGraph`."
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_idempotency.py"
+              ],
+              "text": "`tests/test_idempotency.py` (executor writes it) asserts running act twice with the same D1 decision creates exactly one refund in the mock and one action_executions row per key."
+            }
+          ],
+          "where": "backend/app/agent/nodes/gate.py, backend/app/agent/nodes/act.py, backend/app/agent/nodes/verify.py, backend/app/agent/nodes/close.py, backend/app/agent/nodes/handoff.py, backend/app/agent/graph.py, backend/app/agent/runner.py, backend/app/workers/scheduler.py, backend/app/services/tickets.py, backend/app/integrations/helpdesk/base.py, backend/app/integrations/helpdesk/internal.py, backend/tests/test_idempotency.py, backend/tests/test_engines.py"
+        },
+        {
+          "depends_on": [
+            "T5"
+          ],
+          "features": [
+            "api-health",
+            "ticket-queue"
+          ],
+          "id": "T6",
+          "independence": [
+            "T5"
+          ],
+          "predicate": "GET /api/health returns ok true with llm_mode mock; a POSTed ticket appears in GET /api/tickets with status NEW",
+          "requirement_ids": [
+            "R6"
+          ],
+          "title": "The routers in `api/tickets.py`, `api/audit.py` and `api/metrics.py` must serve `POST/GET /api/tickets`, `GET /api/tickets/{id}` (ticket, run state, timeline, approvals, incident), `POST /api/tickets/{id}/run`, `GET /api/audit` and `GET /api/health` returning `{ok, llm_mode, db, mock_paytm}` with exactly the docs/02 \u00a76.1 shapes",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_api_tickets.py"
+              ],
+              "text": "`tests/test_api_tickets.py` (executor writes it) asserts GET /api/health returns ok true, llm_mode mock and mock_paytm ok; POST /api/tickets returns status NEW; GET /api/tickets lists it; GET /api/tickets/{id} has keys ticket, run, timeline, approvals; GET /api/audit returns a list."
+            }
+          ],
+          "where": "backend/app/api/tickets.py, backend/app/api/audit.py, backend/app/api/metrics.py, backend/app/main.py, backend/tests/test_api_tickets.py"
+        },
+        {
+          "depends_on": [
+            "T6"
+          ],
+          "features": [
+            "mock-paytm-seed",
+            "d1-auto-resolve"
+          ],
+          "id": "T7",
+          "independence": [
+            "T6"
+          ],
+          "predicate": "after reset, seed and POST /api/demo/ticket/d1_failed_upi, tkt_48213 is RESOLVED, its timeline holds ingest, pii_masked, tool_call, tool_result, understanding, decision, gate, verify, reply_sent and status_change, and txn_48213_a shows refund_status INITIATED",
+          "requirement_ids": [
+            "R7"
+          ],
+          "title": "`services/demo.py` and `api/demo.py` must provide reset, seed (canonical data plus 6 KB snippets), the 7 scenarios with fixed ids (`d1_failed_upi` -> `tkt_48213`, `d3_over_limit` -> `tkt_48219`, others `tkt_<scenario>`) and a spike whose 8 phrasing variants are chosen by `random.Random(f\"{issuer_bank}:{count}\")`, so D1 ends RESOLVED with `initiate_reversal` 2499 and `credit_compensation` 200",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_demo_api.py"
+              ],
+              "text": "`tests/test_demo_api.py` (executor writes it) asserts reset plus seed, then POST /api/demo/ticket/d1_failed_upi returns id tkt_48213; after a synchronous run the ticket is RESOLVED with timeline kinds including ingest, pii_masked, tool_call, tool_result, understanding, decision, gate, verify, reply_sent and status_change; txn_48213_a refund_status is INITIATED; the tool_call names include initiate_reversal with amount_inr 2499 and credit_compensation with amount_inr 200; and two spikes with the same arguments produce byte-identical ticket texts."
+            }
+          ],
+          "where": "backend/app/services/demo.py, backend/app/api/demo.py, scripts/demo_reset.sh, backend/app/main.py, backend/tests/test_demo_api.py"
+        },
+        {
+          "depends_on": [
+            "T7"
+          ],
+          "features": [
+            "d1-auto-resolve"
+          ],
+          "id": "T8",
+          "independence": [
+            "T7"
+          ],
+          "predicate": "after reset, seed and POST /api/demo/ticket/d1_failed_upi, the gate event in the tkt_48213 timeline shows three AUTO_EXECUTE results and a compensation of 200 computed by the gate",
+          "requirement_ids": [
+            "R8"
+          ],
+          "title": "The policy test suites must cover every docs/06 T10 case (5 RBI TAT cases, recompute 500 -> 200 with `gate_adjusted_amount`, the 12000 limit with reason text containing 5,000, the holding reply, the mandate channel rule, the settlement KYC rule, the KYC fraud block and 5 adversarial gate cases) with \u2265 15 tests, and `engine.py` must be fixed wherever a case fails",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_policy_engine.py"
+              ],
+              "text": "`tests/test_policy_engine.py` (executor writes it) covers the recompute 500 -> 200, the limit reason text containing 5,000, the holding reply, the mandate channel, the settlement KYC and the KYC fraud cases."
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_gate_adversarial.py"
+              ],
+              "text": "`tests/test_gate_adversarial.py` (executor writes it) covers the unknown ref, dispute with reversal, confidence 0.4, amount above txn and already-initiated refund cases."
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_rbi_tat.py",
+                "tests/test_policy_engine.py",
+                "tests/test_gate_adversarial.py"
+              ],
+              "text": "`tests/test_rbi_tat.py` holds the five cases UPI 3 d 200, UPI 1 d 0, card 3 d 0, card 7 d 200, wallet 2 d 100, and the three policy files together hold at least 15 tests."
+            }
+          ],
+          "where": "backend/tests/test_rbi_tat.py, backend/tests/test_policy_engine.py, backend/tests/test_gate_adversarial.py, backend/app/policy/engine.py"
+        },
+        {
+          "depends_on": [
+            "T8"
+          ],
+          "features": [
+            "d1-auto-resolve"
+          ],
+          "id": "T9",
+          "independence": [
+            "T8"
+          ],
+          "predicate": "each of the 7 scenario tickets shows its expected final status and executed action names in GET /api/tickets/{id}",
+          "requirement_ids": [
+            "R9"
+          ],
+          "title": "All 7 scenarios must end, in mock mode on both engines (`AGENT_ENGINE=langgraph` and `runner`), as docs/06 T11 states: d1 RESOLVED (reversal, 200, reply), d3 AWAITING_APPROVAL with an approval row and a holding reply, hinglish_refund_status RESOLVED in `hi-en` quoting the ARN of seeded `rfd_riya_prev`, merchant_settlement and kyc_rejected RESOLVED via `retrigger_kyc`, mandate_email AWAITING_APPROVAL, and dispute ROUTED to `risk` with no money action",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_scenarios_mock.py"
+              ],
+              "text": "`tests/test_scenarios_mock.py` (executor writes it) asserts each of the 7 scenarios ends in its expected status with its expected executed action names in mock mode, parametrised over `AGENT_ENGINE=langgraph` and `AGENT_ENGINE=runner`."
+            }
+          ],
+          "where": "backend/app/agent/prompts/, backend/app/services/context.py, backend/app/services/demo.py, backend/app/integrations/llm/mock.py, backend/mock_paytm/scenarios.py, backend/tests/test_scenarios_mock.py"
+        },
+        {
+          "depends_on": [
+            "T9"
+          ],
+          "features": [
+            "d3-approval"
+          ],
+          "id": "T10",
+          "independence": [
+            "T9"
+          ],
+          "predicate": "after injecting d3_over_limit, one PENDING approval is listed; approving as Priya leaves txn_big refund INITIATED, tkt_48219 RESOLVED and an approval_decided event with decided_by Priya",
+          "requirement_ids": [
+            "R10"
+          ],
+          "title": "`services/approvals.py` and `api/approvals.py` must list `GET /api/approvals?status=PENDING` and, on `POST /api/approvals/{id}/decide` with approve, execute that single action through the same act and verify code with actor `human:<name>`, close the ticket RESOLVED when no approval is pending, and audit `approval_decided` with `decided_by`. On reject, the ticket must go to ROUTED",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_approvals.py"
+              ],
+              "text": "`tests/test_approvals.py` (executor writes it) asserts d3_over_limit yields one PENDING approval; deciding approve as Priya gives refund INITIATED on txn_big, tkt_48219 RESOLVED and approval_decided with decided_by Priya; a reject gives ROUTED."
+            }
+          ],
+          "where": "backend/app/services/approvals.py, backend/app/api/approvals.py, backend/app/main.py, backend/tests/test_approvals.py"
+        },
+        {
+          "depends_on": [
+            "T10"
+          ],
+          "features": [
+            "override"
+          ],
+          "id": "T11",
+          "independence": [
+            "T10"
+          ],
+          "predicate": "overriding tkt_48213 to ROUTE adds an override event with actor human:Priya to its timeline and one new line to evals/overrides.jsonl",
+          "requirement_ids": [
+            "R11"
+          ],
+          "title": "`POST /api/tickets/{id}/override` must audit `override` with `{resolv_decision, human_decision}`, apply the human path (ROUTE, RESOLVE through the gate with NEEDS_APPROVAL auto-approved by the overriding human, or ESCALATE with P1), and append `{ticket_id, masked_text, resolv_decision, human_decision, note, ts}` to `evals/overrides.jsonl`",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_override.py"
+              ],
+              "text": "`tests/test_override.py` (executor writes it) asserts an override of tkt_48213 to ROUTE writes an override audit event with resolv_decision and human_decision and appends exactly one line to evals/overrides.jsonl."
+            }
+          ],
+          "where": "backend/app/api/tickets.py, backend/app/services/approvals.py, backend/evals/overrides.jsonl, backend/tests/test_override.py"
+        },
+        {
+          "depends_on": [
+            "T6"
+          ],
+          "features": [
+            "ticket-queue"
+          ],
+          "id": "T12",
+          "independence": [
+            "T6"
+          ],
+          "predicate": "localhost:3000 shows the four nav links, a KPI strip of dashes while /api/metrics is absent, and the queue table, which lists a ticket POSTed to /api/tickets within 2 s without a reload",
+          "requirement_ids": [
+            "R12"
+          ],
+          "title": "The frontend foundation must provide typed fetchers in `lib/api.ts` for every docs/02 \u00a76.1 route with `useSWR` `refreshInterval: 2000`, a layout with left nav (Queue, Approvals, Incidents, Evidence) and a KPI strip showing dashes when `/api/metrics` is missing, and a Queue table (id, type, priority, status, path, SLA countdown, incident badge, resolved_by) in client components using the palette tokens",
+          "verify": [
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "text": "the frontend dependencies install from the lockfile."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "text": "the Next.js production build completes with no backend running."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "lint"
+              ],
+              "text": "eslint reports no errors."
+            }
+          ],
+          "where": "frontend/lib/api.ts, frontend/app/layout.tsx, frontend/app/page.tsx, frontend/app/globals.css, frontend/components/KpiTile.tsx, frontend/components/TicketTable.tsx, frontend/components/StatusBadge.tsx, frontend/components/TypeBadge.tsx, frontend/components/PriorityBadge.tsx"
+        },
+        {
+          "depends_on": [
+            "T11",
+            "T12"
+          ],
+          "features": [
+            "ticket-timeline",
+            "override",
+            "d3-approval"
+          ],
+          "id": "T13",
+          "independence": [
+            "T11",
+            "T12"
+          ],
+          "predicate": "localhost:3000/tickets/tkt_48219 shows an amber NEEDS_APPROVAL badge, and clicking Approve flips the status to RESOLVED; submitting Override on tkt_48213 adds an override event",
+          "requirement_ids": [
+            "R13"
+          ],
+          "title": "The ticket detail page must show masked text, the customer or merchant card and the regulatory clock, render every audit kind distinctly in a timeline (gate badges green, amber, red or grey with reasons; collapsible tool calls), and wire `OverrideForm`, Approve/Reject (when an approval is PENDING) and Re-run to the API",
+          "verify": [
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "text": "the frontend dependencies install from the lockfile."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "text": "the Next.js production build completes with no backend running with the ticket detail route."
+            }
+          ],
+          "where": "frontend/app/tickets/, frontend/components/Timeline.tsx, frontend/components/TimelineEvent.tsx, frontend/components/GateBadge.tsx, frontend/components/ContextCard.tsx, frontend/components/RegulatoryClock.tsx, frontend/components/OverrideForm.tsx, frontend/components/ApprovalActions.tsx, frontend/fixtures/ticket_d1.json"
+        },
+        {
+          "depends_on": [
+            "T10"
+          ],
+          "features": [
+            "incident-cluster"
+          ],
+          "id": "T14",
+          "independence": [
+            "T10"
+          ],
+          "predicate": "after a spike of 20 AXIS tickets and one cluster pass, GET /api/incidents lists one OPEN incident failed_payment_reversal|AXIS|UPI_SWITCH_DOWN with ticket_count of at least 10 and a notice draft",
+          "requirement_ids": [
+            "R14"
+          ],
+          "title": "`services/incidents.py` and `api/incidents.py` must store `candidate_txn_id` and `signature` at ingest from the ledger (no LLM), group tickets in `cluster()` by signature at threshold 10 within 60 min, create one OPEN incident titled from issuer and failure reason with `owner_team=payments_ops` and a non-empty notice draft, and on `POST /api/incidents/{id}/notify` set status COMMUNICATED",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_incidents.py"
+              ],
+              "text": "`tests/test_incidents.py` (executor writes it) asserts a spike of AXIS x 20 followed by one `cluster()` call gives one OPEN incident with signature failed_payment_reversal|AXIS|UPI_SWITCH_DOWN, ticket_count of at least 10 and a non-empty notice draft, and POST /api/incidents/{id}/notify sets status COMMUNICATED."
+            }
+          ],
+          "where": "backend/app/services/incidents.py, backend/app/api/incidents.py, backend/app/agent/nodes/ingest.py, backend/app/workers/scheduler.py, backend/app/main.py, backend/tests/test_incidents.py"
+        },
+        {
+          "depends_on": [
+            "T14"
+          ],
+          "features": [
+            "incident-fast-path",
+            "incident-cluster"
+          ],
+          "id": "T15",
+          "independence": [
+            "T14"
+          ],
+          "predicate": "a matching spike ticket's timeline ends INCIDENT_LINKED with an incident_fast_path event and no understanding event",
+          "requirement_ids": [
+            "R15"
+          ],
+          "title": "With an OPEN incident present, `ingest` must attach a matching ticket `via=fast_path`, send the template holding reply, set INCIDENT_LINKED and audit `incident_fast_path` with 0 `understanding` events, and the demo spike must create tickets in batches of 10, so a 120-ticket spike reaches `ticket_count` 120 while `/api/health` answers in < 300 ms",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_incident_fast_path.py"
+              ],
+              "text": "`tests/test_incident_fast_path.py` (executor writes it) asserts that with an OPEN incident a matching ticket ends INCIDENT_LINKED with zero understanding events, and that after a 120-ticket spike ticket_count is 120 and GET /api/health returns in under 300 ms."
+            }
+          ],
+          "where": "backend/app/agent/nodes/ingest.py, backend/app/services/incidents.py, backend/app/services/demo.py, backend/tests/test_incident_fast_path.py"
+        },
+        {
+          "depends_on": [
+            "T15",
+            "T10"
+          ],
+          "features": [
+            "sla-guard",
+            "metrics-kpi"
+          ],
+          "id": "T16",
+          "independence": [
+            "T15",
+            "T10"
+          ],
+          "predicate": "after D1, a spike and D3, GET /api/metrics shows auto_resolution_rate above 0.9, awaiting_approval 1, incidents_open 1 and avg_first_response_sec below 120",
+          "requirement_ids": [
+            "R16"
+          ],
+          "title": "`services/sla.py` must nudge once per ticket and raise it to P1 when fewer than 15 minutes remain to breach, and `GET /api/metrics` must return every docs/01 FR-11 field, with INCIDENT_LINKED counted as resolved by Resolv",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_metrics_sla.py"
+              ],
+              "text": "`tests/test_metrics_sla.py` (executor writes it) asserts that after D1, a spike and D3, GET /api/metrics has auto_resolution_rate above 0.9, awaiting_approval 1, incidents_open 1 and avg_first_response_sec below 120, and that `guard()` nudges a near-breach ticket once and raises it to P1."
+            }
+          ],
+          "where": "backend/app/services/sla.py, backend/app/services/metrics.py, backend/app/api/metrics.py, backend/app/workers/scheduler.py, backend/tests/test_metrics_sla.py"
+        },
+        {
+          "depends_on": [
+            "T16",
+            "T12"
+          ],
+          "features": [
+            "notifications"
+          ],
+          "id": "T17",
+          "independence": [
+            "T16",
+            "T12"
+          ],
+          "predicate": "injecting d3_over_limit adds a notification for tkt_48219 to GET /api/notifications, and the footer panel on localhost:3000 lists it",
+          "requirement_ids": [
+            "R17"
+          ],
+          "title": "`notify(target, text, ticket_id, incident_id)` must always insert an in-app `notifications` row for the handoff nudge, incident creation and the SLA guard and, when `SLACK_WEBHOOK_URL` is set, POST `{text}` with a 3 s timeout and record a second row with `channel=slack` and `delivered` true or false, `GET /api/notifications` must list them, and a `NotificationsPanel` in the layout footer must show the last 10 with a Slack delivered mark",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_notifications.py"
+              ],
+              "text": "`tests/test_notifications.py` (executor writes it) asserts the D3 handoff writes an in-app notifications row that GET /api/notifications lists."
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_notify_slack.py"
+              ],
+              "text": "`tests/test_notify_slack.py` (executor writes it) monkeypatches httpx with `SLACK_WEBHOOK_URL` set, asserts the webhook receives a POST whose JSON body is `{\"text\": ...}` naming tkt_48219 with a 3 s timeout, that a `channel=slack` row with delivered true is written beside the inapp row, and that a 4xx response records delivered false."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "text": "the frontend dependencies install from the lockfile."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "text": "the Next.js production build completes with no backend running with the NotificationsPanel."
+            }
+          ],
+          "where": "backend/app/integrations/notify/inapp.py, backend/app/integrations/notify/slack.py, backend/app/api/audit.py, backend/app/agent/nodes/handoff.py, backend/app/services/incidents.py, backend/app/services/sla.py, frontend/components/NotificationsPanel.tsx, frontend/app/layout.tsx, backend/tests/test_notifications.py, backend/tests/test_notify_slack.py"
+        },
+        {
+          "depends_on": [
+            "T10",
+            "T12"
+          ],
+          "features": [
+            "approvals-page",
+            "d3-approval"
+          ],
+          "id": "T18",
+          "independence": [
+            "T10",
+            "T12"
+          ],
+          "predicate": "after injecting d3_over_limit, localhost:3000/approvals shows a card for tkt_48219 within 2 s; clicking Approve removes it, and the ticket page shows approval_decided with the name",
+          "requirement_ids": [
+            "R18"
+          ],
+          "title": "The Approvals page must list PENDING approvals as `ApprovalCard`s (ticket id, type, priority, masked excerpt, action name and params, gate reasons, Resolv reasoning, reply draft) with Approve and Reject, each taking a note and a name, posted to `/api/approvals/{id}/decide`, removed optimistically",
+          "verify": [
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "text": "the frontend dependencies install from the lockfile."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "text": "the Next.js production build completes with no backend running with the approvals route."
+            }
+          ],
+          "where": "frontend/app/approvals/page.tsx, frontend/components/ApprovalCard.tsx"
+        },
+        {
+          "depends_on": [
+            "T15",
+            "T12",
+            "T11"
+          ],
+          "features": [
+            "incidents-page",
+            "demo-drawer"
+          ],
+          "id": "T19",
+          "independence": [
+            "T15",
+            "T12",
+            "T11"
+          ],
+          "predicate": "on localhost:3000/?demo=1, Reset, Seed, D1, Spike 120 and D3 run from the drawer, the incident card count climbs, and Send proactive notice flips its status to COMMUNICATED",
+          "requirement_ids": [
+            "R19"
+          ],
+          "title": "`GET /api/tickets` must accept `?incident_id=`, the Incidents page must show live `IncidentCard`s (title, signature, ticket_count, first and last seen, status, editable notice draft, Send proactive notice), and the Queue page must show a `DemoDrawer` (Reset, Seed, 7-scenario dropdown, Spike with a bank select and count 120) only when `?demo=1`",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_tickets_incident_filter.py"
+              ],
+              "text": "`tests/test_tickets_incident_filter.py` (executor writes it) asserts GET /api/tickets?incident_id=<id> returns only the tickets linked to that incident."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "text": "the frontend dependencies install from the lockfile."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "text": "the Next.js production build completes with no backend running with the incidents route and the demo drawer."
+            }
+          ],
+          "where": "backend/app/api/tickets.py, backend/tests/test_tickets_incident_filter.py, frontend/app/incidents/page.tsx, frontend/components/IncidentCard.tsx, frontend/components/DemoDrawer.tsx, frontend/app/page.tsx"
+        },
+        {
+          "depends_on": [
+            "T9"
+          ],
+          "features": [
+            "mock-paytm-seed"
+          ],
+          "id": "T20",
+          "independence": [
+            "T9"
+          ],
+          "predicate": "running python -m evals.make_dataset writes evals/dataset.jsonl with at least 58 rows covering all 9 ticket types, and the mock with eval_fixtures loaded serves GET /mock/paytm/v1/customers/cust_eval_01",
+          "requirement_ids": [
+            "R20"
+          ],
+          "title": "`evals/make_dataset.py` must generate, with `random.seed(42)`, at least 58 rows in `evals/dataset.jsonl` that cover every docs/06 T21 type count, keep ev_001 to ev_010 verbatim, include 5 adversarial rows, and emit the matching mock fixtures through `eval_fixtures()`",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "python",
+                "-m",
+                "evals.make_dataset"
+              ],
+              "text": "the generator runs and writes evals/dataset.jsonl."
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_eval_dataset.py"
+              ],
+              "text": "`tests/test_eval_dataset.py` (executor writes it) asserts at least 58 rows, every expected_type present, ev_001 to ev_010 verbatim, 5 adversarial rows, and mock seed plus eval_fixtures loading without error."
+            }
+          ],
+          "where": "backend/evals/make_dataset.py, backend/evals/dataset.jsonl, backend/mock_paytm/scenarios.py, backend/tests/test_eval_dataset.py"
+        },
+        {
+          "depends_on": [
+            "T20",
+            "T16"
+          ],
+          "features": [
+            "evals-report"
+          ],
+          "id": "T21",
+          "independence": [
+            "T20",
+            "T16"
+          ],
+          "predicate": "GET /api/evals/report returns markdown whose headline shows n of at least 58, a false-action rate and gate catch rate 5/5",
+          "requirement_ids": [
+            "R21"
+          ],
+          "title": "`python -m evals.run` must accept `--mode mock|replay`, run every dataset row through the real pipeline in-process, and write `evals/report.md` and `evals/report.json` with n \u2265 58, type accuracy, per-class path precision, recall and F1, false-action rate, gate catch rate and misses, and `GET /api/evals/report` must return `{generated_at, markdown, json, overrides_count}`",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "python",
+                "-m",
+                "evals.run",
+                "--mode",
+                "mock"
+              ],
+              "text": "the eval runner completes in mock mode and writes the report."
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_eval_report.py"
+              ],
+              "text": "`tests/test_eval_report.py` (executor writes it) asserts evals/report.json exists with n of at least 58, a false_action_rate key and gate catch 5 of 5, and GET /api/evals/report returns generated_at, markdown, json and overrides_count."
+            }
+          ],
+          "where": "backend/evals/run.py, backend/evals/report.md, backend/evals/report.json, backend/app/api/metrics.py, backend/tests/test_eval_report.py"
+        },
+        {
+          "depends_on": [
+            "T21",
+            "T17"
+          ],
+          "features": [
+            "evidence-page",
+            "metrics-kpi"
+          ],
+          "id": "T22",
+          "independence": [
+            "T21",
+            "T17"
+          ],
+          "predicate": "localhost:3000/evidence shows n of at least 58 and gate catch rate 5/5, and the KPI strip shows a non-dash auto-resolution percentage after D1",
+          "requirement_ids": [
+            "R22"
+          ],
+          "title": "The Evidence page must show headline tiles from `report.json` (n, type accuracy, RESOLVE precision, false-action rate, gate catch rate, generated_at), the rendered `report.md` and the overrides count, and the layout KPI strip must read `/api/metrics` (auto-resolution %, first response, open, awaiting approval, incidents open) as large numbers",
+          "verify": [
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "text": "the frontend dependencies install from the lockfile."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "text": "the Next.js production build completes with no backend running with the evidence route."
+            }
+          ],
+          "where": "frontend/app/evidence/page.tsx, frontend/components/Markdown.tsx, frontend/components/KpiTile.tsx, frontend/app/layout.tsx"
+        },
+        {
+          "depends_on": [
+            "T19",
+            "T22"
+          ],
+          "features": [
+            "ticket-queue",
+            "demo-drawer"
+          ],
+          "id": "T23",
+          "independence": [
+            "T19",
+            "T22"
+          ],
+          "predicate": "localhost:3000/?demo=1 shows the title Resolv cockpit, an empty-state message before Seed, a toast after Seed, and a spike ticket row carrying an incident badge",
+          "requirement_ids": [
+            "R23"
+          ],
+          "title": "The cockpit polish must add green, amber and red SLA countdown colours, an incident badge and a `resolved_by` chip on Queue rows, empty states, toasts on demo actions and the page title \"Resolv cockpit\", with no new backend calls",
+          "verify": [
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "text": "the frontend dependencies install from the lockfile."
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "text": "the Next.js production build completes with no backend running after the polish."
+            }
+          ],
+          "where": "frontend/app/page.tsx, frontend/app/layout.tsx, frontend/components/TicketTable.tsx, frontend/components/DemoDrawer.tsx"
+        },
+        {
+          "depends_on": [
+            "T15",
+            "T13"
+          ],
+          "features": [
+            "ticket-timeline"
+          ],
+          "id": "T24",
+          "independence": [
+            "T15",
+            "T13"
+          ],
+          "predicate": "with EMBEDDINGS_ENABLED=true, after seeding and injecting hinglish_refund_status, the run state in GET /api/tickets/tkt_hinglish_refund_status lists cust_riya's prior ticket in context.past_tickets; with it false the same ticket resolves with keyword KB snippets",
+          "requirement_ids": [
+            "R24"
+          ],
+          "title": "`integrations/embeddings.py` must embed with fastembed `BAAI/bge-small-en-v1.5` when `EMBEDDINGS_ENABLED` is true, write `ticket_embeddings` at ingest and put the top-3 similar past tickets by cosine into `ContextBundle.past_tickets`, and when `EMBEDDINGS_ENABLED` is false must never import fastembed and must fall back to keyword retrieval",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_embeddings.py"
+              ],
+              "text": "`tests/test_embeddings.py` (executor writes it) sets `EMBEDDINGS_ENABLED=false`, asserts `fastembed` is absent from `sys.modules` after ingest and context build, and that `past_tickets` and KB snippets come from keyword retrieval."
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "--extra",
+                "optional",
+                "pytest",
+                "-q",
+                "tests/test_embeddings_fastembed.py"
+              ],
+              "text": "`tests/test_embeddings_fastembed.py` (executor writes it) imports fastembed, embeds two strings with `BAAI/bge-small-en-v1.5`, asserts two 384-float vectors whose cosine is above that of an unrelated string, and calls `pytest.skip` only when the model download fails."
+            }
+          ],
+          "where": "backend/app/integrations/embeddings.py, backend/app/agent/nodes/ingest.py, backend/app/services/context.py, backend/tests/test_embeddings.py, backend/tests/test_embeddings_fastembed.py"
+        },
+        {
+          "depends_on": [
+            "T21"
+          ],
+          "features": [
+            "replay-cache"
+          ],
+          "id": "T25",
+          "independence": [
+            "T21"
+          ],
+          "predicate": "with an empty cache and replay mode, injecting d1_failed_upi still ends tkt_48213 RESOLVED and the log shows cache_miss with no Anthropic call",
+          "requirement_ids": [
+            "R25"
+          ],
+          "title": "In `LLM_MODE=replay`, a cache miss with no `ANTHROPIC_API_KEY` or no network must fall back to `llm/mock.py`, log `cache_miss`, record the fallback, and make 0 Anthropic SDK calls, and `scripts/warm_cache.sh` must exist with the docs/06 T25 steps without being run",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_replay_fallback.py"
+              ],
+              "text": "`tests/test_replay_fallback.py` (executor writes it) asserts that with LLM_MODE replay, an empty cache dir and no API key, d1_failed_upi still ends RESOLVED, a cache_miss line is logged, the fallback is recorded and the stubbed SDK is never called, and that scripts/warm_cache.sh exists."
+            }
+          ],
+          "where": "backend/app/integrations/llm/client.py, scripts/warm_cache.sh, backend/tests/test_replay_fallback.py"
+        },
+        {
+          "depends_on": [
+            "T23",
+            "T25"
+          ],
+          "features": [
+            "api-health",
+            "demo-drawer"
+          ],
+          "id": "T26",
+          "independence": [
+            "T23",
+            "T25"
+          ],
+          "predicate": "following README from a clean clone, make dev then make seed brings up /api/health ok and the cockpit at localhost:3000/?demo=1 with the demo drawer",
+          "requirement_ids": [
+            "R26"
+          ],
+          "title": "`README.md` must hold run instructions (`make dev`, `make seed`, `http://localhost:3000/?demo=1`), the `LLM_MODE` modes, the attended warm-up step and the test and eval commands, and `scripts/check_readme.py` must exit 1 when any of those sections is missing",
+          "verify": [
+            {
+              "command": [
+                "{python}",
+                "scripts/check_readme.py"
+              ],
+              "text": "`scripts/check_readme.py` (executor writes it) exits 0 only when README.md has the run instructions (make dev, make seed, localhost:3000/?demo=1), the LLM_MODE section, the warm-up step and the test and eval commands."
+            }
+          ],
+          "where": "README.md, scripts/check_readme.py"
+        }
+      ],
+      "title": "Resolv build (T4\u2013T27, unattended)",
+      "uncovered": [],
+      "verification": {
+        "skill": ".claude/skills/verify-resolv"
+      }
+    },
+    "skillContract": "1",
+    "wasAttributedTo": {
+      "skill": "spec-first-planning",
+      "version": "2.6.0"
+    },
+    "wasRevisionOf": null
+  },
+  "predicateType": "https://github.com/dhanesh/agent-skills/skill-contract/task-plan/v1",
+  "subject": [
+    {
+      "digest": {
+        "sha256": "2c49dc0266dc795ad5b9d06a1b1e25f5545e2417c5efab73322fd2542c8599a6"
+      },
+      "name": "docs/spec-resolv-build.md"
+    }
+  ]
+}
