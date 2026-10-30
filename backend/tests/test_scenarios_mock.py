@@ -72,6 +72,13 @@ def test_scenario(
         assert h["agent_summary"] and h["next_action_for_human"]
     if approvals:
         assert replies[0]["holding_reply"] is True
+    if name == "d1_failed_upi":
+        amt = {c["name"]: c["params"]["amount_inr"] for c in calls if c["name"] in MONEY}
+        assert amt == {"initiate_reversal": 2499, "credit_compensation": 200}
+    if name == "d3_over_limit":
+        assert [(a.action_json["name"], a.action_json["params"]["amount_inr"]) for a in apr] == [
+            ("initiate_reversal", 12000)
+        ]
     if name == "hinglish_refund_status":
         und = next(e.payload_json for e in ev if e.kind == "understanding")
         assert und["language"] == "hi-en"
