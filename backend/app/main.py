@@ -6,12 +6,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.db.session import init_db
+from app.workers import scheduler
 from mock_paytm.main import mock_app
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-    init_db()  # (decision: create tables on startup; no background loops here)
+    init_db()  # (decision: create tables on startup)
+    scheduler.start()  # (decision: T8) background loops; tests never run the lifespan
     yield
 
 
