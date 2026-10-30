@@ -2,6 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.agent.tools import build_registry
+from app.config import settings
 from app.integrations.paytm.client import PaytmClient
 from app.main import app
 from app.services import context
@@ -23,7 +24,15 @@ def seeded(monkeypatch: pytest.MonkeyPatch) -> None:
 
 def test_health(client: TestClient) -> None:
     r = client.get("/api/health")
-    assert r.json() == {"ok": True, "llm_mode": "mock", "db": "sqlite", "mock_paytm": "mounted"}
+    body = r.json()
+    assert body["ok"] is True and body["mock_paytm"] in {"mounted", "reachable"}
+    assert body["llm_mode"] == "mock" and body["db"] == "sqlite"
+
+
+def test_health_mock_unreachable(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(settings, "PAYTM_BASE_URL", "http://127.0.0.1:9/v1")
+    body = client.get("/api/health").json()
+    assert body["mock_paytm"] == "unreachable" and body["ok"] is False
 
 
 def test_ticket_lifecycle(client: TestClient, seeded: None) -> None:
