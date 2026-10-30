@@ -32,6 +32,8 @@ _REFS = {
 
 
 def _fmt(v: Any) -> str:
+    if v is _MISSING or v is None:
+        return "missing"
     return f"{v:,.0f}" if isinstance(v, int | float) and not isinstance(v, bool) else str(v)
 
 
@@ -168,7 +170,7 @@ def _evaluate_action(
         lim = expr.split()[-1].split(".")[-1].removesuffix("_max_inr").replace("_", " ")
         if expr.split()[1] == "<=" and isinstance(rhs, int | float):
             reasons.append(
-                f"amount {_fmt(lhs)} > {lim} limit {_fmt(rhs)}; needs a named human approval."
+                f"amount ₹{_fmt(lhs)} > {lim} limit ₹{_fmt(rhs)}; needs a named human approval."
             )
         else:
             reasons.append(f"{expr} is false ({_fmt(lhs)}); needs a named human approval.")

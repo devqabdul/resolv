@@ -24,9 +24,10 @@ APP = Path(__file__).parents[1] / "app"
 
 
 @pytest.fixture(autouse=True)
-def _fixed_now(monkeypatch: pytest.MonkeyPatch) -> None:
+def _fixed_now(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     # D1 txn is created 2026-10-28T10:00Z, so "now" is 3 days later.
     monkeypatch.setattr(settings, "LLM_MODE", "mock")
+    monkeypatch.setattr(settings, "DATABASE_URL", f"sqlite:///{tmp_path}/t.db")
     monkeypatch.setattr(settings, "DEMO_NOW_OVERRIDE", "2026-10-31T10:00:00+00:00")
 
 
@@ -91,7 +92,7 @@ def test_reversal_12000_needs_approval_naming_limit() -> None:
     gate = evaluate(decision, _ctx([big]), TICKET, UND)
     rev = gate.results[0]
     assert rev.outcome == GateOutcome.NEEDS_APPROVAL
-    assert any("5,000" in r for r in rev.reasons)
+    assert any("₹5,000" in r for r in rev.reasons)
     assert gate.ticket_outcome == GateOutcome.NEEDS_APPROVAL
     assert gate.results[1].action.params["holding_reply"] is True
 
