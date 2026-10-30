@@ -32,7 +32,11 @@ SCENARIOS: dict[str, tuple[str, Channel, str | None, str | None, str]] = {
         Channel.in_app_chat,
         "cust_riya",
         None,
-        "bhai mera refund rfd_riya_prev ka status kya hai, paise abhi tak nahi aaye",
+        # (decision: T11) names the Rs 1,200 Urban Kart refund so it is not confused with D1's.
+        (
+            "bhai mera Urban Kart wala Rs 1,200 ka refund rfd_riya_prev ka status kya hai, "
+            "paise abhi tak nahi aaye"
+        ),
     ),
     "merchant_settlement": (
         "tkt_merchant_settlement",

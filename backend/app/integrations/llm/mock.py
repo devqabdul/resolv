@@ -58,14 +58,22 @@ def _dnc(ctx: ContextBundle) -> Any:
     return max(rows, key=lambda x: x.created_at, default=None)
 
 
+def _refund(t: str, ctx: ContextBundle) -> Any:
+    """The refund the customer asks about (decision: T11): id or amount named in the text,
+    else the oldest one, so a refund Resolv just initiated never hides an earlier one."""
+    nums = {float(n.replace(",", "")) for n in re.findall(r"\d[\d,]*", t)}
+    named = [r for r in ctx.refunds if r.refund_id in t or r.amount_inr in nums]
+    return (named or ctx.refunds[::-1] or [None])[0]  # ctx.refunds is newest first
+
+
 def _understand(user: str) -> Understanding:
     t, ctx = _parse(user)
     kind, conf = _classify(t)
     ent: dict[str, Any] = {}
     if kind == TicketType.failed_payment_reversal and (tx := _dnc(ctx)):
         ent = {"txn_id": tx.id, "amount_inr": tx.amount_inr, "issuer_bank": tx.issuer_bank}
-    elif kind == TicketType.refund_status and ctx.refunds:
-        ent = {"refund_id": ctx.refunds[0].refund_id, "txn_id": ctx.refunds[0].txn_id}
+    elif kind == TicketType.refund_status and (rf := _refund(t, ctx)):
+        ent = {"refund_id": rf.refund_id, "txn_id": rf.txn_id}
     elif kind == TicketType.settlement_delay and ctx.settlements:
         ent = {"settlement_id": ctx.settlements[0].id}
     elif kind == TicketType.mandate_cancellation and ctx.mandates:
@@ -85,7 +93,7 @@ def _understand(user: str) -> Understanding:
 
 def _decide(user: str) -> Decision:
     und = _understand(user)
-    _, ctx = _parse(user)
+    t, ctx = _parse(user)
     lang = und.language
     ch = {"channel": "in_app_chat", "language": lang}
     reply = lambda text: ProposedAction(name=ActionName.send_reply, params=ch, rationale=text)
@@ -162,7 +170,7 @@ def _decide(user: str) -> Decision:
         why = f"{tx.id} debited not credited; clock gives compensation {comp}."
         return done(acts, text, why, Priority.P1 if comp else Priority.P2)
     if kind == TicketType.refund_status:
-        rf = ctx.refunds[0] if ctx.refunds else None
+        rf = _refund(t, ctx)
         if rf is None:
             return route("payments_ops", "No refund found in context.", "Look up the refund.")
         text = (
