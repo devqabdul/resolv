@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import audit, demo, metrics, tickets
+from app.api import approvals, audit, demo, metrics, tickets
 from app.db.session import init_db
 from app.workers import scheduler
 from mock_paytm.main import mock_app
@@ -32,6 +32,7 @@ def create_app() -> FastAPI:
     app.include_router(tickets.router)
     app.include_router(audit.router)
     app.include_router(demo.router)
+    app.include_router(approvals.router)
     app.mount("/mock/paytm/v1", mock_app)
     return app
 
