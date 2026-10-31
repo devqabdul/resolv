@@ -114,7 +114,7 @@ export interface Metrics {
   window_minutes: number;
 }
 
-export interface Health { ok: boolean; llm_mode: string; db: string; mock_paytm: string }
+export interface Health { ok: boolean; llm_mode: string; llm_provider?: string; db: string; mock_paytm: string }
 // (decision: T23) shapes match backend/app/api/metrics.py and backend/evals/report.json
 export interface EvalsCounts { caught: number; total: number }
 export interface EvalsPathClass { precision: number; recall: number; f1: number; support: number }

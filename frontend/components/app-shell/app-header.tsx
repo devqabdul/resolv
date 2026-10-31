@@ -180,7 +180,7 @@ export default function AppHeader() {
             <DropdownMenuSeparator />
             {health && !error ? (
               <DropdownMenuGroup className="flex flex-col gap-1 px-2 py-1 font-mono text-sm">
-                {[["llm mode", health.llm_mode], ["db", health.db], ["mock paytm", health.mock_paytm]].map(([k, v]) => (
+                {[["llm mode", health.llm_mode], ["provider", health.llm_provider ?? "-"], ["db", health.db], ["mock paytm", health.mock_paytm]].map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-4">
                     <span className="text-muted-foreground">{k}</span>
                     <span>{v}</span>

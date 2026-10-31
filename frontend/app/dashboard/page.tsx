@@ -172,7 +172,7 @@ export default function DashboardPage() {
   }, [tickets, now, win, w.bucket]);
 
   const byType = useMemo(
-    () => Object.entries(m?.by_type ?? {}).sort((a, b) => b[1] - a[1]).map(([type, count]) => ({ type: human(type), count })),
+    () => Object.entries(m?.by_type ?? {}).filter(([type]) => type !== "unknown").sort((a, b) => b[1] - a[1]).map(([type, count]) => ({ type: human(type), count })),
     [m?.by_type],
   );
 
@@ -311,7 +311,7 @@ export default function DashboardPage() {
         <Card data-testid="dashboard-trust" className="xl:col-span-4">
           <CardHeader>
             <CardTitle className="text-xs font-medium tracking-wider uppercase text-muted-foreground">Trust</CardTitle>
-            <CardDescription className="text-sm text-foreground/80">{j ? `Offline eval, ${j.mode} mode` : "Offline eval report"}</CardDescription>
+            <CardDescription className="text-sm text-foreground/80">{j ? `Tested on ${j.n} labelled tickets, ${j.mode === "live" ? "live on Sarvam" : `${j.mode} mode`}` : "Eval report"}</CardDescription>
           </CardHeader>
           <CardContent>
             {!j ? (
