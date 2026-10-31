@@ -213,7 +213,7 @@ export default function TicketTable({ incidentId, onClearIncident }: { incidentI
     <CardHeader className="flex flex-col gap-4 border-b">
       <CardTitle className="sr-only">Tickets</CardTitle>
       <div className="flex w-full flex-wrap items-end gap-4">
-        <Tabs value={filter} onValueChange={reset(setFilter)}>
+        <Tabs value={filter} onValueChange={(v) => (v === "awaiting" ? router.push("/approvals") : reset(setFilter)(v))}>
           <TabsList variant="line" aria-label="Filter by status">
             {FILTERS.map((f) => (
               <TabsTrigger key={f.id} value={f.id} className="px-2">
