@@ -130,7 +130,7 @@ export default function ApprovalCard({
 
       <CardContent className="flex flex-col gap-6">
         <div className="grid gap-4 lg:grid-cols-5">
-          <div className="flex flex-col gap-4 lg:col-span-3">
+          <div className="flex min-w-0 flex-col gap-4 lg:col-span-3">
             {t?.masked_text && <p className="rounded-lg bg-muted px-4 py-3">{t.masked_text}</p>}
             {cust && (
               <div className="flex flex-wrap items-stretch gap-x-4 gap-y-3">
@@ -154,11 +154,11 @@ export default function ApprovalCard({
             {txn && (
               <div data-testid="approval-context" className="flex flex-col gap-3 rounded-lg border bg-muted/40 p-4">
                 <span className="font-medium">Context from Paytm</span>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                   <div className="flex min-w-0 flex-col">
                     <span className="text-xs text-muted-foreground">Transaction ID</span>
                     <span className="flex items-center gap-1">
-                      <span className="truncate font-mono text-sm">{txn.id}</span>
+                      <span className="min-w-0 break-all font-mono text-sm">{txn.id}</span>
                       <Button
                         variant="ghost"
                         size="icon-xs"
@@ -179,9 +179,9 @@ export default function ApprovalCard({
                     <span className="text-xs text-muted-foreground">Amount</span>
                     <span className="font-mono tabular-nums">{inr(txn.amount_inr)}</span>
                   </div>
-                  <div className="flex flex-col items-start">
+                  <div className="flex min-w-0 flex-col items-start">
                     <span className="text-xs text-muted-foreground">Status</span>
-                    <Badge className={toneBadge({ tone: txn.status === "SUCCESS" ? "resolved" : "failed", className: "font-mono text-xs" })}>
+                    <Badge className={toneBadge({ tone: txn.status === "SUCCESS" ? "resolved" : "failed", className: "h-auto max-w-full whitespace-normal break-all font-mono text-xs" })}>
                       {txn.status}
                     </Badge>
                   </div>
@@ -203,7 +203,7 @@ export default function ApprovalCard({
             )}
           </div>
           {item.customer_reply_draft && (
-            <div className="flex flex-col gap-2 rounded-lg bg-highlight/10 p-4 lg:col-span-2">
+            <div className="flex min-w-0 flex-col gap-2 rounded-lg bg-highlight/10 p-4 lg:col-span-2">
               <span className="flex items-center gap-2 font-medium">
                 <ChatCircleIcon weight="duotone" className="size-5 text-highlight-text" />
                 Draft reply to customer

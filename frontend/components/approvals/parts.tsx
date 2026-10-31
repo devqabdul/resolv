@@ -199,9 +199,9 @@ export function RecentDecisions({ items, now, onViewAll }: { items: ApprovalItem
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                     <Link href={`/tickets/${a.ticket_id}`} className="font-mono text-sm underline-offset-4 hover:underline">{a.ticket_id}</Link>
-                    <span className="truncate">
+                    <span className="break-words">
                       {actionLabel(act.name)}
-                      {act.amount !== null && <span className="font-mono tabular-nums"> {inr(act.amount)}</span>}
+                      {act.amount !== null && <span className="whitespace-nowrap font-mono tabular-nums"> {inr(act.amount)}</span>}
                     </span>
                     <span className="text-xs text-muted-foreground">
                       by {a.decided_by ?? "-"}

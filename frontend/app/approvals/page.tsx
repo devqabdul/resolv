@@ -88,7 +88,7 @@ export default function Approvals() {
       </div>
 
       <div className="grid items-start gap-6 xl:grid-cols-12">
-        <Tabs value={tab} onValueChange={setTab} className="gap-4 xl:col-span-8">
+        <Tabs value={tab} onValueChange={setTab} className="min-w-0 gap-4 xl:col-span-8">
           <TabsList variant="line">
             <TabsTrigger value="pending">Pending{count(sorted)}</TabsTrigger>
             <TabsTrigger value="approved">Approved{count(approvedList)}</TabsTrigger>
@@ -143,7 +143,7 @@ export default function Approvals() {
           </TabsContent>
         </Tabs>
 
-        <aside className="flex flex-col gap-4 xl:sticky xl:top-4 xl:col-span-4">
+        <aside className="flex min-w-0 flex-col gap-4 xl:sticky xl:top-4 xl:col-span-4">
           <Safeguards txnRef={topTxn} />
           <RecentDecisions items={recent} now={now} onViewAll={() => setTab("approved")} />
         </aside>
