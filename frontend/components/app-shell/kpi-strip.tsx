@@ -10,7 +10,7 @@ import AnimatedNumber from "@/components/animated-number";
 import { useMetrics, type Metrics } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
-const mmss = (n: number) => (n > 90 ? `${Math.floor(n / 60)}:${String(Math.round(n % 60)).padStart(2, "0")}` : `${Math.round(n)}s`);
+export const mmss = (n: number) => (n > 90 ? `${Math.floor(n / 60)}:${String(Math.round(n % 60)).padStart(2, "0")}` : `${Math.round(n)}s`);
 const KPIS: { id: string; label: string; pick: (m: Metrics) => number; format?: (n: number) => string }[] = [
   { id: "auto_resolution_rate", label: "Auto-resolved", pick: (m) => m.auto_resolution_rate * 100, format: (n) => `${Math.round(n)}%` },
   { id: "avg_first_response_sec", label: "Avg first response", pick: (m) => m.avg_first_response_sec, format: mmss },

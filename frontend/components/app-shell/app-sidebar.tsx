@@ -2,7 +2,7 @@
 // Nav rail: collapses to icons. Live counts reuse the pages' SWR keys, so no extra polling.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ListChecksIcon, SealCheckIcon, SirenIcon, ChartBarIcon } from "@phosphor-icons/react";
+import { SquaresFourIcon, ListChecksIcon, SealCheckIcon, SirenIcon, ChartBarIcon } from "@phosphor-icons/react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu,
   SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarRail,
@@ -14,6 +14,7 @@ export default function AppSidebar() {
   const { data: approvals } = useApprovals("PENDING");
   const { data: incidents } = useIncidents();
   const nav = [
+    { href: "/dashboard", label: "Dashboard", icon: SquaresFourIcon, count: undefined },
     { href: "/", label: "Queue", icon: ListChecksIcon, count: undefined },
     { href: "/approvals", label: "Approvals", icon: SealCheckIcon, count: approvals?.length },
     { href: "/incidents", label: "Incidents", icon: SirenIcon, count: incidents?.filter((i) => i.status === "OPEN").length },

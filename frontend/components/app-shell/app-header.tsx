@@ -16,7 +16,7 @@ import DemoDrawer from "@/components/DemoDrawer";
 import { useHealth, useNotifications } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
-const TITLES: Record<string, string> = { "": "Queue", approvals: "Approvals", incidents: "Incidents", evidence: "Evidence", tickets: "Ticket" };
+const TITLES: Record<string, string> = { "": "Queue", dashboard: "Dashboard", approvals: "Approvals", incidents: "Incidents", evidence: "Evidence", tickets: "Ticket" };
 
 // Icon-only header button with a tooltip (label plus optional shortcut).
 function HeaderToggle({ label, kbd, ...props }: { label: string; kbd?: string } & React.ComponentProps<typeof Button>) {
