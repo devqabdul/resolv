@@ -16,6 +16,7 @@ from app.domain.schemas import (
     TicketDTO,
     Transaction,
 )
+from app.integrations import embeddings
 from app.integrations.paytm.client import PaytmError
 from app.policy.pii import mask
 from app.policy.rbi_tat import load_rules, regulatory_clock
@@ -142,7 +143,7 @@ def _words(text: str) -> set[str]:
 
 
 def kb_snippets(text: str, k: int = 3) -> list[KbSnippet]:
-    """Top-k KB docs by keyword overlap (decision: keyword scoring now; embeddings in T24)."""
+    """Top-k KB docs by keyword overlap (decision: keyword scoring; past_tickets uses embeddings, T24)."""
     with session.SessionLocal() as db:
         rows = db.scalars(select(KbDoc)).all()
     docs = [(KbSnippet(id=d.id, title=d.title, content=d.content), d.tags or "") for d in rows] or [
@@ -154,7 +155,41 @@ def kb_snippets(text: str, k: int = 3) -> list[KbSnippet]:
     return [d for score, d in scored[:k] if score > 0]
 
 
+def _past(r: Ticket) -> PastTicket:
+    return PastTicket(
+        id=r.id,
+        ticket_type=r.ticket_type,
+        status=r.status,
+        summary=(r.masked_text or mask(r.raw_text)[0])[:200],  # never raw text (PII)
+        resolved_by=r.resolved_by,
+        created_at=r.created_at,
+    )
+
+
+def _similar_past(t: TicketDTO, n: int) -> list[PastTicket] | None:
+    """Top-n by cosine, same customer/merchant first (decision: T24). None = use keyword path."""
+    if not embeddings.enabled():
+        return None
+    ranked = embeddings.similar_tickets(t.id, k=None)
+    if not ranked:
+        return None
+    ids = [i for i, _ in ranked]
+    with session.SessionLocal() as db:
+        rows = {r.id: r for r in db.scalars(select(Ticket).where(Ticket.id.in_(ids)))}
+
+    def mine(r: Ticket) -> bool:
+        return bool(
+            (t.customer_id and r.customer_id == t.customer_id)
+            or (t.merchant_id and r.merchant_id == t.merchant_id)
+        )
+
+    order = sorted((i for i in ids if i in rows), key=lambda i: not mine(rows[i]))  # stable
+    return [_past(rows[i]) for i in order[:n]]
+
+
 def past_tickets(t: TicketDTO, n: int = 3) -> list[PastTicket]:
+    if (similar := _similar_past(t, n)) is not None:
+        return similar
     who = Ticket.customer_id == t.customer_id if t.customer_id else None
     if who is None and t.merchant_id:
         who = Ticket.merchant_id == t.merchant_id
@@ -163,17 +198,7 @@ def past_tickets(t: TicketDTO, n: int = 3) -> list[PastTicket]:
     q = select(Ticket).where(who, Ticket.id != t.id).order_by(Ticket.created_at.desc()).limit(n)
     with session.SessionLocal() as db:
         rows = db.scalars(q).all()
-    return [
-        PastTicket(
-            id=r.id,
-            ticket_type=r.ticket_type,
-            status=r.status,
-            summary=(r.masked_text or mask(r.raw_text)[0])[:200],  # never raw text (PII)
-            resolved_by=r.resolved_by,
-            created_at=r.created_at,
-        )
-        for r in rows
-    ]
+    return [_past(r) for r in rows]
 
 
 def build_context(
