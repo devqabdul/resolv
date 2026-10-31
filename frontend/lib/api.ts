@@ -53,6 +53,14 @@ export interface Approval {
   note: string | null;
 }
 
+// (decision: T19) shape of GET /api/approvals items (backend ApprovalItem).
+export interface ApprovalItem extends Approval {
+  ticket: Ticket | null;
+  reasoning: string;
+  agent_summary: string;
+  customer_reply_draft: string;
+}
+
 export interface TicketDetail {
   ticket: Ticket;
   run: { id: string; outcome: string | null; state: Record<string, unknown> } | null;
@@ -127,8 +135,8 @@ export const getTickets = (q: { status?: string; type?: string; incident_id?: st
 export const getTicket = (id: string) => get<TicketDetail>(`/api/tickets/${id}`);
 export const rerunTicket = (id: string) => post<TicketDetail>(`/api/tickets/${id}/run`);
 export const overrideTicket = (id: string, b: { path: string; note: string; decided_by: string; actions?: ProposedAction[] }) => post<Ticket>(`/api/tickets/${id}/override`, b);
-export const getApprovals = (status = "PENDING") => get<Approval[]>(`/api/approvals${qs({ status })}`);
-export const decideApproval = (id: string, b: { approve: boolean; note?: string; decided_by: string }) => post<{ approval: Approval; ticket: Ticket }>(`/api/approvals/${id}/decide`, b);
+export const getApprovals = (status = "PENDING") => get<ApprovalItem[]>(`/api/approvals${qs({ status })}`);
+export const decideApproval = (id: string, b: { approve: boolean; note?: string | null; decided_by: string }) => post<{ approval: Approval; ticket: Ticket }>(`/api/approvals/${id}/decide`, b);
 export const getIncidents = (status?: string) => get<Incident[]>(`/api/incidents${qs({ status })}`);
 export const getIncident = (id: string) => get<IncidentDetail>(`/api/incidents/${id}`);
 export const notifyIncident = (id: string) => post<Incident>(`/api/incidents/${id}/notify`);
