@@ -84,6 +84,7 @@ class AuditKind(StrEnum):
     approval_decided = "approval_decided"
     override = "override"
     notification = "notification"
+    sla_nudge = "sla_nudge"  # (decision: T17) one per ticket; doubles as the nudge-once memory
     incident_linked = "incident_linked"
     incident_fast_path = "incident_fast_path"
     error = "error"

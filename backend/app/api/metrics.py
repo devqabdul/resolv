@@ -6,6 +6,7 @@ from sqlalchemy import text
 
 from app.config import settings
 from app.db import session
+from app.services import metrics
 from mock_paytm import store
 
 router = APIRouter(prefix="/api")
@@ -36,3 +37,8 @@ def health() -> dict[str, object]:
         "db": settings.DATABASE_URL.split(":", 1)[0].split("+", 1)[0],
         "mock_paytm": mock,
     }
+
+
+@router.get("/metrics")
+def get_metrics(window_minutes: int = 240) -> dict[str, object]:
+    return metrics.compute(window_minutes)
