@@ -1,4 +1,4 @@
-"""Audit trail route (docs/02 §6.1); `/api/notifications` joins here in a later task."""
+"""Audit trail route (docs/02 §6.1); `/api/notifications` too."""
 
 from datetime import datetime
 from typing import Any
@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import select
 
 from app.db import session
-from app.db.models import AuditEvent
+from app.db.models import AuditEvent, Notification
 
 router = APIRouter(prefix="/api")
 
@@ -41,3 +41,23 @@ def get_audit(
     with session.SessionLocal() as db:
         rows = db.scalars(q.order_by(AuditEvent.id.desc()).limit(limit)).all()
     return [*reversed(rows)]
+
+
+class NotificationOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    ts: datetime
+    channel: str
+    target: str
+    text: str
+    delivered: bool
+    ticket_id: str | None = None
+    incident_id: str | None = None
+
+
+@router.get("/notifications", response_model=list[NotificationOut])
+def get_notifications(limit: int = Query(50, ge=1, le=500)) -> list[Notification]:
+    """Newest first."""
+    with session.SessionLocal() as db:
+        return [*db.scalars(select(Notification).order_by(Notification.id.desc()).limit(limit))]

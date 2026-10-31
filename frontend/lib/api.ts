@@ -87,9 +87,16 @@ export interface IncidentDetail {
   notifications: Notification[];
 }
 
+// (decision: T18) typed from docs/02 §5/§6.1; id is the integer row id.
 export interface Notification {
-  id: string;
-  [key: string]: unknown;
+  id: number;
+  ts: string;
+  channel: "slack" | "inapp";
+  target: string;
+  text: string;
+  delivered: boolean;
+  ticket_id?: string | null;
+  incident_id?: string | null;
 }
 
 export interface Metrics {
