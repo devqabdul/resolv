@@ -115,6 +115,11 @@ export default function TicketPage() {
           >
             {t.status}
           </Badge>
+          {t.assigned_team && t.status !== "RESOLVED" && t.status !== "CLOSED" && (
+            <Badge data-testid="ticket-team" variant="outline" className={pill}>
+              Team: <span className="font-mono font-medium">{t.assigned_team}</span>
+            </Badge>
+          )}
           <TypeBadge type={t.ticket_type} />
           {t.path && (
             <Badge variant="outline" className={pill}>

@@ -366,6 +366,9 @@ export default function TicketTable({ incidentId, onClearIncident }: { incidentI
                       >
                         <StatusBadge status={t.status} />
                       </motion.span>
+                      {t.assigned_team && t.status !== "RESOLVED" && t.status !== "CLOSED" && (
+                        <Badge data-testid="ticket-team" variant="outline" className="ml-1.5 font-mono">{t.assigned_team}</Badge>
+                      )}
                     </TableCell>
                     <TableCell data-testid="ticket-path" className={cn("px-2", NARROW)}>
                       {t.path ? <Badge className={toneBadge({ tone: PATH_TONE[t.path], className: "font-mono" })}>{t.path}</Badge> : <span className="text-muted-foreground">-</span>}
