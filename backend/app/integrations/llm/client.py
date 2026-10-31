@@ -35,7 +35,10 @@ class LLMClient:
         if self._sdk is None:
             import anthropic
 
-            self._sdk = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
+            # (decision: FIX4) bounded timeout: a hung call must not stall the queue worker
+            self._sdk = anthropic.Anthropic(
+                api_key=settings.ANTHROPIC_API_KEY, timeout=20.0, max_retries=1
+            )
         return self._sdk
 
     def _live(self, model: str, system: str, user: str, schema: type[BaseModel]) -> dict[str, Any]:

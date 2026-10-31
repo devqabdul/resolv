@@ -93,6 +93,16 @@ def test_replay_miss_without_key_falls_back_to_mock(
     assert "cache_miss" in caplog.text and dec.path == DPath.RESOLVE
 
 
+def test_sdk_constructed_with_timeout(monkeypatch: pytest.MonkeyPatch) -> None:
+    # (decision: FIX4) the real SDK gets a 20 s timeout and one retry
+    import anthropic
+
+    seen: dict = {}
+    monkeypatch.setattr(anthropic, "Anthropic", lambda **kw: seen.update(kw) or FakeSdk())
+    LLMClient()._client()
+    assert seen["timeout"] == 20.0 and seen["max_retries"] == 1
+
+
 def test_prompts_exist() -> None:
     for n in ("understand", "decide", "incident_notice", "reply_style"):
         assert load_prompt(n).strip()
