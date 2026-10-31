@@ -42,7 +42,7 @@ const PAGES = [
 const typing = (t: EventTarget | null) =>
   t instanceof HTMLElement && (t.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName));
 
-// ⌘K palette over the loaded tickets (same SWR key as the queue, so no extra polling) plus page links.
+// ⌘K palette over the loaded tickets (same SWR key as the queue; mounted only while open) plus page links.
 function SearchPalette({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const router = useRouter();
   const { data } = useTickets({ limit: 200 });
@@ -160,7 +160,7 @@ export default function AppHeader() {
           </TooltipTrigger>
           <TooltipContent>Search <Kbd>⌘K</Kbd></TooltipContent>
         </Tooltip>
-        <SearchPalette open={searchOpen} onOpenChange={setSearchOpen} />
+        {searchOpen && <SearchPalette open onOpenChange={setSearchOpen} />}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
