@@ -166,30 +166,7 @@ def _past(r: Ticket) -> PastTicket:
     )
 
 
-def _similar_past(t: TicketDTO, n: int) -> list[PastTicket] | None:
-    """Top-n by cosine, same customer/merchant first (decision: T24). None = use keyword path."""
-    if not embeddings.enabled():
-        return None
-    ranked = embeddings.similar_tickets(t.id, k=None)
-    if not ranked:
-        return None
-    ids = [i for i, _ in ranked]
-    with session.SessionLocal() as db:
-        rows = {r.id: r for r in db.scalars(select(Ticket).where(Ticket.id.in_(ids)))}
-
-    def mine(r: Ticket) -> bool:
-        return bool(
-            (t.customer_id and r.customer_id == t.customer_id)
-            or (t.merchant_id and r.merchant_id == t.merchant_id)
-        )
-
-    order = sorted((i for i in ids if i in rows), key=lambda i: not mine(rows[i]))  # stable
-    return [_past(rows[i]) for i in order[:n]]
-
-
-def past_tickets(t: TicketDTO, n: int = 3) -> list[PastTicket]:
-    if (similar := _similar_past(t, n)) is not None:
-        return similar
+def _recent_past(t: TicketDTO, n: int) -> list[PastTicket]:
     who = Ticket.customer_id == t.customer_id if t.customer_id else None
     if who is None and t.merchant_id:
         who = Ticket.merchant_id == t.merchant_id
@@ -197,8 +174,26 @@ def past_tickets(t: TicketDTO, n: int = 3) -> list[PastTicket]:
         return []
     q = select(Ticket).where(who, Ticket.id != t.id).order_by(Ticket.created_at.desc()).limit(n)
     with session.SessionLocal() as db:
-        rows = db.scalars(q).all()
-    return [_past(r) for r in rows]
+        return [_past(r) for r in db.scalars(q).all()]
+
+
+def _similar_past(t: TicketDTO, n: int) -> list[PastTicket]:
+    ids = [i for i, _ in embeddings.similar_tickets(t.id, k=n)]
+    if not ids:
+        return []
+    with session.SessionLocal() as db:
+        rows = {r.id: r for r in db.scalars(select(Ticket).where(Ticket.id.in_(ids)))}
+    return [_past(rows[i]) for i in ids if i in rows]
+
+
+def past_tickets(t: TicketDTO, n: int = 3) -> list[PastTicket]:
+    """Last n by recency; when embeddings are on, plus top-n by cosine, de-duplicated, recency
+    first, at most 2n (decision: T24, per docs/02 §4)."""
+    out = _recent_past(t, n)
+    if embeddings.enabled():
+        seen = {p.id for p in out}
+        out += [p for p in _similar_past(t, n) if p.id not in seen]
+    return out
 
 
 def build_context(
