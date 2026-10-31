@@ -8,6 +8,13 @@ import PriorityBadge from "./PriorityBadge";
 import StatusBadge from "./StatusBadge";
 import TypeBadge from "./TypeBadge";
 
+// Green > 15 min left, amber <= 15 min, red once breached. (decision: T24A)
+function slaTone(due: string | null, now: number, overdue: boolean): string {
+  if (!due) return "text-ink/60";
+  if (overdue) return "bg-red-600 text-white";
+  return new Date(due).getTime() - now <= 15 * 60_000 ? "bg-amber-400 text-navy" : "bg-green-600 text-white";
+}
+
 export default function TicketTable({ incidentId }: { incidentId?: string }) {
   const router = useRouter();
   const { data, error } = useTickets({ limit: 50, incident_id: incidentId });
@@ -19,6 +26,13 @@ export default function TicketTable({ incidentId }: { incidentId?: string }) {
 
   if (!data) {
     return <p className="text-lg text-ink/60">{error ? "Backend unreachable." : "Loading..."}</p>;
+  }
+  if (data.items.length === 0) {
+    return (
+      <div data-testid="queue-empty" className="mx-auto max-w-xl rounded-xl bg-white p-10 text-center text-2xl font-semibold text-navy shadow-sm">
+        No tickets yet — open ?demo=1 and Seed, then inject a scenario
+      </div>
+    );
   }
   return (
     <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
@@ -43,13 +57,17 @@ export default function TicketTable({ incidentId }: { incidentId?: string }) {
                 <td className="px-3 py-2"><PriorityBadge priority={t.priority} /></td>
                 <td className="px-3 py-2"><StatusBadge status={t.status} /></td>
                 <td data-testid="ticket-path" className="px-3 py-2">{t.path ?? "-"}</td>
-                <td data-testid="sla-countdown" className={`px-3 py-2 font-mono text-lg font-bold ${sla.overdue ? "text-red-600" : ""}`}>{sla.text}</td>
+                <td data-testid="sla-countdown" className="px-3 py-2"><span className={`inline-block rounded-full px-3 py-1 font-mono text-lg font-bold ${slaTone(t.sla_due_at, now, sla.overdue)}`}>{sla.text}</span></td>
                 <td className="px-3 py-2">
                   {t.incident_id && (
-                    <span data-testid="incident-badge" className="inline-block rounded bg-purple-600 px-2 py-0.5 text-sm font-semibold text-white">{t.incident_id}</span>
+                    <Link href="/incidents" data-testid="incident-badge" title={t.incident_id} onClick={(e) => e.stopPropagation()} className="inline-block rounded-full bg-purple-600 px-3 py-1 text-base font-bold text-white">INCIDENT</Link>
                   )}
                 </td>
-                <td data-testid="resolved-by" className="px-3 py-2">{t.resolved_by ?? "-"}</td>
+                <td data-testid="resolved-by" className="px-3 py-2">
+                  {t.resolved_by && (
+                    <span className={`inline-block rounded-full px-3 py-1 text-base font-bold ${t.resolved_by === "resolv" ? "bg-cyan text-navy" : "bg-navy text-white"}`}>{t.resolved_by}</span>
+                  )}
+                </td>
               </tr>
             );
           })}
