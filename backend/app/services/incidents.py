@@ -1,6 +1,7 @@
 """Incident clustering (docs/02 §8): group tickets by ledger signature, draft one notice each."""
 
 import json
+import threading
 from datetime import timedelta
 from typing import Any
 
@@ -212,27 +213,46 @@ def get(incident_id: str) -> dict[str, Any] | None:
     return {"incident": inc, "tickets": [*tickets], "notifications": [*notes]}
 
 
-def send_notice(incident_id: str) -> Incident:
-    """Proactive notice to each linked customer via notify_customer; status COMMUNICATED."""
+def send_notice(incident_id: str, background: bool | None = None) -> Incident:
+    """Proactive notice to each linked customer via notify_customer; status COMMUNICATED.
+
+    (decision: FIX4) The status flips at once; the per-customer sends (one mock call each) run in
+    a daemon thread so the button returns immediately. `background=None` threads only while the
+    scheduler loops run (live app), like `demo.spike`; tests get the synchronous path.
+    """
+    from app.workers import scheduler  # lazy: avoid importing the agent at module load
+
     d = get(incident_id)
     if d is None:
         raise KeyError(f"Incident {incident_id} does not exist.")
     text = d["incident"].proactive_notice_draft or ""
-    tools = context.get_tools()
-    sent = [t for t in d["tickets"] if t.customer_id]
-    for t in sent:
-        tools.call(
-            "notify_customer", t.id, None, customer_id=t.customer_id, channel=t.channel, text=text
-        )
+    targets = [(t.id, t.customer_id, t.channel) for t in d["tickets"] if t.customer_id]
     with session.SessionLocal() as db:
         inc = db.get(Incident, incident_id)
         assert inc is not None
         inc.status, inc.notified_at = "COMMUNICATED", now()
         db.commit()
-    audit.record(
-        incident_id,
-        AuditKind.notification,
-        {"channel": "customer", "sent": len(sent)},
-        actor="system",
-    )
+
+    def send_all() -> None:
+        tools = context.get_tools()
+        sent = 0
+        for tid, cid, channel in targets:
+            try:
+                tools.call(
+                    "notify_customer", tid, None, customer_id=cid, channel=channel, text=text
+                )
+                sent += 1
+            except Exception as e:  # noqa: BLE001 - one failed send must not stop the rest
+                audit.record(tid, AuditKind.error, {"notify_customer": str(e)}, "system")
+        audit.record(
+            incident_id,
+            AuditKind.notification,
+            {"channel": "customer", "sent": sent},
+            actor="system",
+        )
+
+    if scheduler._started if background is None else background:
+        threading.Thread(target=send_all, name="incident-notice", daemon=True).start()
+    else:
+        send_all()
     return inc
