@@ -1,5 +1,6 @@
 """R25: replay miss with no key/network falls back to mock with 0 SDK calls (docs/06 T25)."""
 
+import importlib
 import logging
 import os
 from pathlib import Path
@@ -70,8 +71,7 @@ def test_replay_miss_without_key_uses_mock(
     assert "llm_fallback mode=replay reason=no_api_key" in caplog.text
     assert llm_client.FALLBACKS and set(llm_client.FALLBACKS) == {"no_api_key"}
     assert calls == []
-    import app.main  # noqa: F401
-
+    importlib.import_module("app.main")
     assert logging.getLogger("app.integrations.llm.client").isEnabledFor(logging.INFO)
 
 
