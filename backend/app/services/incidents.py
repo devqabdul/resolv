@@ -16,10 +16,49 @@ from app.services import audit, context
 from app.services.tickets import new_id
 from app.util.clock import now
 
+FAST_PATH_REPLY = (
+    "We've identified an issue affecting {bank} UPI payments and our team is on it. "
+    "Your reversal is being processed automatically; no action needed. Ref {incident_id}"
+)
+
 
 def match_open_incident(ticket: TicketDTO) -> Incident | None:
-    """OPEN incident whose signature matches the ticket (decision: T7 stub, replaced in T16)."""
-    return None
+    """Live incident with the ticket's ledger signature; no LLM (docs/02 §8 fast path).
+
+    (decision: T16) COMMUNICATED still matches: the outage is ongoing until RESOLVED.
+    """
+    if not ticket.signature:
+        return None
+    with session.SessionLocal() as db:
+        return db.scalars(
+            select(Incident).where(
+                Incident.signature == ticket.signature, Incident.status != "RESOLVED"
+            )
+        ).first()
+
+
+def attach_fast_path(ticket: TicketDTO, incident: Incident, run_id: str | None = None) -> str:
+    """Attach `ticket` via fast_path, bump the incident, audit; returns the holding reply text."""
+    with session.SessionLocal() as db:
+        inc = db.get(Incident, incident.id)
+        assert inc is not None
+        if db.get(IncidentTicket, (inc.id, ticket.id)) is None:  # cluster may have linked it
+            db.add(IncidentTicket(incident_id=inc.id, ticket_id=ticket.id, via="fast_path"))
+        row = db.get(Ticket, ticket.id)
+        if row is not None:
+            row.incident_id, row.handling_mode = inc.id, HandlingMode.incident
+        db.flush()
+        inc.ticket_count = (
+            db.scalar(select(func.count()).where(IncidentTicket.incident_id == inc.id)) or 0
+        )
+        seen = ticket.created_at or now()
+        inc.last_seen = max(inc.last_seen or seen, seen)
+        db.commit()
+    payload = {"incident_id": incident.id, "via": "fast_path", "signature": ticket.signature}
+    audit.record(ticket.id, AuditKind.incident_linked, payload, run_id=run_id, actor="system")
+    audit.record(ticket.id, AuditKind.incident_fast_path, payload, run_id=run_id)
+    _, bank, _ = incident.signature.split("|")
+    return FAST_PATH_REPLY.format(bank=bank, incident_id=incident.id)
 
 
 def signature_for(ticket: TicketDTO, run_id: str | None = None) -> tuple[str | None, str | None]:

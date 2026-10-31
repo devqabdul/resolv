@@ -1,13 +1,19 @@
 """Demo controls: reset, seed, scenario tickets, spike (docs/02 §6.1, docs/06 T9)."""
 
+import logging
 import random
+import threading
+import time
+from collections.abc import Callable
 
 from app.config import settings
 from app.db import session
 from app.db.models import KbDoc
-from app.domain.enums import Channel
+from app.domain.enums import AuditKind, Channel
 from app.integrations.paytm.client import PaytmClient
-from app.services import context, tickets
+from app.services import audit, context, tickets
+
+log = logging.getLogger(__name__)
 
 D1_TEXT = (
     "Paid Rs 2,499 by UPI from riya@okhdfc, money debited but order failed 3 days ago, "
@@ -105,15 +111,50 @@ def scenario(name: str) -> str:
     return tickets.create(channel.value, text, cust, mer, ticket_id=tid).id
 
 
-def spike(issuer_bank: str, count: int, minutes: int) -> list[str]:
-    """Mock bank outage plus one NEW ticket per generated customer, texts fixed by the args."""
+SPIKE_BATCH = 10
+
+
+def spike(
+    issuer_bank: str,
+    count: int,
+    minutes: int,
+    batch_delay_s: float = 2.0,
+    background: bool | None = None,
+) -> list[str]:
+    """Mock bank outage plus one NEW ticket per generated customer, texts fixed by the args.
+
+    (decision: T16) Tickets are created in batches of 10, `batch_delay_s` apart, in a background
+    thread so the cockpit count climbs; ids are pre-generated and returned at once.
+    `background=None` paces only while the scheduler loops run (live app); otherwise (tests,
+    scripts) every ticket is created before returning, with no delay.
+    """
+    from app.workers import scheduler  # lazy: avoid importing the agent at module load
+
     out = _paytm().admin_bank_outage(issuer_bank, count, minutes)
     rng = random.Random(f"{issuer_bank}:{count}")
-    return [
-        tickets.create(
-            Channel.in_app_chat.value,
-            rng.choice(SPIKE_VARIANTS).format(bank=issuer_bank),
-            customer_id=cid,
-        ).id
+    rows = [
+        (tickets.new_id("tkt"), rng.choice(SPIKE_VARIANTS).format(bank=issuer_bank), cid)
         for cid in out["customer_ids"]
     ]
+    paced = scheduler._started if background is None else background
+
+    def create_all() -> None:
+        for i in range(0, len(rows), SPIKE_BATCH):
+            if i and paced and batch_delay_s > 0:
+                time.sleep(batch_delay_s)
+            for tid, text, cid in rows[i : i + SPIKE_BATCH]:
+                tickets.create(Channel.in_app_chat.value, text, customer_id=cid, ticket_id=tid)
+
+    if paced:
+        threading.Thread(target=_guarded, args=(create_all,), name="spike", daemon=True).start()
+    else:
+        create_all()
+    return [tid for tid, _, _ in rows]
+
+
+def _guarded(fn: Callable[[], None]) -> None:
+    try:
+        fn()
+    except Exception as e:  # a background spike failure is audited, never silent
+        log.exception("spike failed")
+        audit.record("system", AuditKind.error, {"loop": "spike", "error": str(e)}, "system")
