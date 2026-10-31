@@ -8,11 +8,11 @@ import PriorityBadge from "./PriorityBadge";
 import StatusBadge from "./StatusBadge";
 import TypeBadge from "./TypeBadge";
 
-// Green > 15 min left, amber <= 15 min, red once breached. (decision: T24A)
+// Green > 5 min left, amber <= 5 min, red once breached. (decision: FIX3: first-response SLA is 15 min, so amber at 15 showed on every new ticket)
 function slaTone(due: string | null, now: number, overdue: boolean): string {
   if (!due) return "text-ink/60";
   if (overdue) return "bg-red-600 text-white";
-  return new Date(due).getTime() - now <= 15 * 60_000 ? "bg-amber-400 text-navy" : "bg-green-600 text-white";
+  return new Date(due).getTime() - now <= 5 * 60_000 ? "bg-amber-400 text-navy" : "bg-green-600 text-white";
 }
 
 export default function TicketTable({ incidentId }: { incidentId?: string }) {
