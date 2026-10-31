@@ -17,7 +17,7 @@ function slaTone(due: string | null, now: number, overdue: boolean): string {
 
 export default function TicketTable({ incidentId }: { incidentId?: string }) {
   const router = useRouter();
-  const { data, error } = useTickets({ limit: 50, incident_id: incidentId });
+  const { data, error } = useTickets({ limit: 200, incident_id: incidentId });
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000);
@@ -27,7 +27,9 @@ export default function TicketTable({ incidentId }: { incidentId?: string }) {
   if (!data) {
     return <p className="text-lg text-ink/60">{error ? "Backend unreachable." : "Loading..."}</p>;
   }
-  if (data.items.length === 0) {
+  // (decision: FIX5) stable sort: non-incident rows first so D1/D3 stay on top after a spike
+  const items = [...data.items].sort((a, b) => Number(!!a.incident_id) - Number(!!b.incident_id));
+  if (items.length === 0) {
     return (
       <div data-testid="queue-empty" className="mx-auto max-w-xl rounded-xl bg-white p-10 text-center text-2xl font-semibold text-navy shadow-sm">
         No tickets yet — open ?demo=1 and Seed, then inject a scenario
@@ -45,7 +47,7 @@ export default function TicketTable({ incidentId }: { incidentId?: string }) {
           </tr>
         </thead>
         <tbody>
-          {data.items.map((t) => {
+          {items.map((t) => {
             const sla = slaCountdown(t.sla_due_at, now);
             return (
               <tr key={t.id} data-testid="ticket-row" data-ticket-id={t.id} data-status={t.status} className="cursor-pointer border-t border-light hover:bg-light" onClick={() => router.push(`/tickets/${t.id}`)}>

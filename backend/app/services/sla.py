@@ -35,6 +35,10 @@ def guard() -> list[str]:
         due = db.scalars(
             select(Ticket).where(
                 Ticket.status.in_([str(s) for s in _OPEN]),
+                # (decision: FIX5) the incident covers incident-linked tickets; no per-ticket nudges
+                Ticket.status != str(TicketStatus.INCIDENT_LINKED),
+                Ticket.handling_mode != "incident",
+                Ticket.incident_id.is_(None),
                 Ticket.sla_due_at < now() + timedelta(minutes=limit),
                 ~select(AuditEvent.id)
                 .where(

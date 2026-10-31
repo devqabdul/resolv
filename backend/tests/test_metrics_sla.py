@@ -64,3 +64,21 @@ def test_guard_nudges_once_and_raises_p1(paytm: PaytmClient) -> None:
     assert count(Notification, ticket_id=tid) == 1
     with session.SessionLocal() as db:
         assert db.get(Ticket, tid).priority == "P1"  # type: ignore[union-attr]
+
+
+def test_guard_skips_incident_linked(paytm: PaytmClient) -> None:
+    # (decision: FIX5) incident-linked tickets are covered by the incident, no nudge
+    tid = demo.scenario("d1_failed_upi")
+    with session.SessionLocal() as db:
+        t = db.get(Ticket, tid)
+        assert t is not None
+        t.sla_due_at = now() + timedelta(minutes=10)
+        t.priority = "P3"
+        t.status = "INCIDENT_LINKED"
+        t.handling_mode = "incident"
+        t.incident_id = "inc_deadbeef"
+        db.commit()
+    assert sla.guard() == []
+    with session.SessionLocal() as db:
+        assert db.get(Ticket, tid).priority == "P3"  # type: ignore[union-attr]
+        assert not db.scalars(select(Notification).filter_by(ticket_id=tid)).all()
