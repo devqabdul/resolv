@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from app.agent import runner
 from app.config import settings
 from app.domain.enums import AuditKind
-from app.services import audit, incidents, tickets
+from app.services import audit, incidents, sla, tickets
 
 log = logging.getLogger(__name__)
 _stop = threading.Event()
@@ -31,7 +31,7 @@ def cluster_incidents() -> None:
 
 
 def sla_guard() -> None:
-    """Placeholder until T17 (services/sla.py)."""
+    sla.guard()
 
 
 def _loop(name: str, fn: Callable[[], object], every: float) -> None:
