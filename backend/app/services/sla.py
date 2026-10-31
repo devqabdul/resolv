@@ -5,8 +5,9 @@ from datetime import timedelta
 from sqlalchemy import select
 
 from app.db import session
-from app.db.models import AuditEvent, Notification, Ticket
+from app.db.models import AuditEvent, Ticket
 from app.domain.enums import AuditKind, TicketStatus
+from app.integrations.notify import notify
 from app.policy.rbi_tat import load_rules
 from app.services import audit
 from app.util.clock import now
@@ -51,22 +52,13 @@ def guard() -> list[str]:
             f"{tid} breaches in {max(mins or 0, 0):.0f} min — http://localhost:3000/tickets/{tid}"
         )
         with session.SessionLocal() as db:
-            db.add(
-                Notification(
-                    channel="inapp", target=f"team:{team}", text=text, delivered=True, ticket_id=tid
-                )
-            )
             row = db.get(Ticket, tid)
             if row is not None:
                 row.priority = "P1"
             db.commit()
         audit.record(tid, AuditKind.sla_nudge, {"team": team, "minutes": mins}, actor="system")
-        audit.record(
-            tid,
-            AuditKind.notification,
-            {"channel": "inapp", "target": f"team:{team}"},
-            actor="system",
-        )
+        # (decision: T18) target is #support-leads per docs/06 (was team:<x>); `team` stays in sla_nudge
+        notify("#support-leads", text, tid)
         if prio != "P1":
             audit.record(
                 tid,

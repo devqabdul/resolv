@@ -2,6 +2,7 @@ import re
 
 from app.agent.state import AgentState
 from app.domain.enums import AuditKind, HandlingMode
+from app.integrations import embeddings
 from app.integrations.helpdesk.internal import helpdesk
 from app.policy.pii import mask
 from app.services import audit, context, incidents
@@ -14,6 +15,23 @@ def _language(text: str) -> str:
     if re.search(r"[ऀ-ॿ]", text):
         return "hi"
     return "hi-en" if len(_HINGLISH.findall(text.lower())) >= 2 else "en"
+
+
+_noted = False
+
+
+def _embed(tid: str, masked: str, run_id: str | None) -> None:
+    """Write ticket_embeddings when enabled; on failure audit `embeddings_unavailable` once."""
+    global _noted
+    if not embeddings.enabled():
+        return
+    try:
+        embeddings.store(tid, masked)
+    except embeddings.EmbeddingsUnavailable as exc:  # (decision: T24) never crash a run
+        if not _noted:
+            _noted = True
+            note = {"note": "embeddings_unavailable", "reason": str(exc)[:200]}
+            audit.record(tid, AuditKind.error, note, run_id=run_id)
 
 
 def ingest(state: AgentState) -> AgentState:
@@ -40,6 +58,7 @@ def ingest(state: AgentState) -> AgentState:
         run_id=run_id,
     )
 
+    _embed(tid, masked, run_id)
     out: AgentState = {**state, "ticket": ticket}
     inc = incidents.match_open_incident(ticket)
     if inc is not None:  # fast path (docs/02 §8): template holding reply, no LLM, graph ends
