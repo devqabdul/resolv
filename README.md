@@ -24,6 +24,8 @@ make dev                 # backend :8000 (mock Paytm mounted) + frontend :3000
 make seed                # reset and seed the demo data (scripts/demo_reset.sh)
 ```
 
+`make dev`/`backend`/`seed`/`warm` create `.env` from `.env.example` if missing, and `make backend` loads it with `uv run --env-file ../.env`, so its values (e.g. `DEMO_NOW_OVERRIDE`, `MOCK_LATENCY_MS`) reach both Resolv and the mounted mock Paytm.
+
 The backend venv is created automatically by `uv` on the first `make backend` or `make dev` (Python 3.12 is pinned in `backend/.python-version`).
 
 Open `http://localhost:3000/?demo=1` to get the demo drawer (Reset, Seed, inject the 7 scenarios, Spike AXIS 120). Health check: `GET http://localhost:8000/api/health`.
