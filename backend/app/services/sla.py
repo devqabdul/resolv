@@ -12,9 +12,11 @@ from app.policy.rbi_tat import load_rules
 from app.services import audit
 from app.util.clock import now
 
+# (decision: FIX7, 31 Oct) NEW/PROCESSING tickets are still with the agent, not waiting on a
+# human. first_response_minutes == nudge_before_breach_minutes (15) made every ticket "near
+# breach" on the first tick, so spike tickets were nudged before the clusterer linked them.
+# ponytail: a ticket stuck NEW because the processor is down is never nudged.
 _OPEN = [
-    TicketStatus.NEW,
-    TicketStatus.PROCESSING,
     TicketStatus.ROUTED,
     TicketStatus.ESCALATED,
     TicketStatus.AWAITING_APPROVAL,

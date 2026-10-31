@@ -52,6 +52,7 @@ def test_guard_nudges_once_and_raises_p1(paytm: PaytmClient) -> None:
         assert t is not None
         t.sla_due_at = now() + timedelta(minutes=10)
         t.priority = "P3"
+        t.status = "ROUTED"  # (decision: FIX7) only tickets waiting on a human are nudged
         db.commit()
     assert sla.guard() == [tid]
     assert sla.guard() == []
@@ -82,3 +83,11 @@ def test_guard_skips_incident_linked(paytm: PaytmClient) -> None:
     with session.SessionLocal() as db:
         assert db.get(Ticket, tid).priority == "P3"  # type: ignore[union-attr]
         assert not db.scalars(select(Notification).filter_by(ticket_id=tid)).all()
+
+
+def test_guard_skips_spike_tickets_before_linking(paytm: PaytmClient) -> None:
+    # (decision: FIX7) spike tickets are NEW until the fast path links them; never nudged then
+    ids = demo.spike("AXIS", 12, 60, background=False)
+    assert sla.guard() == []
+    with session.SessionLocal() as db:
+        assert not db.scalars(select(Notification).where(Notification.ticket_id.in_(ids))).all()

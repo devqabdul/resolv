@@ -412,7 +412,7 @@ Optional secondary signal: embedding cosine ≥ 0.85 between the ticket text and
 
 ## 9. SLA guard (`services/sla.py`)
 
-Implemented guard (decision: T17, 31 Oct): uses `sla_due_at` only; folding in the RBI TAT deadline is a follow-up. Every 30 s: for tickets in `NEW, PROCESSING, ROUTED, ESCALATED, AWAITING_APPROVAL`: `due = min(sla_due_at, regulatory_clock.tat_deadline if any)`; if `due − now < nudge_before_breach_minutes` and not yet nudged → `notify(slack, "#support-leads", "<ticket> breaches in 12 min — <reasons> — <cockpit link>")`, raise priority to `P1`, audit `notification`. Metrics counts `tat_breaches_prevented` = tickets resolved by Resolv whose `days_late` would have grown by ≥ 1 if left to the human queue (simple proxy: resolved with `compensation_due_inr > 0` within the session).
+Implemented guard (decision: T17, 31 Oct): uses `sla_due_at` only; folding in the RBI TAT deadline is a follow-up. Every 30 s: for tickets in `ROUTED, ESCALATED, AWAITING_APPROVAL` (decision: FIX7, 31 Oct: `NEW`/`PROCESSING` dropped, they are still with the agent and were all nudged on the first tick because the nudge window equals the first-response SLA): `due = min(sla_due_at, regulatory_clock.tat_deadline if any)`; if `due − now < nudge_before_breach_minutes` and not yet nudged → `notify(slack, "#support-leads", "<ticket> breaches in 12 min — <reasons> — <cockpit link>")`, raise priority to `P1`, audit `notification`. Metrics counts `tat_breaches_prevented` = tickets resolved by Resolv whose `days_late` would have grown by ≥ 1 if left to the human queue (simple proxy: resolved with `compensation_due_inr > 0` within the session).
 
 ## 10. LLM layer (`integrations/llm/`)
 
