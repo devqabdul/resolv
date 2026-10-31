@@ -1,3 +1,4 @@
+import json
 import os
 
 os.environ["MOCK_LATENCY_MS"] = "0"
@@ -66,3 +67,21 @@ def test_compensation_idempotency() -> None:
     # 02 §6.2 names no conflict code for compensations: a new key is a new credit (200)
     r3 = c.post(f"{B}/compensations", json={**body, "idempotency_key": "c2"})
     assert r3.status_code == 200 and r3.json()["compensation_id"] != r1.json()["compensation_id"]
+
+
+def test_seed_is_replay_stable(monkeypatch) -> None:
+    # (decision: FIX4) seeded timestamps are hour-floored, so two reset+seed calls in the same
+    # hour give identical ledger bodies (replay cache keys stay stable)
+    import time
+
+    from mock_paytm import store
+
+    monkeypatch.delenv("DEMO_NOW_OVERRIDE", raising=False)
+    if store.now().minute == 59 and store.now().second >= 58:
+        time.sleep(3)  # avoid straddling an hour boundary
+    _seed()
+    a = c.get(f"{B}/transactions", params={"customer_id": "cust_riya"}).text
+    time.sleep(1.1)
+    _seed()
+    b = c.get(f"{B}/transactions", params={"customer_id": "cust_riya"}).text
+    assert a == b and all(t["created_at"].endswith(":00:00+00:00") for t in json.loads(a))

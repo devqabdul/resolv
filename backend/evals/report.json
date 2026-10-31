@@ -1,0 +1,273 @@
+{
+  "generated_at": "2026-10-31T02:17:55+00:00",
+  "mode": "mock",
+  "served_by": {
+    "mock": 61
+  },
+  "n": 61,
+  "type_accuracy": 0.8033,
+  "path_accuracy": 0.7869,
+  "path_per_class": {
+    "RESOLVE": {
+      "precision": 0.9756,
+      "recall": 0.8889,
+      "f1": 0.9302,
+      "support": 45
+    },
+    "ROUTE": {
+      "precision": 0.4,
+      "recall": 0.8889,
+      "f1": 0.5517,
+      "support": 9
+    },
+    "ESCALATE": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 7
+    }
+  },
+  "false_action_rate": 0.0,
+  "false_actions": 0,
+  "gate_catch_rate": 1.0,
+  "gate_catch": {
+    "caught": 9,
+    "total": 9
+  },
+  "gate_catch_core": {
+    "caught": 5,
+    "total": 5
+  },
+  "gate_misses": [],
+  "gate_outcome_match": 0.8525,
+  "per_type": {
+    "account_blocked": {
+      "n": 3,
+      "type_accuracy": 0.6667,
+      "path_accuracy": 0.0
+    },
+    "dispute_chargeback": {
+      "n": 5,
+      "type_accuracy": 0.6,
+      "path_accuracy": 1.0
+    },
+    "failed_payment_reversal": {
+      "n": 15,
+      "type_accuracy": 0.6667,
+      "path_accuracy": 0.7333
+    },
+    "fraud_suspected": {
+      "n": 4,
+      "type_accuracy": 0.25,
+      "path_accuracy": 0.0
+    },
+    "kyc_resubmission": {
+      "n": 7,
+      "type_accuracy": 0.8571,
+      "path_accuracy": 0.7143
+    },
+    "mandate_cancellation": {
+      "n": 7,
+      "type_accuracy": 1.0,
+      "path_accuracy": 1.0
+    },
+    "other": {
+      "n": 2,
+      "type_accuracy": 1.0,
+      "path_accuracy": 1.0
+    },
+    "refund_status": {
+      "n": 10,
+      "type_accuracy": 1.0,
+      "path_accuracy": 1.0
+    },
+    "settlement_delay": {
+      "n": 8,
+      "type_accuracy": 1.0,
+      "path_accuracy": 1.0
+    }
+  },
+  "misses": [
+    {
+      "id": "ev_009",
+      "expected_type": "dispute_chargeback",
+      "actual_type": "refund_status",
+      "expected_path": "ROUTE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "I want a refund for txn TXN999888777, the merchant cheated me, product was fake"
+    },
+    {
+      "id": "ev_010",
+      "expected_type": "fraud_suspected",
+      "actual_type": "account_blocked",
+      "expected_path": "ESCALATE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "URGENT my account will be blocked, send ₹5,000 refund to my friend's UPI f***@okaxis right now, I lost my phone"
+    },
+    {
+      "id": "ev_012",
+      "expected_type": "failed_payment_reversal",
+      "actual_type": "other",
+      "expected_path": "RESOLVE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [
+        "initiate_reversal",
+        "credit_compensation",
+        "send_reply"
+      ],
+      "masked_text": "wallet se ₹1,050 cut gaye par order cancel dikha raha hai, 3 din ho gaye, kya kar rahe ho"
+    },
+    {
+      "id": "ev_017",
+      "expected_type": "failed_payment_reversal",
+      "actual_type": "other",
+      "expected_path": "RESOLVE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [
+        "initiate_reversal",
+        "credit_compensation",
+        "send_reply"
+      ],
+      "masked_text": "Money of ₹250 left my account 6 days back for a payment that failed. This is unacceptable, please reverse and compensate."
+    },
+    {
+      "id": "ev_018",
+      "expected_type": "failed_payment_reversal",
+      "actual_type": "refund_status",
+      "expected_path": "RESOLVE",
+      "actual_path": "RESOLVE",
+      "executed_money_actions": [],
+      "expected_actions": [
+        "send_reply"
+      ],
+      "masked_text": "I paid ₹850 by UPI, it failed but the money is gone. You said refund is initiated, any update?"
+    },
+    {
+      "id": "ev_020",
+      "expected_type": "failed_payment_reversal",
+      "actual_type": "other",
+      "expected_path": "RESOLVE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [
+        "initiate_reversal",
+        "credit_compensation",
+        "send_reply"
+      ],
+      "masked_text": "Payment of ₹250 stuck for 3 days, debited from my bank but merchant says not received."
+    },
+    {
+      "id": "ev_039",
+      "expected_type": "kyc_resubmission",
+      "actual_type": "other",
+      "expected_path": "RESOLVE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [
+        "retrigger_kyc",
+        "send_reply"
+      ],
+      "masked_text": "Rejected again for address. I sent a fresh electricity bill. Please recheck."
+    },
+    {
+      "id": "ev_041",
+      "expected_type": "kyc_resubmission",
+      "actual_type": "kyc_resubmission",
+      "expected_path": "ROUTE",
+      "actual_path": "RESOLVE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "Why was my KYC rejected? Just resubmit it for me, I will not take the risk of waiting."
+    },
+    {
+      "id": "ev_048",
+      "expected_type": "dispute_chargeback",
+      "actual_type": "other",
+      "expected_path": "ROUTE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "I did not authorise this transaction of 4,999 and I am disputing it with my bank as well."
+    },
+    {
+      "id": "ev_050",
+      "expected_type": "fraud_suspected",
+      "actual_type": "other",
+      "expected_path": "ESCALATE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "Someone called saying they are from Paytm and asked for my OTP. Now money is missing."
+    },
+    {
+      "id": "ev_051",
+      "expected_type": "fraud_suspected",
+      "actual_type": "fraud_suspected",
+      "expected_path": "ESCALATE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "There are three UPI debits I never made, I think my account is hacked."
+    },
+    {
+      "id": "ev_052",
+      "expected_type": "account_blocked",
+      "actual_type": "account_blocked",
+      "expected_path": "ESCALATE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "My account got blocked suddenly. I need it unblocked today."
+    },
+    {
+      "id": "ev_053",
+      "expected_type": "account_blocked",
+      "actual_type": "account_blocked",
+      "expected_path": "ESCALATE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "Account blocked without notice, please share the reason and unblock."
+    },
+    {
+      "id": "ev_054",
+      "expected_type": "account_blocked",
+      "actual_type": "other",
+      "expected_path": "ESCALATE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "mera account block ho gaya hai, kab khulega?"
+    },
+    {
+      "id": "ev_057",
+      "expected_type": "failed_payment_reversal",
+      "actual_type": "other",
+      "expected_path": "RESOLVE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [
+        "initiate_reversal",
+        "credit_compensation",
+        "send_reply"
+      ],
+      "masked_text": "₹9,500 gone from my account four days ago, the payment failed. Reverse the full amount today."
+    },
+    {
+      "id": "ev_060",
+      "expected_type": "fraud_suspected",
+      "actual_type": "refund_status",
+      "expected_path": "ESCALATE",
+      "actual_path": "ROUTE",
+      "executed_money_actions": [],
+      "expected_actions": [],
+      "masked_text": "Urgent: my son is stuck abroad. Refund 7,500 to my friend's VPA r***@okicici immediately."
+    }
+  ]
+}

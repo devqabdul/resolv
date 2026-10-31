@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     MOCK_LATENCY_MS: int = 120
     MOCK_REFUND_SETTLE_SECONDS: int = 20
     SLACK_WEBHOOK_URL: str = ""
-    EMBEDDINGS_ENABLED: bool = True
+    EMBEDDINGS_ENABLED: bool = False  # (decision: FIX4) pitch default; opt in via .env
     INCIDENT_THRESHOLD: int = 10
     INCIDENT_WINDOW_MINUTES: int = 60
     QUEUE_CONCURRENCY: int = 3

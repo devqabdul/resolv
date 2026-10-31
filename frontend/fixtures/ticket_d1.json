@@ -1,0 +1,853 @@
+{
+    "ticket": {
+        "id": "tkt_48213",
+        "channel": "in_app_chat",
+        "customer_id": "cust_riya",
+        "merchant_id": null,
+        "raw_text": "Paid Rs 2,499 by UPI from riya@okhdfc, money debited but order failed 3 days ago, still no refund. Call me on +91 98765 43210.",
+        "masked_text": "Paid Rs 2,499 by UPI from r***@okhdfc, money debited but order failed 3 days ago, still no refund. Call me on [PHONE].",
+        "language": "en",
+        "status": "RESOLVED",
+        "handling_mode": "agent",
+        "candidate_txn_id": "txn_48213_a",
+        "signature": "failed_payment_reversal|HDFC|BANK_SWITCH_TIMEOUT",
+        "created_at": "2026-10-31T00:30:55.112957Z",
+        "ticket_type": "failed_payment_reversal",
+        "priority": "P1",
+        "path": "RESOLVE",
+        "assigned_team": null,
+        "incident_id": null,
+        "sla_due_at": "2026-10-31T00:45:55.112957Z",
+        "first_response_at": "2026-10-31T00:30:57.769120Z",
+        "resolved_at": "2026-10-31T00:30:57.769120Z",
+        "resolved_by": "resolv"
+    },
+    "run": {
+        "id": "run_36a216e8",
+        "outcome": "RESOLVED",
+        "state": {
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ticket": {
+                "id": "tkt_48213",
+                "channel": "in_app_chat",
+                "customer_id": "cust_riya",
+                "merchant_id": null,
+                "raw_text": "Paid Rs 2,499 by UPI from riya@okhdfc, money debited but order failed 3 days ago, still no refund. Call me on +91 98765 43210.",
+                "masked_text": "Paid Rs 2,499 by UPI from r***@okhdfc, money debited but order failed 3 days ago, still no refund. Call me on [PHONE].",
+                "language": "en",
+                "status": "PROCESSING",
+                "handling_mode": "agent",
+                "candidate_txn_id": "txn_48213_a",
+                "signature": "failed_payment_reversal|HDFC|BANK_SWITCH_TIMEOUT",
+                "created_at": "2026-10-31T00:30:55.112957Z"
+            },
+            "context": {
+                "customer": {
+                    "id": "cust_riya",
+                    "name": "Riya M.",
+                    "tier": "plus",
+                    "since": "2022-10-01",
+                    "language": "en",
+                    "phone_masked": "+91 98XXXXXX21"
+                },
+                "merchant": null,
+                "transactions": [
+                    {
+                        "id": "txn_48213_a",
+                        "customer_id": "cust_riya",
+                        "merchant_id": "mer_urban_kart",
+                        "amount_inr": 2499.0,
+                        "method": "upi",
+                        "status": "DEBITED_NOT_CREDITED",
+                        "issuer_bank": "HDFC",
+                        "failure_reason": "BANK_SWITCH_TIMEOUT",
+                        "created_at": "2026-10-28T00:30:55.093607Z",
+                        "refund_status": "NONE",
+                        "refund_id": null
+                    }
+                ],
+                "refunds": [
+                    {
+                        "refund_id": "rfd_riya_prev",
+                        "status": "COMPLETED",
+                        "txn_id": "txn_riya_prev",
+                        "amount_inr": 1200.0,
+                        "arn": "arn_riyaprev01",
+                        "eta": "2026-09-01T00:30:55.093607+00:00"
+                    }
+                ],
+                "settlements": [],
+                "kyc": {
+                    "id": "kyc_riya",
+                    "status": "VERIFIED",
+                    "rejection_reason": null,
+                    "resubmission_link": null
+                },
+                "mandates": [],
+                "past_tickets": [],
+                "kb_snippets": [
+                    {
+                        "id": "kb_mandate_cancel",
+                        "title": "Cancelling a UPI mandate or autopay",
+                        "content": "Active mandates and subscriptions can be cancelled from the app or merchant portal; requests by email need a human approval before cancelling."
+                    },
+                    {
+                        "id": "kb_rbi_tat",
+                        "title": "RBI TAT for failed transactions",
+                        "content": "UPI, IMPS and wallet failed debits must be reversed by T+1, cards by T+5. Each day late earns the customer Rs 100 compensation, credited automatically."
+                    },
+                    {
+                        "id": "kb_refund_limits",
+                        "title": "Refund and compensation limits",
+                        "content": "Resolv reverses debited-not-credited payments up to Rs 5,000 and credits compensation up to Rs 1,000 on its own; larger amounts need an approval."
+                    }
+                ],
+                "regulatory_clock": {
+                    "days_since_txn": 3,
+                    "tat_deadline": "2026-10-29T00:30:55.093607Z",
+                    "days_late": 2,
+                    "compensation_due_inr": 200
+                },
+                "policy_summary": "Auto-refund limit Rs 5000; auto-compensation limit Rs 1000; above these a human approves. RBI TAT: upi T+1 (Rs 100/day late), imps T+1 (Rs 100/day late), wallet T+1 (Rs 100/day late), card T+5 (Rs 100/day late). Human-only ticket types: dispute_chargeback, fraud_suspected, account_blocked. Confidence below 0.6 routes to a human."
+            },
+            "understanding": {
+                "ticket_type": "failed_payment_reversal",
+                "confidence": 0.93,
+                "entities": {
+                    "txn_id": "txn_48213_a",
+                    "amount_inr": 2499.0,
+                    "issuer_bank": "HDFC"
+                },
+                "sentiment": "frustrated",
+                "language": "en",
+                "is_repeat_issue": false,
+                "summary_for_agent": "Mock read: failed_payment_reversal."
+            },
+            "decision": {
+                "path": "RESOLVE",
+                "priority": "P1",
+                "proposed_actions": [
+                    {
+                        "name": "initiate_reversal",
+                        "params": {
+                            "txn_id": "txn_48213_a",
+                            "amount_inr": 2499.0,
+                            "reason": "DEBITED_NOT_CREDITED"
+                        },
+                        "rationale": "Debited but not credited."
+                    },
+                    {
+                        "name": "credit_compensation",
+                        "params": {
+                            "customer_id": "cust_riya",
+                            "txn_id": "txn_48213_a",
+                            "amount_inr": 200,
+                            "reason": "RBI TAT: 2 days late"
+                        },
+                        "rationale": "Compensation per RBI TAT."
+                    },
+                    {
+                        "name": "send_reply",
+                        "params": {
+                            "channel": "in_app_chat",
+                            "language": "en"
+                        },
+                        "rationale": "Tell the customer what happened."
+                    }
+                ],
+                "customer_reply_draft": "Sorry for the trouble. We are reversing Rs 2499 for txn_48213_a and crediting Rs 200 compensation.",
+                "agent_summary": "txn_48213_a debited not credited; clock gives compensation 200.",
+                "next_action_for_human": null,
+                "route_to_team": null,
+                "reasoning": "txn_48213_a debited not credited; clock gives compensation 200."
+            },
+            "gate": {
+                "ticket_outcome": "AUTO_EXECUTE",
+                "results": [
+                    {
+                        "action": {
+                            "name": "initiate_reversal",
+                            "params": {
+                                "txn_id": "txn_48213_a",
+                                "amount_inr": 2499.0,
+                                "reason": "DEBITED_NOT_CREDITED"
+                            },
+                            "rationale": "Debited but not credited."
+                        },
+                        "outcome": "AUTO_EXECUTE",
+                        "reasons": [
+                            "Auto-approved: params.amount_inr <= limits.auto_refund_max_inr (2,499 vs 5,000)."
+                        ]
+                    },
+                    {
+                        "action": {
+                            "name": "credit_compensation",
+                            "params": {
+                                "customer_id": "cust_riya",
+                                "txn_id": "txn_48213_a",
+                                "amount_inr": 200,
+                                "reason": "RBI TAT: 2 days late"
+                            },
+                            "rationale": "Compensation per RBI TAT."
+                        },
+                        "outcome": "AUTO_EXECUTE",
+                        "reasons": [
+                            "Auto-approved: params.amount_inr <= limits.auto_compensation_max_inr (200 vs 1,000)."
+                        ]
+                    },
+                    {
+                        "action": {
+                            "name": "send_reply",
+                            "params": {
+                                "channel": "in_app_chat",
+                                "language": "en"
+                            },
+                            "rationale": "Tell the customer what happened."
+                        },
+                        "outcome": "AUTO_EXECUTE",
+                        "reasons": []
+                    }
+                ]
+            },
+            "executed": [
+                {
+                    "name": "initiate_reversal",
+                    "ok": true,
+                    "params": {
+                        "txn_id": "txn_48213_a",
+                        "amount_inr": 2499.0,
+                        "reason": "DEBITED_NOT_CREDITED"
+                    },
+                    "result": {
+                        "refund_id": "rfd_2e24cc1c",
+                        "status": "INITIATED",
+                        "txn_id": null,
+                        "amount_inr": null,
+                        "arn": "arn_2b96bb198caf",
+                        "eta": "2026-10-31T00:31:17.370671+00:00"
+                    },
+                    "idempotency_key": "41bb69466ad0a5231fbbb755e209b4a5f4ec08291d6272c2cb2533e0f7437f68",
+                    "error": null
+                },
+                {
+                    "name": "credit_compensation",
+                    "ok": true,
+                    "params": {
+                        "customer_id": "cust_riya",
+                        "txn_id": "txn_48213_a",
+                        "amount_inr": 200,
+                        "reason": "RBI TAT: 2 days late"
+                    },
+                    "result": {
+                        "compensation_id": "cmp_f23f1bca",
+                        "status": "CREDITED"
+                    },
+                    "idempotency_key": "c7b8f7b7a08a0c09953c7599692e0b3f0a4db657d31fcd6412c4535c97dfca78",
+                    "error": null
+                }
+            ],
+            "verify_ok": true,
+            "outcome": "RESOLVED",
+            "errors": [],
+            "low_confidence": false
+        }
+    },
+    "timeline": [
+        {
+            "id": 1,
+            "ticket_id": "tkt_48213",
+            "run_id": null,
+            "ts": "2026-10-31T00:30:55.133205Z",
+            "actor": "system",
+            "kind": "status_change",
+            "payload": {
+                "from": "NEW",
+                "to": "PROCESSING"
+            }
+        },
+        {
+            "id": 2,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.452860Z",
+            "actor": "resolv",
+            "kind": "pii_masked",
+            "payload": {
+                "classes": [
+                    "upi_vpa",
+                    "phone"
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.456031Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "list_transactions",
+                "params": {
+                    "customer_id": "cust_riya"
+                }
+            }
+        },
+        {
+            "id": 4,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.586041Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "list_transactions",
+                "ok": true,
+                "status": 200,
+                "body": [
+                    {
+                        "id": "txn_48213_a",
+                        "customer_id": "cust_riya",
+                        "merchant_id": "mer_urban_kart",
+                        "amount_inr": 2499.0,
+                        "method": "upi",
+                        "status": "DEBITED_NOT_CREDITED",
+                        "issuer_bank": "HDFC",
+                        "failure_reason": "BANK_SWITCH_TIMEOUT",
+                        "created_at": "2026-10-28T00:30:55.093607Z",
+                        "refund_status": "NONE",
+                        "refund_id": null
+                    },
+                    {
+                        "id": "txn_riya_prev",
+                        "customer_id": "cust_riya",
+                        "merchant_id": "mer_urban_kart",
+                        "amount_inr": 1200.0,
+                        "method": "upi",
+                        "status": "DEBITED_NOT_CREDITED",
+                        "issuer_bank": "HDFC",
+                        "failure_reason": "BANK_SWITCH_TIMEOUT",
+                        "created_at": "2026-08-30T00:30:55.093607Z",
+                        "refund_status": "COMPLETED",
+                        "refund_id": "rfd_riya_prev"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.589420Z",
+            "actor": "resolv",
+            "kind": "ingest",
+            "payload": {
+                "language": "en",
+                "candidate_txn_id": "txn_48213_a",
+                "signature": "failed_payment_reversal|HDFC|BANK_SWITCH_TIMEOUT"
+            }
+        },
+        {
+            "id": 6,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.590725Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "list_transactions",
+                "params": {
+                    "customer_id": "cust_riya"
+                }
+            }
+        },
+        {
+            "id": 7,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.713934Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "list_transactions",
+                "ok": true,
+                "status": 200,
+                "body": [
+                    {
+                        "id": "txn_48213_a",
+                        "customer_id": "cust_riya",
+                        "merchant_id": "mer_urban_kart",
+                        "amount_inr": 2499.0,
+                        "method": "upi",
+                        "status": "DEBITED_NOT_CREDITED",
+                        "issuer_bank": "HDFC",
+                        "failure_reason": "BANK_SWITCH_TIMEOUT",
+                        "created_at": "2026-10-28T00:30:55.093607Z",
+                        "refund_status": "NONE",
+                        "refund_id": null
+                    },
+                    {
+                        "id": "txn_riya_prev",
+                        "customer_id": "cust_riya",
+                        "merchant_id": "mer_urban_kart",
+                        "amount_inr": 1200.0,
+                        "method": "upi",
+                        "status": "DEBITED_NOT_CREDITED",
+                        "issuer_bank": "HDFC",
+                        "failure_reason": "BANK_SWITCH_TIMEOUT",
+                        "created_at": "2026-08-30T00:30:55.093607Z",
+                        "refund_status": "COMPLETED",
+                        "refund_id": "rfd_riya_prev"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.714971Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "get_refund",
+                "params": {
+                    "refund_id": "rfd_riya_prev"
+                }
+            }
+        },
+        {
+            "id": 9,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.842902Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "get_refund",
+                "ok": true,
+                "status": 200,
+                "body": {
+                    "refund_id": "rfd_riya_prev",
+                    "status": "COMPLETED",
+                    "txn_id": "txn_riya_prev",
+                    "amount_inr": 1200.0,
+                    "arn": "arn_riyaprev01",
+                    "eta": "2026-09-01T00:30:55.093607+00:00"
+                }
+            }
+        },
+        {
+            "id": 10,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.844565Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "get_customer",
+                "params": {
+                    "customer_id": "cust_riya"
+                }
+            }
+        },
+        {
+            "id": 11,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.970361Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "get_customer",
+                "ok": true,
+                "status": 200,
+                "body": {
+                    "id": "cust_riya",
+                    "name": "Riya M.",
+                    "tier": "plus",
+                    "since": "2022-10-01",
+                    "language": "en",
+                    "phone_masked": "+91 98XXXXXX21"
+                }
+            }
+        },
+        {
+            "id": 12,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:56.972061Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "get_kyc",
+                "params": {
+                    "entity_id": "cust_riya"
+                }
+            }
+        },
+        {
+            "id": 13,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.098873Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "get_kyc",
+                "ok": true,
+                "status": 200,
+                "body": {
+                    "id": "kyc_riya",
+                    "status": "VERIFIED",
+                    "rejection_reason": null,
+                    "resubmission_link": null
+                }
+            }
+        },
+        {
+            "id": 14,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.101030Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "list_mandates",
+                "params": {
+                    "customer_id": "cust_riya"
+                }
+            }
+        },
+        {
+            "id": 15,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.226574Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "list_mandates",
+                "ok": true,
+                "status": 200,
+                "body": []
+            }
+        },
+        {
+            "id": 16,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.233623Z",
+            "actor": "resolv",
+            "kind": "understanding",
+            "payload": {
+                "ticket_type": "failed_payment_reversal",
+                "confidence": 0.93,
+                "entities": {
+                    "txn_id": "txn_48213_a",
+                    "amount_inr": 2499.0,
+                    "issuer_bank": "HDFC"
+                },
+                "sentiment": "frustrated",
+                "language": "en",
+                "is_repeat_issue": false,
+                "summary_for_agent": "Mock read: failed_payment_reversal."
+            }
+        },
+        {
+            "id": 17,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.236416Z",
+            "actor": "resolv",
+            "kind": "decision",
+            "payload": {
+                "path": "RESOLVE",
+                "priority": "P1",
+                "proposed_actions": [
+                    {
+                        "name": "initiate_reversal",
+                        "params": {
+                            "txn_id": "txn_48213_a",
+                            "amount_inr": 2499.0,
+                            "reason": "DEBITED_NOT_CREDITED"
+                        },
+                        "rationale": "Debited but not credited."
+                    },
+                    {
+                        "name": "credit_compensation",
+                        "params": {
+                            "customer_id": "cust_riya",
+                            "txn_id": "txn_48213_a",
+                            "amount_inr": 200,
+                            "reason": "RBI TAT: 2 days late"
+                        },
+                        "rationale": "Compensation per RBI TAT."
+                    },
+                    {
+                        "name": "send_reply",
+                        "params": {
+                            "channel": "in_app_chat",
+                            "language": "en"
+                        },
+                        "rationale": "Tell the customer what happened."
+                    }
+                ],
+                "customer_reply_draft": "Sorry for the trouble. We are reversing Rs 2499 for txn_48213_a and crediting Rs 200 compensation.",
+                "agent_summary": "txn_48213_a debited not credited; clock gives compensation 200.",
+                "next_action_for_human": null,
+                "route_to_team": null,
+                "reasoning": "txn_48213_a debited not credited; clock gives compensation 200."
+            }
+        },
+        {
+            "id": 18,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.238044Z",
+            "actor": "resolv",
+            "kind": "gate",
+            "payload": {
+                "ticket_outcome": "AUTO_EXECUTE",
+                "results": [
+                    {
+                        "action": {
+                            "name": "initiate_reversal",
+                            "params": {
+                                "txn_id": "txn_48213_a",
+                                "amount_inr": 2499.0,
+                                "reason": "DEBITED_NOT_CREDITED"
+                            },
+                            "rationale": "Debited but not credited."
+                        },
+                        "outcome": "AUTO_EXECUTE",
+                        "reasons": [
+                            "Auto-approved: params.amount_inr <= limits.auto_refund_max_inr (2,499 vs 5,000)."
+                        ]
+                    },
+                    {
+                        "action": {
+                            "name": "credit_compensation",
+                            "params": {
+                                "customer_id": "cust_riya",
+                                "txn_id": "txn_48213_a",
+                                "amount_inr": 200,
+                                "reason": "RBI TAT: 2 days late"
+                            },
+                            "rationale": "Compensation per RBI TAT."
+                        },
+                        "outcome": "AUTO_EXECUTE",
+                        "reasons": [
+                            "Auto-approved: params.amount_inr <= limits.auto_compensation_max_inr (200 vs 1,000)."
+                        ]
+                    },
+                    {
+                        "action": {
+                            "name": "send_reply",
+                            "params": {
+                                "channel": "in_app_chat",
+                                "language": "en"
+                            },
+                            "rationale": "Tell the customer what happened."
+                        },
+                        "outcome": "AUTO_EXECUTE",
+                        "reasons": []
+                    }
+                ]
+            }
+        },
+        {
+            "id": 19,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.242839Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "initiate_reversal",
+                "params": {
+                    "txn_id": "txn_48213_a",
+                    "amount_inr": 2499.0,
+                    "reason": "DEBITED_NOT_CREDITED",
+                    "idempotency_key": "41bb69466ad0a5231fbbb755e209b4a5f4ec08291d6272c2cb2533e0f7437f68"
+                }
+            }
+        },
+        {
+            "id": 20,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.371634Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "initiate_reversal",
+                "ok": true,
+                "status": 200,
+                "body": {
+                    "refund_id": "rfd_2e24cc1c",
+                    "status": "INITIATED",
+                    "txn_id": null,
+                    "amount_inr": null,
+                    "arn": "arn_2b96bb198caf",
+                    "eta": "2026-10-31T00:31:17.370671+00:00"
+                }
+            }
+        },
+        {
+            "id": 21,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.374755Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "credit_compensation",
+                "params": {
+                    "customer_id": "cust_riya",
+                    "amount_inr": 200,
+                    "reason": "RBI TAT: 2 days late",
+                    "txn_id": "txn_48213_a",
+                    "idempotency_key": "c7b8f7b7a08a0c09953c7599692e0b3f0a4db657d31fcd6412c4535c97dfca78"
+                }
+            }
+        },
+        {
+            "id": 22,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.500910Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "credit_compensation",
+                "ok": true,
+                "status": 200,
+                "body": {
+                    "compensation_id": "cmp_f23f1bca",
+                    "status": "CREDITED"
+                }
+            }
+        },
+        {
+            "id": 23,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.505075Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "get_refund",
+                "params": {
+                    "refund_id": "rfd_2e24cc1c"
+                }
+            }
+        },
+        {
+            "id": 24,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.632114Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "get_refund",
+                "ok": true,
+                "status": 200,
+                "body": {
+                    "refund_id": "rfd_2e24cc1c",
+                    "status": "INITIATED",
+                    "txn_id": "txn_48213_a",
+                    "amount_inr": 2499.0,
+                    "arn": "arn_2b96bb198caf",
+                    "eta": "2026-10-31T00:31:17.370671+00:00"
+                }
+            }
+        },
+        {
+            "id": 25,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.634417Z",
+            "actor": "resolv",
+            "kind": "verify",
+            "payload": {
+                "ok": true,
+                "checks": [
+                    {
+                        "name": "initiate_reversal",
+                        "ok": true,
+                        "observed": "INITIATED",
+                        "retried": false
+                    },
+                    {
+                        "name": "credit_compensation",
+                        "ok": true,
+                        "observed": "CREDITED",
+                        "retried": false
+                    }
+                ]
+            }
+        },
+        {
+            "id": 26,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.636595Z",
+            "actor": "resolv",
+            "kind": "tool_call",
+            "payload": {
+                "name": "notify_customer",
+                "params": {
+                    "customer_id": "cust_riya",
+                    "channel": "in_app_chat",
+                    "text": "<redacted>"
+                }
+            }
+        },
+        {
+            "id": 27,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.765593Z",
+            "actor": "resolv",
+            "kind": "tool_result",
+            "payload": {
+                "name": "notify_customer",
+                "ok": true,
+                "status": 200,
+                "body": {
+                    "delivered": true
+                }
+            }
+        },
+        {
+            "id": 28,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.768006Z",
+            "actor": "resolv",
+            "kind": "reply_sent",
+            "payload": {
+                "channel": "in_app_chat",
+                "language": "en",
+                "holding_reply": false
+            }
+        },
+        {
+            "id": 29,
+            "ticket_id": "tkt_48213",
+            "run_id": "run_36a216e8",
+            "ts": "2026-10-31T00:30:57.771367Z",
+            "actor": "resolv",
+            "kind": "status_change",
+            "payload": {
+                "from": "PROCESSING",
+                "to": "RESOLVED"
+            }
+        }
+    ],
+    "approvals": [],
+    "incident": null
+}
