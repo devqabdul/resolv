@@ -2,7 +2,7 @@
 // Approve / Reject for a PENDING approval on this ticket (D3).
 import { useState } from "react";
 import { toast } from "sonner";
-import { CheckIcon, XIcon } from "@phosphor-icons/react";
+import { CheckIcon, GavelIcon, XIcon } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +12,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { toneBadge } from "@/components/status-tone";
 import { decideApproval, type Approval } from "@/lib/api";
-import { inr, obj } from "./TimelineEvent";
+import { humanAction, inr, obj } from "./TimelineEvent";
 
 export default function ApprovalActions({ approval, onDone }: { approval: Approval; onDone: () => void }) {
   const [note, setNote] = useState("");
@@ -40,13 +40,13 @@ export default function ApprovalActions({ approval, onDone }: { approval: Approv
   return (
     <Card data-testid="approval-actions" data-approval-id={approval.id} className="ring-2 ring-status-awaiting/40">
       <CardHeader>
-        <CardTitle>Approval needed</CardTitle>
+        <CardTitle className="flex items-center gap-2"><GavelIcon className="text-status-awaiting" />Approval needed</CardTitle>
         <CardDescription className="font-mono">{approval.id}</CardDescription>
         <CardAction><Badge className={toneBadge({ tone: "awaiting" })}>PENDING</Badge></CardAction>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2 font-mono tabular-nums">
-          <span className="text-base font-medium">{name}</span>
+          <span className="font-sans text-base font-medium">{humanAction(name)} <span className="font-mono text-sm text-muted-foreground">{name}</span></span>
           {typeof amount === "number" && <span className="text-3xl font-semibold">{inr(amount)}</span>}
         </div>
         {reasons.length > 0 && (

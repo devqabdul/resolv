@@ -2,11 +2,11 @@
 // D4: a human picks a different path; the backend audits `override` and re-runs via the gate.
 import { useState } from "react";
 import { toast } from "sonner";
-import { UserSwitchIcon } from "@phosphor-icons/react";
+import { ArrowBendUpRightIcon } from "@phosphor-icons/react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { overrideTicket, type BlockedAction, type OverridePath } from "@/lib/api";
@@ -19,14 +19,17 @@ export default function OverrideForm({ ticketId, onDone }: { ticketId: string; o
   const [by, setBy] = useState("");
   const [busy, setBusy] = useState(false);
   const [missingName, setMissingName] = useState(false);
+  const [missingNote, setMissingNote] = useState(false);
   const [blocked, setBlocked] = useState<BlockedAction[]>([]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!by.trim()) return setMissingName(true);
+    setMissingNote(!note.trim());
+    setMissingName(!by.trim());
+    if (!note.trim() || !by.trim()) return;
     setBusy(true);
     try {
-      const r = await overrideTicket(ticketId, { path, note: note.trim() || undefined, decided_by: by.trim() });
+      const r = await overrideTicket(ticketId, { path, note: note.trim(), decided_by: by.trim() });
       setBlocked(r.blocked);
       setNote("");
       if (r.blocked.length) toast.warning(`Override saved, ${r.blocked.length} action${r.blocked.length > 1 ? "s" : ""} blocked by the gate`);
@@ -43,11 +46,11 @@ export default function OverrideForm({ ticketId, onDone }: { ticketId: string; o
     <form data-testid="override-form" onSubmit={submit}>
       <Card>
         <CardHeader>
-          <CardTitle>Override Resolv</CardTitle>
+          <CardTitle className="flex items-center gap-2"><ArrowBendUpRightIcon className="text-muted-foreground" />Override / Re-route</CardTitle>
           <CardDescription>Pick a different path. The gate still checks every action.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <FieldGroup>
+        <CardContent className="@container flex flex-col gap-4">
+          <div className="grid grid-cols-2 items-start gap-3 @xl:grid-cols-[7rem_minmax(0,1fr)_minmax(0,9rem)_auto]">
             <Field>
               <FieldLabel htmlFor="override-path">Path</FieldLabel>
               {/* Native select on purpose: verify recipes drive it with Playwright select_option. */}
@@ -56,14 +59,23 @@ export default function OverrideForm({ ticketId, onDone }: { ticketId: string; o
                 data-testid="override-path"
                 value={path}
                 onChange={(e) => setPath(e.target.value as OverridePath)}
-                className="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 font-mono text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:[color-scheme:dark]"
+                className="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 font-mono text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:[color-scheme:dark]"
               >
                 {PATHS.map((p) => <option key={p} value={p}>{p}</option>)}
               </select>
             </Field>
-            <Field>
-              <FieldLabel htmlFor="override-note">Note</FieldLabel>
-              <Input id="override-note" data-testid="override-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why the change" className="h-9" />
+            <Field data-invalid={missingNote || undefined}>
+              <FieldLabel htmlFor="override-note">Note <span className="font-normal text-muted-foreground">(required)</span></FieldLabel>
+              <Input
+                id="override-note"
+                data-testid="override-note"
+                value={note}
+                aria-invalid={missingNote || undefined}
+                onChange={(e) => { setNote(e.target.value); setMissingNote(false); }}
+                placeholder="Why the change"
+                className="h-9"
+              />
+              {missingNote && <FieldError>Add a note.</FieldError>}
             </Field>
             <Field data-invalid={missingName || undefined}>
               <FieldLabel htmlFor="override-decided-by">Your name</FieldLabel>
@@ -77,9 +89,13 @@ export default function OverrideForm({ ticketId, onDone }: { ticketId: string; o
               />
               {missingName && <FieldError>Enter your name first.</FieldError>}
             </Field>
-          </FieldGroup>
+            <Button data-testid="override-submit" type="submit" size="lg" disabled={busy} className="self-end @xl:self-start @xl:mt-[1.375rem]">
+              {busy ? <Spinner data-icon="inline-start" /> : <ArrowBendUpRightIcon data-icon="inline-start" />}
+              Submit override
+            </Button>
+          </div>
           {blocked.length > 0 && (
-            <Alert data-testid="override-blocked" variant="destructive" className="mt-4">
+            <Alert data-testid="override-blocked" variant="destructive">
               <AlertTitle>Blocked by the gate, not executed</AlertTitle>
               <AlertDescription>
                 <ul className="list-disc pl-5">
@@ -91,12 +107,6 @@ export default function OverrideForm({ ticketId, onDone }: { ticketId: string; o
             </Alert>
           )}
         </CardContent>
-        <CardFooter>
-          <Button data-testid="override-submit" type="submit" size="lg" disabled={busy}>
-            {busy ? <Spinner data-icon="inline-start" /> : <UserSwitchIcon data-icon="inline-start" />}
-            Override
-          </Button>
-        </CardFooter>
       </Card>
     </form>
   );

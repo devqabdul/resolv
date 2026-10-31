@@ -1,34 +1,40 @@
 'use client';
 // RBI TAT clock from run.state.context.regulatory_clock; dashes when there is no candidate txn.
+// T+N and the per-day rate are derived from the clock itself (days_since - days_late, comp / days_late),
+// so they only show once the txn is late (before that days_late is 0 and N is not recoverable).
+import { ClockIcon } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toneBadge } from "@/components/status-tone";
 import { cn } from "@/lib/utils";
-import { inr, num, str, type Obj } from "./TimelineEvent";
+import { fmtDate, inr, num, str, type Obj } from "./TimelineEvent";
 
 export default function RegulatoryClock({ clock }: { clock: Obj | null }) {
+  const since = num(clock?.days_since_txn);
   const daysLate = num(clock?.days_late);
   const comp = num(clock?.compensation_due_inr);
   const late = (daysLate ?? 0) > 0;
   const deadline = str(clock?.tat_deadline);
-  const cells: [string, string, boolean][] = [
-    ["Days since txn", String(num(clock?.days_since_txn) ?? "-"), false],
-    ["TAT deadline", deadline ? new Date(deadline).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "-", false],
-    ["Days late", String(daysLate ?? "-"), late],
-    ["Compensation due", comp === undefined ? "-" : inr(comp), (comp ?? 0) > 0],
+  const tatDays = since !== undefined && daysLate !== undefined ? since - daysLate : undefined;
+  const cells: [string, string, string | undefined, boolean][] = [
+    ["Days since txn", String(since ?? "-"), undefined, false],
+    ["RBI TAT deadline", deadline ? fmtDate(deadline) : "-", late && tatDays !== undefined ?`(T+${tatDays} days)` : undefined, false],
+    ["Days late", String(daysLate ?? "-"), undefined, late],
+    ["Compensation due", comp === undefined ? "-" : inr(comp), comp && daysLate ? `(${inr(comp / daysLate)} × ${daysLate} days)` : undefined, (comp ?? 0) > 0],
   ];
   return (
     <Card data-testid="regulatory-clock" data-late={late}>
       <CardHeader>
-        <CardTitle>RBI regulatory clock</CardTitle>
+        <CardTitle className="flex items-center gap-2"><ClockIcon className="text-muted-foreground" />RBI regulatory clock</CardTitle>
         {late && <CardAction><Badge className={toneBadge({ tone: "failed" })}>Past TAT</Badge></CardAction>}
       </CardHeader>
       <CardContent>
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border bg-border">
-          {cells.map(([label, value, bad]) => (
-            <div key={label} className="flex flex-col gap-1 bg-card p-3">
+        <dl className="grid grid-cols-2 gap-y-4 sm:grid-cols-4 sm:divide-x">
+          {cells.map(([label, value, hint, bad]) => (
+            <div key={label} className="flex flex-col gap-1 px-3 first:pl-0">
               <dt className="text-sm text-muted-foreground">{label}</dt>
-              <dd className={cn("font-mono text-3xl font-semibold tabular-nums", bad && "text-status-failed")}>{value}</dd>
+              <dd className={cn("font-mono text-2xl font-semibold tabular-nums", bad && "text-status-failed")}>{value}</dd>
+              {hint && <dd className="font-mono text-xs text-muted-foreground tabular-nums">{hint}</dd>}
             </div>
           ))}
         </dl>
