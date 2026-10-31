@@ -1,9 +1,11 @@
 import re
 
 from app.agent.state import AgentState
-from app.domain.enums import AuditKind
+from app.domain.enums import AuditKind, HandlingMode
+from app.integrations.helpdesk.internal import helpdesk
 from app.policy.pii import mask
 from app.services import audit, context, incidents
+from app.util.clock import now
 
 _HINGLISH = re.compile(r"\b(kab|mera|meri|paise|kat|gaya|gaye|nahi|hai|bhai|aayega|abhi)\b")
 
@@ -39,6 +41,11 @@ def ingest(state: AgentState) -> AgentState:
     )
 
     out: AgentState = {**state, "ticket": ticket}
-    if incidents.match_open_incident(ticket) is not None:  # T16 fills in the fast path
+    inc = incidents.match_open_incident(ticket)
+    if inc is not None:  # fast path (docs/02 §8): template holding reply, no LLM, graph ends
+        text = incidents.attach_fast_path(ticket, inc, run_id)
+        helpdesk.reply(ticket, text, run_id, holding=True)
+        context.update_ticket(tid, first_response_at=now())
+        out["ticket"] = ticket.model_copy(update={"handling_mode": HandlingMode.incident})
         out["outcome"] = "INCIDENT_LINKED"
     return out
