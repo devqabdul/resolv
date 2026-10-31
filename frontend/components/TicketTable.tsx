@@ -50,13 +50,11 @@ const FILTERS: { id: string; label: string; keep: (t: Ticket) => boolean }[] = [
 // SLA state: resolved tickets compare resolved_at with the deadline, open ones compare now.
 type Sla = { text: string; tone: string; state: "breached" | "due" | "ok" | null };
 function slaOf(t: Ticket, now: number): Sla {
-  if (!t.sla_due_at) return { text: "-", tone: "text-muted-foreground", state: null };
+  if (!t.sla_due_at || (DONE.includes(t.status) && !t.resolved_at)) return { text: "-", tone: "text-muted-foreground", state: null };
   if (DONE.includes(t.status)) {
-    if (!t.resolved_at) return { text: "-", tone: "text-muted-foreground", state: null };
-    const m = slaCountdown(t.sla_due_at, new Date(t.resolved_at).getTime());
-    return m.overdue
-      ? { text: `+${m.text.slice(1)}`, tone: "bg-status-failed/12 text-status-failed", state: "breached" }
-      : { text: `-${m.text}`, tone: "bg-status-resolved/12 text-status-resolved", state: "ok" };
+    return new Date(t.resolved_at as string).getTime() <= new Date(t.sla_due_at).getTime()
+      ? { text: "Met", tone: "bg-status-resolved/12 text-status-resolved", state: "ok" }
+      : { text: "Late", tone: "bg-status-failed/12 text-status-failed", state: "breached" };
   }
   const c = slaCountdown(t.sla_due_at, now);
   // Green > 5 min left, amber <= 5 min, red once breached. (decision: FIX3: first-response SLA is 15 min, so amber at 15 showed on every new ticket)
@@ -274,7 +272,7 @@ export default function TicketTable({ incidentId, onClearIncident }: { incidentI
             <Empty className="py-16">
               <EmptyHeader>
                 <EmptyMedia variant="icon"><TrayIcon /></EmptyMedia>
-                <EmptyTitle data-testid="queue-empty" className="text-base">No tickets yet. Open ?demo=1, then Seed and inject a scenario.</EmptyTitle>
+                <EmptyTitle data-testid="queue-empty" className="text-base">No tickets yet. Open Demo controls (flask icon), then Seed and inject a scenario.</EmptyTitle>
               </EmptyHeader>
             </Empty>
           )}
@@ -301,7 +299,7 @@ export default function TicketTable({ incidentId, onClearIncident }: { incidentI
         <Table data-testid="ticket-table" className="text-base">
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className={cn("px-2", NARROW)}>
+              <TableHead className={cn("px-1.5", NARROW)}>
                 <Checkbox
                   aria-label="Select page"
                   checked={pageChecked ? true : pageSome ? "indeterminate" : false}
@@ -313,16 +311,16 @@ export default function TicketTable({ incidentId, onClearIncident }: { incidentI
                 />
               </TableHead>
               {COLS.map((c, i) => (
-                <TableHead key={c.label} className={cn("px-2 text-sm text-muted-foreground", i > 0 && NARROW)} aria-sort={sort && sort.key === c.sort ? (sort.dir === 1 ? "ascending" : "descending") : undefined}>
+                <TableHead key={c.label} className={cn("px-1.5 text-sm text-muted-foreground", i > 0 && NARROW, c.sort === "resolved_by" && "whitespace-normal")} aria-sort={sort && sort.key === c.sort ? (sort.dir === 1 ? "ascending" : "descending") : undefined}>
                   {c.sort ? (
-                    <Button variant="ghost" size="sm" className="-ml-2 text-muted-foreground" onClick={() => toggleSort(c.sort!)}>
+                    <Button variant="ghost" size="sm" className={cn("-ml-1 pl-1 text-muted-foreground has-data-[icon=inline-end]:pr-1", c.sort === "resolved_by" && "h-auto py-0.5 text-left whitespace-normal")} onClick={() => toggleSort(c.sort!)}>
                       {c.label}
                       <CaretUpDownIcon data-icon="inline-end" />
                     </Button>
                   ) : c.label}
                 </TableHead>
               ))}
-              <TableHead className={cn("px-2", NARROW)}><span className="sr-only">Actions</span></TableHead>
+              <TableHead className={cn("px-1.5", NARROW)}><span className="sr-only">Actions</span></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -345,18 +343,19 @@ export default function TicketTable({ incidentId, onClearIncident }: { incidentI
                     className="cursor-pointer border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
                     onClick={() => router.push(`/tickets/${t.id}`)}
                   >
-                    <TableCell className={cn("px-2", NARROW)} onClick={stop}>
+                    <TableCell className={cn("px-1.5", NARROW)} onClick={stop}>
                       <Checkbox aria-label={`Select ${t.id}`} checked={selected.has(t.id)} onCheckedChange={(on) => toggleRow(t.id, on === true)} />
                     </TableCell>
-                    <TableCell className="w-full max-w-0 min-w-32 px-2 py-2.5">
+                    <TableCell className="w-full max-w-0 min-w-24 px-1.5 py-2.5">
                       <Link href={`/tickets/${t.id}`} onClick={stop} className="font-mono text-sm font-medium text-highlight-text hover:underline">
                         {t.id}
                       </Link>
                       <div className="truncate text-sm text-muted-foreground">{t.masked_text}</div>
                     </TableCell>
-                    <TableCell className={cn("px-2", NARROW)}><TypeBadge type={t.ticket_type} /></TableCell>
-                    <TableCell className={cn("px-2", NARROW)}><PriorityBadge priority={t.priority} /></TableCell>
-                    <TableCell className={cn("px-2", NARROW)}>
+                    <TableCell className={cn("px-1.5", NARROW)}><TypeBadge type={t.ticket_type} className="px-2 text-xs" /></TableCell>
+                    <TableCell className={cn("px-1.5", NARROW)}><PriorityBadge priority={t.priority} /></TableCell>
+                    <TableCell className={cn("px-1.5", NARROW)}>
+                      <span className="inline-flex flex-col items-start gap-1">
                       <motion.span
                         key={t.status}
                         className="inline-flex"
@@ -364,39 +363,40 @@ export default function TicketTable({ incidentId, onClearIncident }: { incidentI
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.2, ease: EASE }}
                       >
-                        <StatusBadge status={t.status} />
+                        <StatusBadge status={t.status} className="px-2 text-xs" />
                       </motion.span>
                       {t.assigned_team && t.status !== "RESOLVED" && t.status !== "CLOSED" && (
-                        <Badge data-testid="ticket-team" variant="outline" className="ml-1.5 font-mono">{t.assigned_team}</Badge>
+                        <Badge data-testid="ticket-team" variant="outline" className="font-mono">{t.assigned_team}</Badge>
                       )}
+                      </span>
                     </TableCell>
-                    <TableCell data-testid="ticket-path" className={cn("px-2", NARROW)}>
-                      {t.path ? <Badge className={toneBadge({ tone: PATH_TONE[t.path], className: "font-mono" })}>{t.path}</Badge> : <span className="text-muted-foreground">-</span>}
+                    <TableCell data-testid="ticket-path" className={cn("px-1.5", NARROW)}>
+                      {t.path ? <Badge className={toneBadge({ tone: PATH_TONE[t.path], className: "px-2 font-mono text-xs" })}>{t.path}</Badge> : <span className="text-muted-foreground">-</span>}
                     </TableCell>
-                    <TableCell data-testid="sla-countdown" className={cn("px-2", NARROW)}>
-                      <span className={cn("inline-flex h-7 items-center rounded-full px-2.5 font-mono text-sm font-medium tabular-nums", sla.tone)}>
+                    <TableCell data-testid="sla-countdown" className={cn("px-1.5", NARROW)}>
+                      <span className={cn("inline-flex h-7 items-center rounded-full px-2 font-mono text-sm font-medium tabular-nums", sla.tone)}>
                         {sla.text}
                       </span>
                     </TableCell>
-                    <TableCell className={cn("px-2", NARROW)}>
+                    <TableCell className={cn("px-1.5", NARROW)}>
                       {t.incident_id ? (
                         <Link
                           href="/incidents"
                           data-testid="incident-badge"
                           title={t.incident_id}
                           onClick={stop}
-                          className="inline-flex h-6 items-center rounded-full bg-status-processing/12 px-2.5 text-sm font-medium text-status-processing hover:bg-status-processing/20"
+                          className="inline-flex h-6 items-center rounded-full bg-status-processing/12 px-2 text-xs font-medium text-status-processing hover:bg-status-processing/20"
                         >
                           INCIDENT
                         </Link>
                       ) : <span className="text-muted-foreground">-</span>}
                     </TableCell>
-                    <TableCell data-testid="resolved-by" className={cn("px-2", NARROW)}>
+                    <TableCell data-testid="resolved-by" className={cn("px-1.5", NARROW)}>
                       {t.resolved_by ? (
                         <Badge
                           variant={t.resolved_by === "resolv" ? "default" : "outline"}
                           className={cn(
-                            "h-6 px-2.5 text-sm",
+                            "h-6 px-2 text-xs",
                             t.resolved_by === "resolv" ? "bg-highlight text-highlight-foreground" : "border-primary text-primary",
                           )}
                         >
@@ -404,7 +404,7 @@ export default function TicketTable({ incidentId, onClearIncident }: { incidentI
                         </Badge>
                       ) : <span className="text-muted-foreground">-</span>}
                     </TableCell>
-                    <TableCell className={cn("px-2", NARROW)} onClick={stop}>
+                    <TableCell className={cn("px-1.5", NARROW)} onClick={stop}>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${t.id}`}>

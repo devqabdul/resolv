@@ -3,9 +3,9 @@
 import { Badge } from "@/components/ui/badge";
 import { STATUS_TONE, toneBadge } from "@/components/status-tone";
 
-export default function StatusBadge({ status }: { status: string }) {
+export default function StatusBadge({ status, className }: { status: string; className?: string }) {
   return (
-    <Badge data-testid="ticket-status" className={toneBadge({ tone: STATUS_TONE[status] })}>
+    <Badge data-testid="ticket-status" className={toneBadge({ tone: STATUS_TONE[status], className })}>
       {status}
     </Badge>
   );
