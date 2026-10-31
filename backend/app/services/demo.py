@@ -8,7 +8,7 @@ from collections.abc import Callable
 
 from app.config import settings
 from app.db import session
-from app.db.models import KbDoc
+from app.db.models import KbDoc, Ticket
 from app.domain.enums import AuditKind, Channel
 from app.integrations.paytm.client import PaytmClient
 from app.services import audit, context, tickets
@@ -108,6 +108,11 @@ def seed() -> dict[str, int]:
 def scenario(name: str) -> str:
     """Create the named scenario ticket (status NEW); KeyError for an unknown name."""
     tid, channel, cust, mer, text = SCENARIOS[name]
+    # (decision: FIX6, 31 Oct) fixed id only while free; a re-inject without Reset gets a fresh id
+    # instead of a 500 (which the browser shows as "Failed to fetch").
+    with session.SessionLocal() as db:
+        if db.get(Ticket, tid) is not None:
+            tid = None
     return tickets.create(channel.value, text, cust, mer, ticket_id=tid).id
 
 

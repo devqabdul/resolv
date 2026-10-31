@@ -7,7 +7,7 @@ import { LayoutStateProvider } from "@/components/app-shell/layout-state";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} storageKey="resolv-theme" disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} storageKey="resolv-theme" disableTransitionOnChange>
       <TooltipProvider>
         <LayoutStateProvider>{children}</LayoutStateProvider>
         <Toaster position="bottom-right" />

@@ -57,15 +57,15 @@ export default function KpiStrip() {
         {KPIS.map((k, i) => {
           const d = m && base.current && k.delta ? Math.round(k.pick(m) - base.current.values[i]) : 0;
           return (
-            <Card key={k.id} data-testid={`kpi-${k.id}`} size="sm" className="shadow-sm">
+            <Card key={k.id} data-testid={`kpi-${k.id}`} size="sm" className={cn("shadow-sm", i === 0 && "ring-highlight/40 dark:glow-cyan")}>
               <CardContent className="flex items-start justify-between gap-3">
                 <div className="flex min-w-0 flex-col gap-1">
-                  <div className="font-mono text-3xl font-semibold tracking-tight tabular-nums">
+                  <div className={cn("font-mono text-4xl font-semibold tracking-tight tabular-nums", i === 0 && "text-highlight-text")}>
                     {m ? <AnimatedNumber value={k.pick(m)} format={k.format} /> : "-"}
                   </div>
-                  <div className="text-sm leading-snug whitespace-nowrap text-muted-foreground">
+                  <div className="text-xs font-medium tracking-wider whitespace-nowrap uppercase text-muted-foreground">
                     {k.label}
-                    {k.sub && <span className="ml-1.5 text-xs">{k.sub}</span>}
+                    {k.sub && <span className="ml-1.5 normal-case tracking-normal">{k.sub}</span>}
                   </div>
                   {d !== 0 && k.delta && (
                     <div className="font-mono text-xs text-muted-foreground tabular-nums">
@@ -73,7 +73,7 @@ export default function KpiStrip() {
                     </div>
                   )}
                 </div>
-                <div className={cn("flex size-9 shrink-0 items-center justify-center rounded-lg", k.tint)}>
+                <div className={cn("flex size-10 shrink-0 items-center justify-center rounded-lg ring-1 ring-current/15", k.tint)}>
                   <k.icon weight="duotone" className="size-5" />
                 </div>
               </CardContent>

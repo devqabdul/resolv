@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/chart";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
@@ -39,8 +40,8 @@ const tick = { fontSize: 14 };
 function Stat({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
   return (
     <div data-testid={`dashboard-stat-${id}`} className="flex flex-auto flex-col gap-1">
-      <div className="font-mono text-3xl font-semibold tracking-tight tabular-nums">{children}</div>
-      <div className="text-sm whitespace-nowrap text-muted-foreground">{label}</div>
+      <div className="font-mono text-4xl font-semibold tracking-tight tabular-nums">{children}</div>
+      <div className="text-xs font-medium tracking-wider whitespace-nowrap uppercase text-muted-foreground">{label}</div>
     </div>
   );
 }
@@ -51,8 +52,8 @@ function ChartCard({ name, title, description, className, children }: {
   return (
     <Card data-testid={`dashboard-chart-${name}`} className={className}>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardTitle className="text-xs font-medium tracking-wider uppercase text-muted-foreground">{title}</CardTitle>
+        <CardDescription className="text-sm text-foreground/80">{description}</CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
@@ -203,6 +204,7 @@ export default function DashboardPage() {
   return (
     <div data-testid="dashboard" className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center gap-4">
+        <span className="font-mono text-xs font-medium tracking-[0.2em] uppercase text-highlight-text">Operations</span>
         <ToggleGroup
           type="single"
           variant="outline"
@@ -255,11 +257,17 @@ export default function DashboardPage() {
           {d.inWin.length === 0 ? <NoData /> : (
             <ChartContainer config={{ count: { label: "Tickets", color: "var(--chart-1)" } }} className="aspect-auto h-64 w-full">
               <AreaChart data={d.series} margin={{ left: 0, right: 8, top: 8 }}>
-                <CartesianGrid vertical={false} />
+                <defs>
+                  <linearGradient id="fill-count" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--color-count)" stopOpacity={0.45} />
+                    <stop offset="100%" stopColor="var(--color-count)" stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" />
                 <XAxis dataKey="t" tickFormatter={hhmm} tickLine={false} axisLine={false} tickMargin={8} tick={tick} minTickGap={24} />
                 <YAxis allowDecimals={false} tickLine={false} axisLine={false} width={32} tick={tick} />
                 <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, p) => hhmm(Number(p?.[0]?.payload?.t))} />} />
-                <Area dataKey="count" type="monotone" stroke="var(--color-count)" strokeWidth={2} fill="var(--color-count)" fillOpacity={0.15} isAnimationActive={animate} />
+                <Area dataKey="count" type="monotone" stroke="var(--color-count)" strokeWidth={2.5} fill="url(#fill-count)" activeDot={{ r: 5, strokeWidth: 0 }} isAnimationActive={animate} />
               </AreaChart>
             </ChartContainer>
           )}
@@ -280,7 +288,7 @@ export default function DashboardPage() {
           )}
         </ChartCard>
 
-        <ChartCard name="by-type" title="By type" description={`${winText}, from metrics`} className="xl:col-span-8">
+        <ChartCard name="by-type" title="By type" description={`${winText}, from metrics`} className="xl:col-span-4">
           {byType.length === 0 ? <NoData /> : (
             <ChartContainer config={{ count: { label: "Tickets", color: "var(--chart-2)" } }} className="aspect-auto w-full" style={{ height: Math.max(120, byType.length * 40) }}>
               <BarChart data={byType} layout="vertical" margin={{ left: 0, right: 16 }}>
@@ -293,19 +301,17 @@ export default function DashboardPage() {
           )}
         </ChartCard>
 
-        <div className="flex flex-col gap-6 xl:col-span-4">
-          <ChartCard name="path" title="Resolution path" description={winText}>
-            {pathTotal === 0 ? <NoData title="No decided tickets in this window" /> : <StackBar config={pathConfig} row={d.path} animate={animate} />}
-          </ChartCard>
-          <ChartCard name="resolved-by" title="Resolved by" description={winText}>
-            {d.by.resolv + d.by.human === 0 ? <NoData title="No resolved tickets in this window" /> : <StackBar config={byConfig} row={d.by} animate={animate} />}
-          </ChartCard>
-        </div>
+        <ChartCard name="path" title="Resolution path" description={winText} className="xl:col-span-4">
+          {pathTotal === 0 ? <NoData title="No decided tickets in this window" /> : <StackBar config={pathConfig} row={d.path} animate={animate} />}
+        </ChartCard>
+        <ChartCard name="resolved-by" title="Resolved by" description={winText} className="xl:col-span-4">
+          {d.by.resolv + d.by.human === 0 ? <NoData title="No resolved tickets in this window" /> : <StackBar config={byConfig} row={d.by} animate={animate} />}
+        </ChartCard>
 
         <Card data-testid="dashboard-trust" className="xl:col-span-4">
           <CardHeader>
-            <CardTitle>Trust</CardTitle>
-            <CardDescription>{j ? `Offline eval, ${j.mode} mode` : "Offline eval report"}</CardDescription>
+            <CardTitle className="text-xs font-medium tracking-wider uppercase text-muted-foreground">Trust</CardTitle>
+            <CardDescription className="text-sm text-foreground/80">{j ? `Offline eval, ${j.mode} mode` : "Offline eval report"}</CardDescription>
           </CardHeader>
           <CardContent>
             {!j ? (
@@ -316,19 +322,28 @@ export default function DashboardPage() {
                 </EmptyHeader>
               </Empty>
             ) : (
-              <div className="grid grid-cols-2 gap-4">
-                <Stat id="evals_n" label="Labelled tickets"><AnimatedNumber value={j.n} /></Stat>
-                <Stat id="type_accuracy" label="Type accuracy"><AnimatedNumber value={j.type_accuracy * 100} format={pct1} /></Stat>
-                <Stat id="false_action_rate" label="False-action rate">
-                  <span className={j.false_action_rate === 0 ? "text-status-resolved" : "text-status-failed"}>
+              <div className="flex flex-col gap-4">
+                <div
+                  data-testid="dashboard-stat-false_action_rate"
+                  className={cn(
+                    "flex flex-col gap-1 rounded-lg px-4 py-3 ring-1",
+                    j.false_action_rate === 0 ? "bg-status-resolved/8 ring-status-resolved/30 dark:glow-green" : "bg-status-failed/8 ring-status-failed/30",
+                  )}
+                >
+                  <div className={cn("font-mono text-5xl font-semibold tracking-tight tabular-nums", j.false_action_rate === 0 ? "text-status-resolved" : "text-status-failed")}>
                     <AnimatedNumber value={j.false_action_rate * 100} format={pct1} />
-                  </span>
-                </Stat>
-                <Stat id="gate_catch_core" label="Gate catch (core)">
-                  <span className={j.gate_catch_core.caught === j.gate_catch_core.total ? "text-status-resolved" : "text-status-failed"}>
-                    <AnimatedNumber value={j.gate_catch_core.caught} />/{j.gate_catch_core.total}
-                  </span>
-                </Stat>
+                  </div>
+                  <div className="text-xs font-medium tracking-wider uppercase text-muted-foreground">False-action rate</div>
+                </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <Stat id="evals_n" label="Labelled"><AnimatedNumber value={j.n} /></Stat>
+                  <Stat id="type_accuracy" label="Type acc."><AnimatedNumber value={j.type_accuracy * 100} format={pct1} /></Stat>
+                  <Stat id="gate_catch_core" label="Gate catch">
+                    <span className={j.gate_catch_core.caught === j.gate_catch_core.total ? "text-status-resolved" : "text-status-failed"}>
+                      <AnimatedNumber value={j.gate_catch_core.caught} />/{j.gate_catch_core.total}
+                    </span>
+                  </Stat>
+                </div>
               </div>
             )}
           </CardContent>
@@ -341,8 +356,8 @@ export default function DashboardPage() {
 
         <Card data-testid="dashboard-incidents" className="xl:col-span-4">
           <CardHeader>
-            <CardTitle>Active incidents</CardTitle>
-            <CardDescription>Open or communicated</CardDescription>
+            <CardTitle className="text-xs font-medium tracking-wider uppercase text-muted-foreground">Active incidents</CardTitle>
+            <CardDescription className="text-sm text-foreground/80">Open or communicated</CardDescription>
             <CardAction>
               <Button asChild variant="ghost" size="sm">
                 <Link href="/incidents">View all<ArrowRightIcon data-icon="inline-end" /></Link>
@@ -368,8 +383,8 @@ export default function DashboardPage() {
 
         <Card data-testid="dashboard-approvals" className="xl:col-span-4">
           <CardHeader>
-            <CardTitle>Pending approvals</CardTitle>
-            <CardDescription>Waiting for a human decision</CardDescription>
+            <CardTitle className="text-xs font-medium tracking-wider uppercase text-muted-foreground">Pending approvals</CardTitle>
+            <CardDescription className="text-sm text-foreground/80">Waiting for a human decision</CardDescription>
             <CardAction>
               <Button asChild variant="ghost" size="sm">
                 <Link href="/approvals">View all<ArrowRightIcon data-icon="inline-end" /></Link>

@@ -121,7 +121,7 @@ export default function AppHeader() {
   const title = TITLES[section ?? ""] ?? "Resolv";
   const up = !!health?.ok && !error;
   return (
-    <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-3 border-b bg-background px-4">
+    <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur-md">
       <SidebarTrigger />
       <Separator orientation="vertical" className="data-vertical:h-5 data-vertical:self-center" />
       {(section === "tickets" || section === "incidents") && ticketId ? (
@@ -166,7 +166,7 @@ export default function AppHeader() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className={cn("gap-2", !up && "text-destructive")}>
+            <Button variant="outline" className={cn("gap-2", up ? "dark:ring-status-resolved/30 dark:shadow-[0_0_18px_-6px_var(--status-resolved)]" : "text-destructive")}>
               <span className="relative flex size-2">
                 {up && <span className="absolute inline-flex size-full rounded-full bg-status-resolved opacity-75 motion-safe:animate-ping" />}
                 <span className={cn("relative inline-flex size-2 rounded-full", up ? "bg-status-resolved" : "bg-destructive")} />

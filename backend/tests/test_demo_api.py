@@ -22,6 +22,8 @@ def test_d1_end_to_end(client: TestClient, paytm: PaytmClient) -> None:
     assert client.post("/api/demo/reset").status_code == 200
     assert client.post("/api/demo/seed").json()["kb_docs"] == 6
     assert client.post("/api/demo/ticket/d1_failed_upi").json() == {"id": "tkt_48213"}
+    again = client.post("/api/demo/ticket/d1_failed_upi")  # re-inject without Reset: fresh id
+    assert again.status_code == 200 and again.json()["id"] != "tkt_48213"
     assert client.post("/api/demo/ticket/nope").status_code == 404
 
     runner.run("tkt_48213")

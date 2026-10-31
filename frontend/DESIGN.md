@@ -35,8 +35,12 @@ No infinite loops except the KPI "Live" pulse.
 
 ## Anti-slop
 - No em-dash or en-dash in any visible string.
-- No decorative dots (a dot only for real live state), no eyebrow labels, no "01 /" numbering,
-  no fake numbers, no three equal feature cards, no gradients, glow, glassmorphism or emoji.
+- No decorative dots (a dot only for real live state), no "01 /" numbering,
+  no fake numbers, no three equal feature cards, no emoji.
+- (decision: UI-2, 31 Oct) Dark is the default theme ("dark command-center", user choice). In `.dark` only:
+  cards get a faint surface gradient and soft shadow (`globals.css`), the first KPI tile and the
+  false-action-rate tile may use `glow-cyan` / `glow-green`, the area chart uses a gradient fill, and
+  KPI / card labels are small uppercase tracked captions. No other glow, gradient or blur. Light theme stays flat.
 - Plain functional copy ("Awaiting approval", "Send notice").
 - Loading = `Skeleton` shaped like the final layout. Empty = `Empty`. Errors inline (`Alert`), transient
   feedback via `toast()` from `sonner`.
