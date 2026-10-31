@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31T02:01:04+00:00",
+  "generated_at": "2026-10-31T02:17:55+00:00",
   "mode": "mock",
   "served_by": {
     "mock": 61
@@ -27,8 +27,8 @@
       "support": 7
     }
   },
-  "false_action_rate": 0.0328,
-  "false_actions": 2,
+  "false_action_rate": 0.0,
+  "false_actions": 0,
   "gate_catch_rate": 1.0,
   "gate_catch": {
     "caught": 9,
@@ -39,7 +39,7 @@
     "total": 5
   },
   "gate_misses": [],
-  "gate_outcome_match": 0.8197,
+  "gate_outcome_match": 0.8525,
   "per_type": {
     "account_blocked": {
       "n": 3,
@@ -161,36 +161,6 @@
         "send_reply"
       ],
       "masked_text": "Payment of ₹250 stuck for 3 days, debited from my bank but merchant says not received."
-    },
-    {
-      "id": "ev_034",
-      "expected_type": "settlement_delay",
-      "actual_type": "settlement_delay",
-      "expected_path": "RESOLVE",
-      "actual_path": "RESOLVE",
-      "executed_money_actions": [
-        "retrigger_kyc"
-      ],
-      "expected_actions": [
-        "retrigger_settlement",
-        "send_reply"
-      ],
-      "masked_text": "Settlement ₹48,000 failed and we are still showing KYC pending. Need money today for payroll."
-    },
-    {
-      "id": "ev_035",
-      "expected_type": "settlement_delay",
-      "actual_type": "settlement_delay",
-      "expected_path": "RESOLVE",
-      "actual_path": "RESOLVE",
-      "executed_money_actions": [
-        "retrigger_kyc"
-      ],
-      "expected_actions": [
-        "retrigger_settlement",
-        "send_reply"
-      ],
-      "masked_text": "₹46,500 settlement failed, please push it again, KYC update is in progress."
     },
     {
       "id": "ev_039",
