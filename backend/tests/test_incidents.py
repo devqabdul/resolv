@@ -2,9 +2,10 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 
+from app.agent import runner
 from app.agent.tools import build_registry
 from app.db import session
-from app.db.models import AuditEvent, Incident
+from app.db.models import AuditEvent, Incident, Ticket
 from app.integrations.paytm.client import PaytmClient
 from app.main import app
 from app.services import context, demo, incidents
@@ -63,3 +64,27 @@ def test_single_ticket_makes_no_incident(paytm: PaytmClient) -> None:
     assert _incidents() == []
     sig = context.load_ticket("tkt_48213").signature
     assert sig == "failed_payment_reversal|HDFC|BANK_SWITCH_TIMEOUT"
+
+
+def test_resolved_spike_tickets_still_cluster(paytm: PaytmClient) -> None:
+    ids = demo.spike("AXIS", 20, 20)
+    for i in ids:
+        runner.run(i)
+    assert {context.load_ticket(i).status for i in ids} == {"RESOLVED"}
+    assert incidents.cluster()
+    [inc] = _incidents()
+    assert (inc.signature, inc.status) == (SIG, "OPEN") and inc.ticket_count >= 10
+    with session.SessionLocal() as db:
+        linked = {
+            e.ticket_id
+            for e in db.scalars(select(AuditEvent).where(AuditEvent.kind == "incident_linked"))
+        }
+    assert linked == set(ids)
+    with session.SessionLocal() as db:
+        rows = db.scalars(select(Ticket).where(Ticket.id.in_(ids))).all()
+    assert {(t.status, t.incident_id, t.handling_mode) for t in rows} == {
+        ("RESOLVED", inc.id, "incident")
+    }
+    assert incidents.get(inc.id)["incident"].ticket_count == len(ids)  # type: ignore[index]
+    assert incidents.cluster() == []
+    assert len(_incidents()) == 1 and len(incidents.get(inc.id)["tickets"]) == len(ids)  # type: ignore[index]

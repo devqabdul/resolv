@@ -56,7 +56,7 @@ def start() -> None:
     _stop.clear()
     for name, fn, every in [
         ("process_queue", process_queue, 1.0),
-        ("cluster_incidents", cluster_incidents, 15.0),
+        ("cluster_incidents", cluster_incidents, 5.0),  # (decision: T15) 5 s, not 15 s
         ("sla_guard", sla_guard, 30.0),
     ]:
         threading.Thread(target=_loop, args=(name, fn, every), name=name, daemon=True).start()

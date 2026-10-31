@@ -16,8 +16,6 @@ from app.services import audit, context
 from app.services.tickets import new_id
 from app.util.clock import now
 
-_CLOSED = (TicketStatus.RESOLVED, TicketStatus.CLOSED)
-
 
 def match_open_incident(ticket: TicketDTO) -> Incident | None:
     """OPEN incident whose signature matches the ticket (decision: T7 stub, replaced in T16)."""
@@ -98,7 +96,9 @@ def cluster() -> list[str]:
             select(Ticket).where(
                 Ticket.signature.is_not(None),
                 Ticket.created_at >= since,
-                Ticket.status.not_in(_CLOSED),
+                # (decision: T15 — count all tickets in window, not only open; docs/02 §8 to
+                # be amended) an outage is an outage even if Resolv already resolved some.
+                Ticket.status != TicketStatus.CLOSED,
             )
         ).all()
     groups: dict[str, list[Ticket]] = {}
