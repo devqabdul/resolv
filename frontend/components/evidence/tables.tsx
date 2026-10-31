@@ -61,7 +61,7 @@ export function TypeTable({ data }: { data: [string, PerType][] }) {
       <TableBody>
         {data.map(([t, p]) => (
           <TableRow key={t}>
-            <TableCell className="font-mono">{t}</TableCell>
+            <TableCell className="font-mono whitespace-normal wrap-anywhere">{t}</TableCell>
             <TableCell className={num}>{p.n}</TableCell>
             <TableCell className={num}>{p.correct ?? Math.round(p.n * p.type_accuracy)}</TableCell>
             <TableCell className={num}>{pct1(p.type_accuracy)}</TableCell>

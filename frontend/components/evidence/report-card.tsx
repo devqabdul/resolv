@@ -57,7 +57,7 @@ export function ReportCard({ r, x }: { r: EvalsReport; x: Extra }) {
         </CardAction>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <section className="flex flex-col gap-2">
+        <section className="flex min-w-0 flex-col gap-2">
           <h3 className="text-sm font-semibold">Summary</h3>
           <Dl rows={[
             ["Labelled tickets", String(j.n)],
@@ -70,7 +70,7 @@ export function ReportCard({ r, x }: { r: EvalsReport; x: Extra }) {
             ["Generated", r.generated_at],
           ]} />
         </section>
-        <section className="flex flex-col gap-4">
+        <section className="flex min-w-0 flex-col gap-4">
           <div className="flex flex-col gap-2">
             <h3 className="text-sm font-semibold">Path precision / recall / F1</h3>
             <PathTable data={j.path_per_class} />
@@ -85,7 +85,7 @@ export function ReportCard({ r, x }: { r: EvalsReport; x: Extra }) {
             ]} />
           </div>
         </section>
-        <section className="flex flex-col gap-2">
+        <section className="flex min-w-0 flex-col gap-2">
           <h3 className="text-sm font-semibold">Per type accuracy</h3>
           <TypeTable data={perType} />
         </section>

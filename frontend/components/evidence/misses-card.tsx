@@ -14,7 +14,7 @@ import type { Miss } from "./types";
 const MISS_LIMIT = 8;
 
 const Pill = ({ children, bad }: { children: React.ReactNode; bad?: boolean }) => (
-  <Badge variant="outline" className={toneBadge({ tone: bad ? "failed" : "resolved" })}>{children}</Badge>
+  <Badge variant="outline" className={toneBadge({ tone: bad ? "failed" : "resolved", className: "h-auto min-h-6 max-w-full whitespace-normal text-left wrap-anywhere" })}>{children}</Badge>
 );
 const PathPill = ({ children, bad }: { children: React.ReactNode; bad?: boolean }) => (
   <Badge variant="outline" className={cn(toneBadge({ tone: bad ? "failed" : "closed" }), "font-mono")}>{children}</Badge>
@@ -24,8 +24,8 @@ function Row({ m }: { m: Miss }) {
   return (
     <TableRow>
       <TableCell className="font-mono">{m.id}</TableCell>
-      <TableCell><Pill>{m.expected_type}</Pill></TableCell>
-      <TableCell><Pill bad={m.actual_type !== m.expected_type}>{m.actual_type}</Pill></TableCell>
+      <TableCell className="whitespace-normal"><Pill>{m.expected_type}</Pill></TableCell>
+      <TableCell className="whitespace-normal"><Pill bad={m.actual_type !== m.expected_type}>{m.actual_type}</Pill></TableCell>
       <TableCell><PathPill>{m.expected_path}</PathPill></TableCell>
       <TableCell><PathPill bad={m.actual_path !== m.expected_path}>{m.actual_path}</PathPill></TableCell>
     </TableRow>
@@ -38,15 +38,15 @@ export function MissesCard({ misses }: { misses: Miss[] }) {
     <TableHeader>
       <TableRow>
         <TableHead>ID</TableHead>
-        <TableHead>Expected type</TableHead>
-        <TableHead>Predicted type</TableHead>
-        <TableHead>Expected path</TableHead>
-        <TableHead>Predicted path</TableHead>
+        <TableHead className="whitespace-normal">Expected type</TableHead>
+        <TableHead className="whitespace-normal">Predicted type</TableHead>
+        <TableHead className="whitespace-normal">Expected path</TableHead>
+        <TableHead className="whitespace-normal">Predicted path</TableHead>
       </TableRow>
     </TableHeader>
   );
   return (
-    <Card className="shadow-sm">
+    <Card className="min-w-0 shadow-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">Misses ({misses.length}) <Info label="About misses" text="Labelled tickets where the predicted type or path differs from the label. Money actions executed on a miss count as false actions." /></CardTitle>
       </CardHeader>

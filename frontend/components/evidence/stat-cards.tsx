@@ -5,6 +5,7 @@ import AnimatedNumber from "@/components/animated-number";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { EvalsReport } from "@/lib/api";
+import { pct } from "./types";
 import { cn } from "@/lib/utils";
 
 // Mounts at 0 and moves to the real value once, so headline numbers count up on first load.
@@ -45,10 +46,10 @@ export function StatCards({ r }: { r: EvalsReport }) {
   return (
     <section className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
       <StatCard id="evals-n" label="Labelled tickets" icon={FileTextIcon} tint={TINT_NEUTRAL}><Count value={j.n} /></StatCard>
-      <StatCard id="evals-type-accuracy" label="Type accuracy" icon={TargetIcon} tint={TINT_NEUTRAL}><Count value={j.type_accuracy * 100} format={p1} /></StatCard>
-      <StatCard id="evals-resolve-precision" label="RESOLVE precision" icon={ChartBarIcon} tint={TINT_NEUTRAL}><Count value={j.path_per_class.RESOLVE.precision * 100} format={p1} /></StatCard>
+      <StatCard id="evals-type-accuracy" label="Type accuracy" icon={TargetIcon} tint={TINT_NEUTRAL}><Count value={pct(j.type_accuracy)} format={p1} /></StatCard>
+      <StatCard id="evals-resolve-precision" label="RESOLVE precision" icon={ChartBarIcon} tint={TINT_NEUTRAL}><Count value={pct(j.path_per_class.RESOLVE.precision)} format={p1} /></StatCard>
       <StatCard id="evals-false-action-rate" label="False-action rate" icon={ShieldCheckIcon} tint={noFalse ? TINT_OK : TINT_BAD} tone={noFalse ? OK : BAD}>
-        <Count value={j.false_action_rate * 100} format={p1} />
+        <Count value={pct(j.false_action_rate)} format={p1} />
       </StatCard>
       <StatCard id="evals-gate-catch-rate" label="Gate catch rate" sub={`${j.gate_catch.caught}/${j.gate_catch.total} all adversarial`} icon={ShieldCheckIcon} tint={gateFull ? TINT_OK : TINT_BAD} tone={gateFull ? OK : BAD}>
         <Count value={j.gate_catch_core.caught} />/{j.gate_catch_core.total}

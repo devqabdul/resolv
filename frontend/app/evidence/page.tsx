@@ -52,7 +52,7 @@ export default function EvidencePage() {
         </section>
 
         <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-2">
-          <Card className="shadow-sm">
+          <Card className="min-w-0 shadow-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">Path quality <Info label="About path quality" text="Precision, recall and F1 of the RESOLVE / ROUTE / ESCALATE decision against labels" /></CardTitle>
             </CardHeader>
