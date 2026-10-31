@@ -2,8 +2,10 @@
 // One stat block per metric, hairline separators, dashes when /api/metrics is unreachable.
 // Labels never wrap; blocks size to content and the strip wraps as a whole on narrow screens.
 import { Fragment } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { useLayoutState } from "@/components/app-shell/layout-state";
 import AnimatedNumber from "@/components/animated-number";
 import { useMetrics, type Metrics } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -20,7 +22,18 @@ const KPIS: { id: string; label: string; pick: (m: Metrics) => number; format?: 
 
 export default function KpiStrip() {
   const { data: m } = useMetrics(); // undefined on 404 / network error -> dashes
+  const { kpiOpen: open, motionOn } = useLayoutState();
+  const reduce = useReducedMotion();
+  // Closed: stays mounted at height 0; the negative margin cancels the parent's gap-6.
   return (
+    <motion.div
+      aria-hidden={!open}
+      inert={!open}
+      initial={false}
+      animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0, marginBottom: open ? 0 : "-1.5rem" }}
+      transition={{ duration: reduce || !motionOn ? 0 : 0.18, ease: [0.16, 1, 0.3, 1] }}
+      className="overflow-hidden"
+    >
     <section data-testid="kpi-strip" className="flex flex-wrap items-stretch gap-x-4 gap-y-3 border-b pb-5">
       {KPIS.map((k, i) => (
         <Fragment key={k.id}>
@@ -44,5 +57,6 @@ export default function KpiStrip() {
         {m ? "Live" : "Offline"}
       </Badge>
     </section>
+    </motion.div>
   );
 }

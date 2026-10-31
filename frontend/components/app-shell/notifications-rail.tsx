@@ -1,20 +1,32 @@
 'use client';
 // Right rail (below content under xl), open on load on every page: last 10 in-app notifications,
 // newest first, with a Slack mark when a slack row shares ticket/incident + ts.
-import { useEffect, useState } from "react";
-import { BellIcon, CaretDoubleLeftIcon, CaretDoubleRightIcon, CheckIcon, SlackLogoIcon, XIcon } from "@phosphor-icons/react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { BellIcon, CaretDoubleRightIcon, CheckIcon, SlackLogoIcon, XIcon } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { useLayoutState } from "@/components/app-shell/layout-state";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNotifications, type Notification } from "@/lib/api";
 import { ago } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
+const XL = "(min-width: 1280px)";
+const subscribeXl = (cb: () => void) => {
+  const mq = window.matchMedia(XL);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+const useXl = () => useSyncExternalStore(subscribeXl, () => window.matchMedia(XL).matches, () => false);
+
 export default function NotificationsRail() {
   const { data, error } = useNotifications(50);
-  const [open, setOpen] = useState(true);
+  const { notificationsOpen: open, setPanel, motionOn } = useLayoutState();
+  const xl = useXl();
+  const reduce = useReducedMotion();
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 5000);
@@ -26,27 +38,31 @@ export default function NotificationsRail() {
   const items = rows.filter((r) => r.channel === "inapp").slice(0, 10);
 
   return (
-    <aside
+    // Closed: stays mounted, collapsed to width 0 (xl) or height 0 (below xl), hidden from AT and focus.
+    <motion.aside
       data-testid="notifications-panel"
-      className={cn(
-        "flex shrink-0 flex-col border-t bg-card xl:sticky xl:top-0 xl:h-svh xl:border-t-0 xl:border-l",
-        open ? "xl:w-72" : "xl:w-14",
-      )}
+      aria-hidden={!open}
+      inert={!open}
+      initial={false}
+      animate={xl ? { width: open ? 288 : 0, opacity: open ? 1 : 0 } : { height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+      transition={{ duration: reduce || !motionOn ? 0 : 0.18, ease: [0.16, 1, 0.3, 1] }}
+      className="shrink-0 overflow-hidden bg-card xl:sticky xl:top-0 xl:h-svh"
     >
+    <div className="flex h-full w-full flex-col border-t xl:w-72 xl:border-t-0 xl:border-l">
       <div className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
         <BellIcon className="text-muted-foreground" />
-        <h2 className={cn("text-base font-semibold", !open && "xl:hidden")}>Notifications</h2>
+        <h2 className="text-base font-semibold">Notifications</h2>
         <Button
           variant="ghost"
           size="icon-sm"
           className="ml-auto hidden xl:inline-flex"
-          aria-label={open ? "Collapse notifications" : "Expand notifications"}
-          onClick={() => setOpen(!open)}
+          aria-label="Collapse notifications"
+          onClick={() => setPanel("notificationsOpen", false)}
         >
-          {open ? <CaretDoubleRightIcon /> : <CaretDoubleLeftIcon />}
+          <CaretDoubleRightIcon />
         </Button>
       </div>
-      <ScrollArea className={cn("min-h-0 flex-1", !open && "xl:hidden")}>
+      <ScrollArea className="min-h-0 flex-1">
         {!data && !error ? (
           <div className="flex flex-col gap-4 p-4">
             {[0, 1, 2].map((i) => <Skeleton key={i} className="h-12 w-full" />)}
@@ -90,6 +106,7 @@ export default function NotificationsRail() {
           </ul>
         )}
       </ScrollArea>
-    </aside>
+    </div>
+    </motion.aside>
   );
 }

@@ -2,11 +2,14 @@
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 import { toast } from "sonner";
+import { CaretRightIcon } from "@phosphor-icons/react";
+import { useLayoutState } from "@/components/app-shell/layout-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { demoReset, demoSeed, demoSpike, demoTicket } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +29,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 export default function DemoDrawer() {
   const { mutate } = useSWRConfig();
+  const { demoOpen, setPanel } = useLayoutState();
   const [scenario, setScenario] = useState(SCENARIOS[0]);
   const [bank, setBank] = useState("AXIS");
   const [count, setCount] = useState(120);
@@ -72,9 +76,42 @@ export default function DemoDrawer() {
     </Button>
   );
 
+  // Collapsed: the drawer stays mounted (hidden) so its handles exist; a tab or pill reopens it.
   return (
-    <aside data-testid="demo-drawer" aria-label="Demo controls" className="flex flex-col gap-4 rounded-xl border bg-card p-4 text-card-foreground">
-      <h2 className="text-base font-semibold">Demo</h2>
+    <>
+      {!demoOpen && (
+        <>
+          <Button data-testid="demo-drawer-tab" variant="outline" className="w-fit 2xl:hidden" onClick={() => setPanel("demoOpen", true)}>
+            Show demo controls
+          </Button>
+          <button
+            type="button"
+            data-testid="demo-drawer-tab-vertical"
+            aria-label="Show demo controls"
+            onClick={() => setPanel("demoOpen", true)}
+            className="hidden h-28 w-10 items-center justify-center rounded-lg border bg-card text-sm font-medium [writing-mode:vertical-rl] hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none 2xl:flex"
+          >
+            Demo
+          </button>
+        </>
+      )}
+    <aside
+      data-testid="demo-drawer"
+      aria-label="Demo controls"
+      aria-hidden={!demoOpen}
+      className={cn("flex flex-col gap-4 rounded-xl border bg-card p-4 text-card-foreground", !demoOpen && "hidden")}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="text-base font-semibold">Demo</h2>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon-sm" aria-label="Collapse demo drawer" onClick={() => setPanel("demoOpen", false)}>
+              <CaretRightIcon />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Collapse demo drawer</TooltipContent>
+        </Tooltip>
+      </div>
       <div className="grid gap-4 md:grid-cols-3 2xl:grid-cols-1">
         <Section title="Data">
           <div className="grid grid-cols-2 gap-2">
@@ -104,5 +141,6 @@ export default function DemoDrawer() {
       <Separator />
       <p data-testid="demo-status" className="text-sm font-medium" aria-live="polite">{msg}</p>
     </aside>
+    </>
   );
 }
