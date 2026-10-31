@@ -21,7 +21,7 @@ function Facts({ facts, cols }: { facts: Fact[]; cols: string }) {
       {facts.map(([k, v, mono]) => (
         <div key={k} className="flex min-w-0 flex-col gap-0.5">
           <dt className="text-sm text-muted-foreground">{k}</dt>
-          <dd className={mono ? "truncate font-mono text-sm tabular-nums" : "truncate font-medium"}>{v}</dd>
+          <dd className={mono ? "break-words font-mono text-sm tabular-nums" : "break-words font-medium"}>{v}</dd>
         </div>
       ))}
     </dl>
@@ -76,12 +76,12 @@ export default function ContextCard({ context, candidateTxnId }: { context: Obj 
           <CardContent className="flex flex-col gap-4">
             <span className="font-mono text-3xl font-semibold tabular-nums">{inr(txn.amount_inr)}</span>
             <Facts
-              cols="grid-cols-2 sm:grid-cols-3"
+              cols="grid-cols-2"
               facts={([
                 ["Transaction ID", str(txn.id), true],
                 ["Date & time", str(txn.created_at) ? fmtDateTime(str(txn.created_at) as string) : undefined, true],
                 ["Payment method", method || undefined],
-                ["Status", str(txn.status) ? <Badge className={toneBadge({ tone: TXN_TONE[str(txn.status) ?? ""] ?? "new", className: "font-mono text-xs" })}>{str(txn.status)}</Badge> : undefined],
+                ["Status", str(txn.status) ? <Badge className={toneBadge({ tone: TXN_TONE[str(txn.status) ?? ""] ?? "new", className: "h-auto max-w-full whitespace-normal break-all font-mono text-xs" })}>{str(txn.status)}</Badge> : undefined],
                 ["Failure reason", str(txn.failure_reason), true],
               ] as Fact[]).filter((f) => f[1] !== undefined)}
             />

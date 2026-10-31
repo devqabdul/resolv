@@ -22,12 +22,22 @@ function group(events: AuditEvent[]): Item[] {
   return items;
 }
 
+// The ingest node does its own ledger lookup before it writes the `ingest` row (the row carries
+// candidate_txn_id), so lift `ingest` above the tool events directly before it.
+function ingestFirst(events: AuditEvent[]): AuditEvent[] {
+  const i = events.findIndex((e) => e.kind === "ingest");
+  let j = i;
+  while (j > 0 && (events[j - 1].kind === "tool_call" || events[j - 1].kind === "tool_result")) j--;
+  if (j === i) return events;
+  return [...events.slice(0, j), events[i], ...events.slice(j, i), ...events.slice(i + 1)];
+}
+
 // API order is ascending (newest last). reply_sent carries no text, so it shows the latest
 // preceding decision's customer_reply_draft. Rows present on mount stagger in (first 12 only);
 // rows with an event that arrived later through polling get the "fresh" highlight.
 export default function Timeline({ events, channel }: { events: AuditEvent[]; channel: string }) {
   const [initial] = useState(() => new Set(events.map((e) => e.id)));
-  const items = group(events);
+  const items = group(ingestFirst(events));
   let draft: string | undefined;
   let understood = false;
   return (

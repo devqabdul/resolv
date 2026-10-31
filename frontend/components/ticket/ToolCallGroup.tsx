@@ -64,10 +64,10 @@ function PairRow({ pair }: { pair: ToolPair }) {
       <li data-testid="tool-call" data-name={name} className="flex flex-col px-3 py-2">
         <CollapsibleTrigger className="group/tc flex w-full items-center gap-3 text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
           {pair.call ? (
-            <span data-testid="timeline-event" data-kind="tool_call" className="flex min-w-0 flex-1 items-center gap-2">
+            <span data-testid="timeline-event" data-kind="tool_call" className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
               {STATE_ICON[s]}
-              <span className="shrink-0 font-mono text-sm font-medium">{endpoint(name, params)}</span>
-              <span className="truncate font-mono text-xs text-muted-foreground">{paramsSummary(params)}</span>
+              <span className="min-w-0 truncate font-mono text-sm font-medium">{endpoint(name, params)}</span>
+              <span className="min-w-0 flex-1 basis-0 truncate font-mono text-xs text-muted-foreground">{paramsSummary(params)}</span>
             </span>
           ) : (
             <span className="flex min-w-0 flex-1 items-center gap-2">
@@ -77,7 +77,7 @@ function PairRow({ pair }: { pair: ToolPair }) {
           )}
           {pair.result ? (
             <span data-testid="timeline-event" data-kind="tool_result" className="flex shrink-0 items-center gap-2">
-              {ref && <span className="font-mono text-xs text-muted-foreground">{ref}</span>}
+              {ref && <span className="max-w-32 truncate font-mono text-xs text-muted-foreground">{ref}</span>}
               <Badge className={toneBadge({ tone: STATE_TONE[s], className: "font-mono text-xs" })}>{s}</Badge>
             </span>
           ) : (

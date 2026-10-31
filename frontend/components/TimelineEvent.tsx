@@ -106,8 +106,11 @@ export function describe(e: AuditEvent, channel: string): { title: string; summa
     }
     case "handoff":
       return { title: "Handed off", summary: `To team ${str(p.assigned_team) ?? "-"} • ${str(p.outcome) ?? ""}`, dot: "info" };
-    case "override":
-      return { title: "Human override", summary: `Path ${str(obj(p.resolv_decision)?.path) ?? "-"} changed to ${str(obj(p.human_decision)?.path) ?? "-"}`, dot: "info" };
+    case "override": {
+      const from = str(obj(p.resolv_decision)?.path) ?? "-";
+      const to = str(obj(p.human_decision)?.path) ?? "-";
+      return { title: "Human override", summary: from === to ? `Path kept as ${to}` : `Path ${from} changed to ${to}`, dot: "info" };
+    }
     case "incident_linked":
       return { title: "Incident linked", summary: str(p.incident_id), dot: "info" };
     case "incident_fast_path":
