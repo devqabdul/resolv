@@ -8,9 +8,9 @@ from pydantic import BaseModel, ConfigDict
 
 from app.agent import runner
 from app.api.audit import AuditEventOut
-from app.domain.enums import Channel
-from app.domain.schemas import TicketDTO
-from app.services import tickets
+from app.domain.enums import Channel, Path
+from app.domain.schemas import ProposedAction, TicketDTO
+from app.services import approvals, tickets
 
 router = APIRouter(prefix="/api/tickets")
 
@@ -110,3 +110,29 @@ def run_ticket(ticket_id: str) -> Any:
     _detail(ticket_id)  # 404 first
     runner.run(ticket_id)
     return _detail(ticket_id)
+
+
+class OverrideIn(BaseModel):
+    path: Path
+    note: str | None = None
+    decided_by: str
+    actions: list[ProposedAction] | None = None
+    assigned_team: str | None = None  # (decision: T11) team for path=ROUTE; else keep the current
+
+
+class OverrideOut(BaseModel):
+    ticket: TicketOut
+    blocked: list[dict[str, Any]]  # (decision: T11) gate-blocked actions, not executed
+
+
+@router.post("/{ticket_id}/override", response_model=OverrideOut)
+def override_ticket(ticket_id: str, body: OverrideIn) -> Any:
+    _detail(ticket_id)  # 404 first
+    try:
+        blocked = approvals.override(
+            ticket_id, body.path, body.note, body.decided_by, body.actions, body.assigned_team
+        )
+    except approvals.OverrideConflict as e:
+        raise HTTPException(409, str(e)) from None
+    t = TicketOut.model_validate(_detail(ticket_id)["ticket"])
+    return {"ticket": t.model_copy(update={"raw_text": ""}), "blocked": blocked}
