@@ -63,7 +63,7 @@ export interface ApprovalItem extends Approval {
 
 export interface TicketDetail {
   ticket: Ticket;
-  run: { id: string; outcome: string | null; state: Record<string, unknown> } | null;
+  run: { id: string; outcome: string | null; state: Record<string, unknown> | null } | null; // (decision: T14) state is nullable in RunOut
   timeline: AuditEvent[];
   approvals: Approval[];
   incident: Incident | null;
@@ -134,7 +134,10 @@ export const createTicket = (b: { channel: string; text: string; customer_id?: s
 export const getTickets = (q: { status?: string; type?: string; incident_id?: string; limit?: number; since?: string } = {}) => get<TicketList>(`/api/tickets${qs(q)}`);
 export const getTicket = (id: string) => get<TicketDetail>(`/api/tickets/${id}`);
 export const rerunTicket = (id: string) => post<TicketDetail>(`/api/tickets/${id}/run`);
-export const overrideTicket = (id: string, b: { path: string; note: string; decided_by: string; actions?: ProposedAction[] }) => post<Ticket>(`/api/tickets/${id}/override`, b);
+// (decision: T14) override body/response per backend OverrideIn/OverrideOut.
+export type OverridePath = "RESOLVE" | "ROUTE" | "ESCALATE";
+export interface BlockedAction { action: ProposedAction; outcome: string; reasons: string[] }
+export const overrideTicket = (id: string, b: { path: OverridePath; note?: string; decided_by: string; actions?: ProposedAction[]; assigned_team?: string }) => post<{ ticket: Ticket; blocked: BlockedAction[] }>(`/api/tickets/${id}/override`, b);
 export const getApprovals = (status = "PENDING") => get<ApprovalItem[]>(`/api/approvals${qs({ status })}`);
 export const decideApproval = (id: string, b: { approve: boolean; note?: string | null; decided_by: string }) => post<{ approval: Approval; ticket: Ticket }>(`/api/approvals/${id}/decide`, b);
 export const getIncidents = (status?: string) => get<Incident[]>(`/api/incidents${qs({ status })}`);
