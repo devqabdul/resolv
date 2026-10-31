@@ -20,10 +20,11 @@ function KpiStrip() {
   return (
     <div data-testid="kpi-strip" className="flex flex-wrap gap-3 pb-4">
       <KpiTile id="auto_resolution_rate" label="Auto-resolved" value={v(m?.auto_resolution_rate, (n) => `${Math.round(n * 100)}%`)} />
-      <KpiTile id="avg_first_response_sec" label="Avg first response" value={v(m?.avg_first_response_sec, (n) => `${Math.round(n)}s`)} />
+      <KpiTile id="avg_first_response_sec" label="Avg first response" value={v(m?.avg_first_response_sec, (n) => (n > 90 ? `${Math.floor(n / 60)}:${String(Math.round(n % 60)).padStart(2, "0")}` : `${Math.round(n)}s`))} />
       <KpiTile id="open" label="Open" value={v(m?.open)} />
       <KpiTile id="awaiting_approval" label="Awaiting approval" value={v(m?.awaiting_approval)} />
       <KpiTile id="incidents_open" label="Incidents open" value={v(m?.incidents_open)} />
+      <KpiTile id="window" label="Window" value={v(m?.window_minutes, (n) => (n % 60 ? `${n} min` : `${n / 60} h`))} />
     </div>
   );
 }

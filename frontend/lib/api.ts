@@ -115,7 +115,23 @@ export interface Metrics {
 }
 
 export interface Health { ok: boolean; llm_mode: string; db: string; mock_paytm: string }
-export interface EvalsReport { generated_at: string; markdown: string; json: unknown }
+// (decision: T23) shapes match backend/app/api/metrics.py and backend/evals/report.json
+export interface EvalsCounts { caught: number; total: number }
+export interface EvalsPathClass { precision: number; recall: number; f1: number; support: number }
+export interface EvalsJson {
+  generated_at: string;
+  mode: string;
+  n: number;
+  type_accuracy: number;
+  path_accuracy: number;
+  path_per_class: Record<"RESOLVE" | "ROUTE" | "ESCALATE", EvalsPathClass>;
+  false_action_rate: number;
+  false_actions: number;
+  gate_catch_rate: number;
+  gate_catch: EvalsCounts;
+  gate_catch_core: EvalsCounts;
+}
+export interface EvalsReport { generated_at: string; markdown: string; json: EvalsJson; overrides_count: number }
 export interface ProposedAction { name: string; params: Record<string, unknown> }
 export interface TicketList { items: Ticket[]; total: number }
 
