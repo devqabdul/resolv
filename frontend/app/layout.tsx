@@ -1,62 +1,38 @@
-'use client';
-// Client layout: nav highlights the active link and the KPI strip polls /api/metrics (D16).
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import KpiTile from "@/components/KpiTile";
-import NotificationsPanel from "@/components/NotificationsPanel";
-import { useMetrics } from "@/lib/api";
+import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import Providers from "@/components/app-shell/providers";
+import AppSidebar from "@/components/app-shell/app-sidebar";
+import AppHeader from "@/components/app-shell/app-header";
+import KpiStrip from "@/components/app-shell/kpi-strip";
+import NotificationsRail from "@/components/app-shell/notifications-rail";
 import "./globals.css";
 
-const NAV = [
-  { href: "/", label: "Queue" },
-  { href: "/approvals", label: "Approvals" },
-  { href: "/incidents", label: "Incidents" },
-  { href: "/evidence", label: "Evidence" },
-];
+export const metadata: Metadata = { title: "Resolv cockpit" };
 
-function KpiStrip() {
-  const { data: m } = useMetrics(); // undefined on 404 / network error -> dashes
-  const v = (x: number | undefined, f: (n: number) => string = String) => (x === undefined ? "-" : f(x));
-  return (
-    <div data-testid="kpi-strip" className="flex flex-wrap gap-3 pb-4">
-      <KpiTile id="auto_resolution_rate" label="Auto-resolved" value={v(m?.auto_resolution_rate, (n) => `${Math.round(n * 100)}%`)} />
-      <KpiTile id="avg_first_response_sec" label="Avg first response" value={v(m?.avg_first_response_sec, (n) => (n > 90 ? `${Math.floor(n / 60)}:${String(Math.round(n % 60)).padStart(2, "0")}` : `${Math.round(n)}s`))} />
-      <KpiTile id="open" label="Open" value={v(m?.open)} />
-      <KpiTile id="awaiting_approval" label="Awaiting approval" value={v(m?.awaiting_approval)} />
-      <KpiTile id="incidents_open" label="Incidents open" value={v(m?.incidents_open)} />
-      <KpiTile id="window" label="Window" value={v(m?.window_minutes, (n) => (n % 60 ? `${n} min` : `${n / 60} h`))} />
-    </div>
-  );
-}
-
+// Server layout; the shell leaves are client components (D16: pages poll the API themselves).
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const path = usePathname();
   return (
-    <html lang="en">
-      <head><title>Resolv cockpit</title></head>
-      <body className="min-h-screen bg-light text-ink">
-        <header className="bg-navy px-6 py-3 text-2xl font-bold text-white">
-          Resolv <span className="text-cyan">cockpit</span>
-        </header>
-        <div className="flex">
-          <nav className="w-48 shrink-0 bg-navy px-3 py-4 text-lg font-semibold text-white" style={{ minHeight: "calc(100vh - 3.5rem)" }}>
-            {NAV.map((n) => {
-              const active = n.href === "/" ? path === "/" : path.startsWith(n.href);
-              return (
-                <Link key={n.href} href={n.href} className={`mb-1 block rounded px-3 py-2 ${active ? "bg-cyan text-navy" : "hover:bg-white/10"}`}>
-                  {n.label}
-                </Link>
-              );
-            })}
-          </nav>
-          <main className="min-w-0 flex-1 p-6">
-            <KpiStrip />
-            {children}
-          </main>
-        </div>
-        <footer className="px-6 pb-6">
-          <NotificationsPanel />
-        </footer>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
+      <body className="antialiased">
+        <Providers>
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset className="min-w-0">
+              <div className="flex min-h-svh flex-col xl:flex-row">
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <AppHeader />
+                  <div className="flex flex-col gap-6 p-6">
+                    <KpiStrip />
+                    {children}
+                  </div>
+                </div>
+                <NotificationsRail />
+              </div>
+            </SidebarInset>
+          </SidebarProvider>
+        </Providers>
       </body>
     </html>
   );

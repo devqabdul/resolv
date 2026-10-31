@@ -1,21 +1,12 @@
 'use client';
-import type { TicketStatus } from "@/lib/api";
-const COLOR: Record<TicketStatus, string> = {
-  NEW: "bg-gray-500",
-  PROCESSING: "bg-cyan",
-  RESOLVED: "bg-green-600",
-  AWAITING_APPROVAL: "bg-amber-500",
-  ROUTED: "bg-navy",
-  ESCALATED: "bg-navy",
-  INCIDENT_LINKED: "bg-purple-600",
-  CLOSED: "bg-slate-700",
-  FAILED: "bg-red-600",
-};
+// Visible text stays the raw enum (recipes read `RESOLVED`); colour eases between states.
+import { Badge } from "@/components/ui/badge";
+import { STATUS_TONE, toneBadge } from "@/components/status-tone";
 
 export default function StatusBadge({ status }: { status: string }) {
   return (
-    <span data-testid="ticket-status" className={`inline-block text-sm font-semibold px-2 py-0.5 rounded-full text-white ${COLOR[status as TicketStatus] ?? "bg-gray-500"}`}>
+    <Badge data-testid="ticket-status" className={toneBadge({ tone: STATUS_TONE[status] })}>
       {status}
-    </span>
+    </Badge>
   );
 }

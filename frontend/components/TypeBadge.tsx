@@ -1,8 +1,10 @@
 'use client';
+import { Badge } from "@/components/ui/badge";
+
 export default function TypeBadge({ type }: { type: string | null }) {
   return (
-    <span data-testid="ticket-type" className="inline-block text-sm font-semibold px-2 py-0.5 rounded bg-cyan/15 text-navy">
+    <Badge data-testid="ticket-type" variant="outline" className="h-6 px-2.5 font-mono text-sm font-normal">
       {type ?? "-"}
-    </span>
+    </Badge>
   );
 }

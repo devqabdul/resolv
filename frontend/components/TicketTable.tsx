@@ -32,7 +32,7 @@ export default function TicketTable({ incidentId }: { incidentId?: string }) {
   if (items.length === 0) {
     return (
       <div data-testid="queue-empty" className="mx-auto max-w-xl rounded-xl bg-white p-10 text-center text-2xl font-semibold text-navy shadow-sm">
-        No tickets yet — open ?demo=1 and Seed, then inject a scenario
+        No tickets yet. Open ?demo=1, then Seed and inject a scenario.
       </div>
     );
   }
