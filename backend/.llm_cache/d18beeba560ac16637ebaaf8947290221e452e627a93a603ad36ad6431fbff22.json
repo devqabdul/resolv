@@ -1,0 +1,16 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "amount_inr": 649.0,
+    "mandate_id": "mnd_eval_50",
+    "merchant_name": "Netflix",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer wants to cancel an active Netflix mandate (mnd_eval_50, \u20b9649/month) on behalf of their brother. Per policy, mandate cancellation requests by email require human approval; the customer should be guided to cancel via the app or merchant portal, or this should be routed for human approval.",
+  "ticket_type": "mandate_cancellation"
+}

@@ -1,0 +1,14 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_23"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer is requesting a chargeback because the merchant did not provide the service. The transaction txn_eval_23 for \u20b91,250 via UPI is successful with no refund initiated. This is a human-only dispute_chargeback ticket.",
+  "ticket_type": "dispute_chargeback"
+}

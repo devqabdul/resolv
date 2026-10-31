@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": true,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports UPI payment of \u20b92,499 to Urban Kart debited but order failed; no refund after 3 days. Past ticket indicates repeat issue. Transaction txn_48213_a is DEBITED_NOT_CREDITED with BANK_SWITCH_TIMEOUT. Customer is frustrated and claims this is the second time.",
+  "ticket_type": "failed_payment_reversal"
+}

@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer is raising a chargeback dispute (dispute_chargeback) because merchant charged twice and refuses to help. This is a repeat issue (same summary as tkt_dispute from 2026-10-31). Transaction txn_48213_a is DEBITED_NOT_CREDITED with a COMPLETED refund rfd_18eb8fcc (arn_462cabc0412b) for Rs 2,499. Since dispute_chargeback is a human-only category, we must route to risk team. No money action should be taken as a refund already exists.",
+  "customer_reply_draft": "Hi Riya, I'm sorry to hear about the duplicate charge and the merchant's refusal to help. A specialist from our risk team is reviewing your chargeback request and will get back to you shortly. In the meantime, please note that a refund of Rs 2,499 for the original transaction was already processed and should have reached your account by now. We'll keep you updated on the next steps.",
+  "next_action_for_human": "Route to risk team to review chargeback eligibility given the existing completed refund rfd_18eb8fcc (arn_462cabc0412b) for txn_48213_a. Customer is frustrated and this is a repeat dispute.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer is raising a chargeback dispute, which is a human-only category per policy. We must route to risk team and inform the customer that a specialist is reviewing it."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {
+        "note": "Customer is raising chargeback dispute for txn_48213_a. A completed refund rfd_18eb8fcc (arn_462cabc0412b) already exists for the same amount. Customer is now disputing the charge. Past ticket tkt_dispute (2026-10-31) was also routed for same issue. Risk team to review for chargeback eligibility and refund status."
+      },
+      "rationale": "Document the existing completed refund and repeat nature of the dispute for the risk team."
+    }
+  ],
+  "reasoning": "Fact: Customer raised dispute_chargeback for txn_48213_a, which is a human-only category per policy_summary. Fact: A completed refund rfd_18eb8fcc (arn_462cabc0412b) already exists for the same transaction. Rule: Human-only types must be routed to risk team with no money action. Action: ROUTE to risk with create_internal_note and send_reply.",
+  "route_to_team": "risk"
+}

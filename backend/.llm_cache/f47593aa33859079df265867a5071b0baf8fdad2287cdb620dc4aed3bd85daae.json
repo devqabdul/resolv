@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer reports account blocked without notice and requests reason + unblock. Human-only ticket type per policy. No transactions, refunds, or other IDs provided. Route to risk team for manual review.",
+  "customer_reply_draft": "We sincerely apologize for the inconvenience. A specialist is currently reviewing your account block to determine the reason and next steps. You will hear back from us shortly with an update.",
+  "next_action_for_human": "Risk team to review account block reason and initiate unblock if approved; customer to be notified of outcome.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs an immediate acknowledgment and explanation while a human reviews the block."
+    }
+  ],
+  "reasoning": "Facts: Customer says account blocked without notice and wants reason/unblock. Rule: account_blocked is a human-only ticket type per policy_summary. Action: ROUTE to risk team with send_reply to acknowledge and set expectation.",
+  "route_to_team": "risk"
+}

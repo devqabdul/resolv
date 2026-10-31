@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "angry",
+  "summary_for_agent": "Customer reports a social engineering/fraud call claiming to be from Paytm, after which money went missing. This is a human-only fraud case requiring immediate risk/fraud review. No transaction ID was provided, so ask for details to locate the debit.",
+  "ticket_type": "fraud_suspected"
+}

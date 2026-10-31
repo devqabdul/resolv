@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reported a UPI debit of Rs 2,499 that failed 3 days ago with no refund. Transaction txn_48213_a is DEBITED_NOT_CREDITED with bank switch timeout. No refund exists yet. Regulatory clock shows 2 days late, so Rs 200 compensation is due. Initiate reversal and credit compensation within auto limits.",
+  "customer_reply_draft": "Hi Riya, we are sorry for the inconvenience. We have initiated a reversal of Rs 2,499 for txn_48213_a and a compensation of Rs 200 for the delay. The refund and compensation will reach your account within 1 working day. If you do not see it by then, please contact us again.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 2499,
+        "reason": "UPI debit failed due to bank switch timeout, refund overdue by 2 days",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with no refund initiated yet, within auto-refund limit of Rs 5,000."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_riya",
+        "reason": "2 days late beyond RBI T+1 TAT for UPI",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Regulatory clock shows 2 days late, compensation due is Rs 200."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "sms",
+        "language": "en"
+      },
+      "rationale": "Customer requested callback but we can provide status update and next steps via SMS."
+    }
+  ],
+  "reasoning": "Facts: UPI txn_48213_a debited Rs 2,499 on 2026-10-28, failed with bank switch timeout, no refund initiated. Regulatory clock: 3 days since txn, 2 days late, compensation due Rs 200. Rule: DEBITED_NOT_CREDITED with no refund -> initiate reversal. Compensation auto due for days late. Action: initiate reversal + credit_compensation + send_reply.",
+  "route_to_team": null
+}

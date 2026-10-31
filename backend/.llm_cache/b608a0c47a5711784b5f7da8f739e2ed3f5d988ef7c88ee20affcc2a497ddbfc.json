@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Merchant reports missing T+1 settlement of \u20b948,300 (settlement id stl_eval_2210, expected 2026-10-30). Settlement status is FAILED with reason 'Bank rejected credit'. Policy allows re-triggering a failed settlement. No compensation due as this is a settlement issue, not a delayed customer refund.",
+  "customer_reply_draft": "We sincerely apologize for the delay with your settlement of \u20b948,300 under settlement ID STL-2210. The previous attempt failed because the bank rejected the credit, but we are re-triggering the settlement now. You should see the amount in your account within 1 working day. If you do not receive it by then, please reach out to us again with this reference number.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_settlement",
+      "params": {
+        "settlement_id": "stl_eval_2210"
+      },
+      "rationale": "Settlement failed due to bank rejection; re-triggering is the allowed fix per policy."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "email",
+        "language": "en"
+      },
+      "rationale": "Close the loop with the merchant in their language."
+    }
+  ],
+  "reasoning": "Fact: Settlement stl_eval_2210 for \u20b948,300 is FAILED due to bank rejection. Rule: A failed settlement can be re-triggered. Action: Retrigger the settlement and inform the merchant of the expected timeline.",
+  "route_to_team": null
+}

@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer paid Rs 12,000 by UPI to Urban Kart (txn_big), order failed, money debited from ICICI. Transaction status is DEBITED_NOT_CREDITED with no refund. Request is 3 days old, 2 days past RBI TAT, so Rs 200 compensation is due. Auto-refund limit is Rs 5,000; remaining Rs 7,000 requires human approval. Path is ESCALATE because reversal amount exceeds auto-refund limit.",
+  "customer_reply_draft": "Hi Arjun, I'm sorry your UPI payment of Rs 12,000 to Urban Kart was debited but the order failed. I've requested a full reversal for transaction txn_big, but because the amount exceeds our auto-refund limit, a specialist needs to approve it first. In the meantime, Rs 200 in compensation has been credited to your account for the delay. You will hear back once the reversal is processed.",
+  "next_action_for_human": "Approve the reversal of Rs 12,000 for txn_big (remaining Rs 7,000 above auto-refund limit) and confirm the Rs 200 compensation has been credited.",
+  "path": "ESCALATE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 12000.0,
+        "reason": "Order failed; customer requested full reversal for DEBITED_NOT_CREDITED UPI payment to Urban Kart",
+        "txn_id": "txn_big"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with no refund yet, so a reversal is eligible. However, the amount exceeds the auto-refund limit of Rs 5,000, requiring human approval before the reversal can be initiated."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_arjun",
+        "reason": "2 days past RBI TAT for UPI failed debit reversal",
+        "txn_id": "txn_big"
+      },
+      "rationale": "Regulatory clock shows 2 days late, so Rs 200 compensation is due and within the auto-compensation limit."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Draft a reply informing the customer about the reversal request, compensation, and next steps."
+    }
+  ],
+  "reasoning": "Fact: txn_big is DEBITED_NOT_CREDITED with no refund, amount Rs 12,000, request is 3 days old and 2 days past RBI TAT. Rule: reversal is eligible but exceeds auto-refund limit Rs 5,000, requiring human approval. Rule: compensation of Rs 200 is due and within auto-compensation limit. Action: ESCALATE for human approval of reversal, credit compensation, and send reply.",
+  "route_to_team": "risk"
+}

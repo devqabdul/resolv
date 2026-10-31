@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer Riya M. (cust_riya) reports UPI payment of \u20b92,499 to Urban Kart debited but order failed; no refund after 3 days. Transaction txn_48213_a is DEBITED_NOT_CREDITED with BANK_SWITCH_TIMEOUT and no refund yet. Past refund rfd_riya_prev is COMPLETED. Regulatory clock shows 2 days late, compensation due \u20b9200. Proposed: initiate_reversal for \u20b92,499, credit_compensation \u20b9200, send_reply in English.",
+  "customer_reply_draft": "I\u2019m sorry this has happened twice. I\u2019ve initiated the reversal for your UPI payment of \u20b92,499 (txn_48213_a), and the refund should reach your account within 1 working day. I\u2019ve also added \u20b9200 as compensation for the delay. You\u2019ll receive a confirmation once the reversal is processed.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 2499.0,
+        "reason": "UPI payment debited but order failed due to BANK_SWITCH_TIMEOUT; customer is repeat victim",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Transaction txn_48213_a is DEBITED_NOT_CREDITED with no existing refund, so initiate_reversal is the correct money action."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_riya",
+        "reason": "2 days late per RBI TAT; Rs 100/day late for UPI",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "regulatory_clock.compensation_due_inr is 200 and within auto-compensation limit of Rs 1000."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer is frustrated and needs a clear update in English."
+    }
+  ],
+  "reasoning": "txn_48213_a is DEBITED_NOT_CREDITED with no refund, so initiate_reversal is required. regulatory_clock.compensation_due_inr is 200 and within auto limit, so credit_compensation is allowed. Customer is frustrated but not in a human-only category; path is RESOLVE.",
+  "route_to_team": null
+}

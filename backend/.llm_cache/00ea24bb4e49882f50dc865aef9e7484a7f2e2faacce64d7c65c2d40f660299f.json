@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer paid Rs 12,000 via UPI to Urban Kart (txn_big) but the order failed; money was debited from ICICI with status DEBITED_NOT_CREDITED. Requesting a full reversal. The transaction is 3 days old (2 days past RBI T+1 deadline), entitling the customer to Rs 200 compensation. Since the amount exceeds the auto-refund limit of Rs 5,000, a human approval is required before the reversal can be processed.",
+  "customer_reply_draft": "I\u2019m sorry for the inconvenience, Arjun. I\u2019ve initiated a reversal request of Rs 12,000 for transaction txn_big (UPI to Urban Kart), and a specialist is reviewing it for approval since the amount exceeds the auto-refund limit. You will also receive Rs 200 compensation for the delay beyond the RBI T+1 window. We\u2019ll share an update once the review is complete.",
+  "next_action_for_human": "A specialist needs to approve the reversal of Rs 12,000 (txn_big) because it exceeds the auto-refund limit of Rs 5,000. The reversal has been initiated and is pending human approval.",
+  "path": "ESCALATE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 12000,
+        "reason": "Order failed; customer requests full reversal of debited UPI payment to Urban Kart.",
+        "txn_id": "txn_big"
+      },
+      "rationale": "Transaction status is DEBITED_NOT_CREDITED with no existing refund, so reversal is allowed."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_arjun",
+        "reason": "2 days past RBI T+1 deadline for UPI failed debit.",
+        "txn_id": "txn_big"
+      },
+      "rationale": "Regulatory clock shows 2 days late, compensation due is Rs 200."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Required customer reply drafted per style guide."
+    }
+  ],
+  "reasoning": "Transaction txn_big is DEBITED_NOT_CREDITED with no refund yet, so initiate_reversal is allowed. Regulatory clock shows 2 days late, so credit_compensation of Rs 200 is due. Because the reversal amount (Rs 12,000) exceeds the auto-refund limit of Rs 5,000, policy requires human approval, so path is ESCALATE and route_to_team is risk.",
+  "route_to_team": "risk"
+}

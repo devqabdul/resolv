@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports failed UPI debit txn_spike_0003 (\u20b91,200) from AXIS with amount debited. Status is DEBITED_NOT_CREDITED, no refund yet. Initiated reversal and will send confirmation.",
+  "customer_reply_draft": "Sorry for the trouble. I've initiated a reversal for transaction txn_spike_0003 (\u20b91,200) debited from your AXIS account. The reversed amount should reach your account within 1 working day. You'll receive a confirmation once it's processed.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1200,
+        "reason": "UPI_SWITCH_DOWN",
+        "txn_id": "txn_spike_0003"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with no refund yet and customer is requesting reversal."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 0,
+        "customer_id": "cust_spike_0003",
+        "reason": "No days late, compensation not due",
+        "txn_id": "txn_spike_0003"
+      },
+      "rationale": "Regulatory clock shows 0 days late, so no compensation is due."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer is English-speaking and this is an in-app support channel."
+    }
+  ],
+  "reasoning": "Transaction status is DEBITED_NOT_CREDITED with no refund yet, so initiate_reversal is allowed. Regulatory clock shows 0 days late, so no compensation is due. Path is RESOLVE with P2 priority.",
+  "route_to_team": null
+}

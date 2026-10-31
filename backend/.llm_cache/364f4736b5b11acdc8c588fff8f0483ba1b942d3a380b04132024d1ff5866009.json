@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer asked for the status of refund rfd_eval_16 (\u20b92,600) on txn_eval_16. The refund is in INITIATED status with an ETA of 2026-11-02. No further action is needed from Resolv beyond informing the customer of the current status and ETA.",
+  "customer_reply_draft": "Hi Eval Customer 20, I\u2019m sorry for the delay in checking this for you. Your refund of \u20b92,600 (ARN: arn_eval16) for transaction txn_eval_16 is currently in Initiated status and is expected to reach your account by 2 November 2026. If you don\u2019t see it by then, please reach out to us again.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Provide the customer with the refund status and ETA."
+    }
+  ],
+  "reasoning": "The ticket is a straightforward refund status query. The refund rfd_eval_16 is already in INITIATED status with a known ETA of 2026-11-02. No reversal, compensation, or other money action is required. The correct path is to reply to the customer with the status and ETA.",
+  "route_to_team": null
+}

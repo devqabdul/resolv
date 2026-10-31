@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Merchant Eval Store 02 reports settlement stl_eval_hold01 on hold for 3 days due to pending KYC. KYC kyc_eval_02 is still pending. Settlement amount is INR 21,000. No past tickets. Confidence 0.85. Path RESOLVE with retrigger_kyc and send_reply.",
+  "customer_reply_draft": "We\u2019re sorry for the delay with your settlement. Your KYC verification is still pending, which is why settlement stl_eval_hold01 is on hold. We\u2019ve retriggered your KYC (kyc_eval_02) to speed up verification. Once KYC is approved, your INR 21,000 settlement will be released. You\u2019ll hear back once the review is complete.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_02"
+      },
+      "rationale": "KYC is pending and blocking settlement stl_eval_hold01; retriggering KYC is the correct fix per KB."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "app",
+        "language": "en"
+      },
+      "rationale": "Merchant is frustrated and needs a clear update in English."
+    }
+  ],
+  "reasoning": "Facts: Settlement stl_eval_hold01 (INR 21,000) is ON_HOLD_KYC because KYC kyc_eval_02 is PENDING. The merchant says they submitted everything. Rule: retrigger_kyc is allowed for pending KYC blocking settlement. No money action needed. No human-only type.",
+  "route_to_team": null
+}

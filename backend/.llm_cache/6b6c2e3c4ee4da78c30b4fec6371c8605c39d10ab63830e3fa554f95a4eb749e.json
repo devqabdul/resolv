@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": "stl_chai_001",
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer is asking why settlement stl_chai_001 of Rs 48,500 is on hold. Context shows the settlement is ON_HOLD_KYC because merchant KYC is pending verification; expected release is 2026-10-30. No past tickets match.",
+  "ticket_type": "settlement_delay"
+}

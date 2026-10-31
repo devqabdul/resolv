@@ -1,0 +1,29 @@
+{
+  "agent_summary": "Customer paid Rs 12,000 via UPI to Urban Kart, order failed, money debited. Transaction txn_big is DEBITED_NOT_CREDITED with no refund yet. It's 3 days old (2 days late), so Rs 200 compensation is due. Amount exceeds auto-refund limit (Rs 5,000), so full reversal needs human approval. No refund exists yet.",
+  "customer_reply_draft": "I'm sorry for the trouble, Arjun. Your transaction txn_big for Rs 12,000 to Urban Kart is debited but not credited, and the order failed. Since it's 2 days past the RBI TAT, we're crediting you Rs 200 as compensation right away. The full reversal of Rs 12,000 requires specialist approval because the amount exceeds our auto-refund limit. A specialist is reviewing your request and will contact you shortly.",
+  "next_action_for_human": "Approve and initiate the full reversal of Rs 12,000 for transaction txn_big to customer cust_arjun.",
+  "path": "ESCALATE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_arjun",
+        "reason": "2 days past RBI TAT for UPI failed transaction",
+        "txn_id": "txn_big"
+      },
+      "rationale": "Regulatory clock shows 2 days late, so Rs 200 compensation is due per policy."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs an immediate reply acknowledging the issue, the compensation, and the next steps for the reversal."
+    }
+  ],
+  "reasoning": "txn_big is DEBITED_NOT_CREDITED with no refund yet, so a reversal is possible in principle. However, the amount (Rs 12,000) exceeds the auto-refund limit (Rs 5,000), so it requires human approval. The regulatory clock shows 2 days late, so Rs 200 compensation is due. We must ESCALATE for the reversal and ROUTE to risk team for approval. We can credit compensation immediately and send a reply.",
+  "route_to_team": "risk"
+}

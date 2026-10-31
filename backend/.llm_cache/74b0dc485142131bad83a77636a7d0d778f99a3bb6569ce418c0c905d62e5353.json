@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer requested cancellation of active monthly Prime mandate mnd_eval_35 for Rs 179. Per policy, email-based cancellation requires human approval before cancelling.",
+  "customer_reply_draft": "Hi, we\u2019re sorry but we can\u2019t cancel your Amazon Prime mandate directly from here. Your request has been forwarded to our team for approval. A specialist will review it and get back to you shortly. Your reference number is mnd_eval_35.",
+  "next_action_for_human": "Review and approve the mandate cancellation request for mnd_eval_35, then confirm completion with the customer.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "cancel_mandate",
+      "params": {
+        "mandate_id": "mnd_eval_35"
+      },
+      "rationale": "Customer requested cancellation of active mandate mnd_eval_35. Per policy, email-based cancellation requires human approval before it can be processed."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "email",
+        "language": "en"
+      },
+      "rationale": "Acknowledge the cancellation request and inform the customer it has been forwarded to the team for approval."
+    }
+  ],
+  "reasoning": "Fact: customer wants to cancel mandate mnd_eval_35. Rule: email-based cancellation requires human approval per policy. Action: route to risk team for approval and send reply.",
+  "route_to_team": "risk"
+}

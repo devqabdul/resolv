@@ -1,0 +1,18 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "amount_inr": 299.0,
+    "issuer_bank": null,
+    "mandate_id": "mnd_eval_32",
+    "merchant_name": "Hotstar",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer wants to cancel/disable the monthly autopay mandate for Hotstar (\u20b9299). The mandate mnd_eval_32 is currently ACTIVE. Provide cancellation steps or confirm cancellation request.",
+  "ticket_type": "mandate_cancellation"
+}

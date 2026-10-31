@@ -1,0 +1,29 @@
+{
+  "agent_summary": "Customer followed up on refund rfd_eval_09 for failed UPI txn txn_eval_09 (\u20b9850). Refund is initiated with ETA 2026-11-02. Transaction is 2 days late, so \u20b9200 compensation is auto-due and should be credited. No reversal needed because refund already exists.",
+  "customer_reply_draft": "Hi, I\u2019m sorry for the delay. Your refund ARN arn_eval09 for \u20b9850 to Urban Kart is already in progress and should reach your account by 2 Nov. Since this is 2 days past the RBI T+1 timeline, we have auto-credited \u20b9200 as compensation to your account. No further action is needed from your side.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_eval_13",
+        "reason": "2 days past RBI T+1 TAT for failed UPI debit",
+        "txn_id": "txn_eval_09"
+      },
+      "rationale": "The refund rfd_eval_09 is already initiated and will credit by 2026-11-02. Since the transaction is 2 days late, auto-compensation of \u20b9200 is due per policy."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer asked for refund update in English; must reply with reference, apology, next steps, and compensation."
+    }
+  ],
+  "reasoning": "Fact: txn_eval_09 is DEBITED_NOT_CREDITED, refund rfd_eval_09 is INITIATED with ETA 2026-11-02. Fact: regulatory_clock shows days_late=2, compensation_due_inr=200. Rule: when refund already initiated, do not reverse; instead credit compensation for late TAT. Rule: always end with send_reply. Action: credit_compensation + send_reply.",
+  "route_to_team": null
+}

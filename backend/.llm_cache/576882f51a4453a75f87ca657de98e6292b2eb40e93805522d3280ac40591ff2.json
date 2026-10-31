@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_spike_0001"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer reports a failed UPI payment where money was debited from their AXIS account but the merchant was not credited. Transaction txn_spike_0001 shows status DEBITED_NOT_CREDITED with issuer_bank AXIS and failure_reason UPI_SWITCH_DOWN. No refund has been initiated yet (refund_status: NONE).",
+  "ticket_type": "failed_payment_reversal"
+}

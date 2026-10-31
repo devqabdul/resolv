@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_08"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer is frustrated that \u20b9250 was debited 6 days ago for a failed UPI payment and is demanding reversal plus compensation. The transaction (txn_eval_08) is still unrefunded and 5 days late, so \u20b9500 in automatic compensation is due per RBI rules.",
+  "ticket_type": "failed_payment_reversal"
+}

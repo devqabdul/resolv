@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer frustrated about repeated KYC rejection due to address mismatch. Retrigger KYC to allow resubmission via app. No money action needed.",
+  "customer_reply_draft": "Sorry for the inconvenience. Your KYC was rejected again due to an address mismatch. I have retriggered your KYC so you can resubmit through the app using the resubmission link. Please ensure the address you enter matches your bank records exactly, and upload clear documents. A specialist will review it once submitted.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_001"
+      },
+      "rationale": "Customer's KYC was rejected again due to address mismatch. Retriggering KYC will allow resubmission through the app's resubmission link."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "app",
+        "language": "en"
+      },
+      "rationale": "Provide clear next steps and reference to the customer."
+    }
+  ],
+  "reasoning": "Customer reports KYC rejection due to address mismatch. Context confirms KYC can be retriggered and resubmitted via app. No fraud/sanctions hit mentioned, so not human-only. Retrigger KYC to enable resubmission.",
+  "route_to_team": null
+}

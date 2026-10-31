@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_10"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a failed UPI debit of \u20b91,800 on 2026-10-27 that remains debited but not credited; they are requesting a refund and RBI-mandated compensation. The transaction is 3 days past the T+1 RBI TAT with \u20b9300 compensation due, and the auto-refund/auto-compensation limits (\u20b95,000 / \u20b91,000) are within scope.",
+  "ticket_type": "failed_payment_reversal"
+}

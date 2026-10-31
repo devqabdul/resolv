@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer's KYC was rejected due to name mismatch. I will retrigger the KYC process so they can resubmit documents via the provided link, and send them a reply with instructions.",
+  "customer_reply_draft": "Sorry for the inconvenience. Your KYC (ID: kyc_eval_26) was rejected due to a name mismatch. Please re-upload clear documents matching your registered name using this link: https://paytm.example/kyc/resubmit/cust_eval_26. Once verified, your account will be active.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_26"
+      },
+      "rationale": "The KYC is rejected due to name mismatch. Retriggering the KYC process will allow the customer to resubmit their documents via the provided link."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Provide the customer with the resubmission link and instructions to re-upload documents matching their registered name."
+    }
+  ],
+  "reasoning": "Facts: KYC kyc_eval_26 is REJECTED with reason NAME_MISMATCH. Rule: For a rejected KYC, retrigger_kyc is allowed to let the customer resubmit. Action: retrigger_kyc and send_reply with the resubmission link.",
+  "route_to_team": null
+}

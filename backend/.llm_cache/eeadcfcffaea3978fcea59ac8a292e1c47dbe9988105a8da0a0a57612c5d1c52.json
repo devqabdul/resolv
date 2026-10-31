@@ -1,0 +1,14 @@
+{
+  "confidence": 0.8,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer wants to know how to change the mobile number linked to their wallet. This is a general account/profile query unrelated to transactions, refunds, settlements, KYC, or mandates, and does not match any past tickets.",
+  "ticket_type": "other"
+}

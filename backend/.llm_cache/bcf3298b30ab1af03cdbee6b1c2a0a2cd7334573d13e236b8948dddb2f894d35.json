@@ -1,0 +1,14 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_24"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a failed UPI payment of \u20b99,500 debited from HDFC account four days ago with no credit to merchant. They want the full amount reversed today. Transaction status is DEBITED_NOT_CREDITED with failure reason BANK_SWITCH_TIMEOUT. The transaction is 3 days past RBI T+1 deadline, so \u20b9300 compensation is auto-due. Since the auto-refund limit is \u20b95,000 and the amount is \u20b99,500, human approval is required for the full reversal.",
+  "ticket_type": "failed_payment_reversal"
+}

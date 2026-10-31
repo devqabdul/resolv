@@ -1,0 +1,24 @@
+{
+  "agent_summary": "Customer paid Rs 12,000 by UPI to Urban Kart, money debited but order failed. No txn_id provided. Amount exceeds auto-refund limit of Rs 5,000. Confidence 0.55 < 0.6. Must route to human for lookup and approval.",
+  "customer_reply_draft": "We\u2019re sorry for the inconvenience. We\u2019re unable to process this reversal directly because the amount exceeds our auto-refund limit and no transaction ID was provided. A specialist will look into this and contact you shortly. We\u2019ll also share the ticket reference once it\u2019s assigned.",
+  "next_action_for_human": "Look up the failed UPI debit to Urban Kart, verify the transaction, and process the Rs 12,000 reversal. Apply RBI TAT (T+1) and any late compensation if applicable.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "email",
+        "language": "en"
+      },
+      "rationale": "No transaction ID provided; amount exceeds auto-refund limit of Rs 5,000; confidence below 0.6 per policy."
+    },
+    {
+      "name": "notify_customer",
+      "params": {},
+      "rationale": "Notify customer that a specialist will review and contact them."
+    }
+  ],
+  "reasoning": "Facts: Customer reports Rs 12,000 UPI debit to Urban Kart with order failure and requests full reversal. No transaction ID is provided. Amount exceeds auto-refund limit of Rs 5,000. Confidence is 0.55, below the 0.6 threshold. Rule: Confidence below 0.6 routes to human; amounts above auto-refund limit require human approval. Action: ROUTE to risk team for lookup and reversal processing, then notify customer.",
+  "route_to_team": "risk"
+}

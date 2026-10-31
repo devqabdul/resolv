@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer resubmitted a fresh electricity bill after a KYC rejection for address mismatch. Retriggered KYC review to re-evaluate the new document.",
+  "customer_reply_draft": "We\u2019re sorry for the repeated inconvenience. We\u2019ve re-triggered your KYC review (ID: kyc_eval_28) so the fresh electricity bill you submitted can be rechecked. A specialist will verify the address details and you\u2019ll hear back within 1-2 working days.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_28"
+      },
+      "rationale": "The KYC is rejected for address mismatch and the customer has resubmitted a fresh electricity bill. Retriggering the KYC will re-evaluate the newly submitted document."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Provide a clear, empathetic update to the customer about the re-evaluation and next steps."
+    }
+  ],
+  "reasoning": "Fact: KYC kyc_eval_28 is rejected due to address mismatch and customer has resubmitted a fresh electricity bill. Rule: For a resubmitted KYC document, retrigger_kyc is the correct action to re-evaluate. Action: Retrigger KYC and send a reply with the reference number and timeline.",
+  "route_to_team": null
+}

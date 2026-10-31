@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer reports Rs 2,499 UPI debit (r***@okhdfc) for failed order 3 days ago, no refund. Prior ticket tkt_79de051a is PROCESSING and tkt_48213 was RESOLVED as refund_status. No refund ARN exists in context. Customer is frustrated and requests a call. Since this is a repeat unresolved issue and the customer explicitly asked to be called, and there is no refund record to quote, human review is required.",
+  "customer_reply_draft": "We are sorry for the delay with your refund. Your prior ticket tkt_79de051a is still in processing, and because this is a repeat issue we are escalating it to a specialist who will call you back. You will hear from them shortly.",
+  "next_action_for_human": "Call the customer on the number provided in ticket tkt_79de051a and resolve the pending refund.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "email",
+        "language": "en"
+      },
+      "rationale": "Customer is frustrated and this is a repeat issue; a human specialist should review and call back per request."
+    }
+  ],
+  "reasoning": "Customer states money debited but order failed 3 days ago with no refund; this is a repeat ticket (tkt_79de051a) and prior ticket (tkt_48213) was resolved as refund_status. No refund ARN is present in context, so cannot confirm refund status or ETA. Customer is frustrated and explicitly requests a callback. Per policy, repeat/unresolved refund issues needing human callback should be routed to a human team.",
+  "route_to_team": "risk"
+}

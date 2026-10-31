@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer paid Rs 2,499 via UPI 3 days ago and the order failed, but the amount is still debited and no refund has been initiated. The transaction is in DEBITED_NOT_CREDITED status.",
+  "ticket_type": "failed_payment_reversal"
+}

@@ -1,0 +1,27 @@
+{
+  "agent_summary": "Customer wants to cancel Netflix autopay mandate (mnd_netflix) from next month. Policy requires human approval for email-based mandate cancellation. Routed to human team for review and future-dated cancellation processing.",
+  "customer_reply_draft": "Hi Meera, I'm sorry for the inconvenience. I've noted your request to cancel your Netflix autopay mandate (mnd_netflix) from next month. A specialist will review this and confirm the cancellation with you shortly. You will hear back from us soon.",
+  "next_action_for_human": "Review customer's request to cancel mandate mnd_netflix from next month. Process future-dated cancellation if confirmed.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "cancel_mandate",
+      "params": {
+        "mandate_id": "mnd_netflix",
+        "reason": "Customer requested future-dated cancellation from next month"
+      },
+      "rationale": "Customer explicitly requested cancellation from next month, not immediate. Policy states email-based mandate cancellation requests require human approval."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "email",
+        "language": "en"
+      },
+      "rationale": "Acknowledge request and inform customer that a specialist will review and confirm the future-dated cancellation."
+    }
+  ],
+  "reasoning": "Customer requested future-dated mandate cancellation via email. Policy states email-based mandate cancellation requires human approval. No immediate cancellation requested, so no immediate money action needed. Route to human team for review and future-dated cancellation processing.",
+  "route_to_team": "risk"
+}

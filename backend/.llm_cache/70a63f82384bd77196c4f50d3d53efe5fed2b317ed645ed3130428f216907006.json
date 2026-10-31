@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer requested cancellation of active Hotstar autopay mandate mnd_eval_32 (\u20b9299). KB indicates email/app requests need human approval. Route to risk team for approval.",
+  "customer_reply_draft": "\u092e\u0941\u091d\u0947 \u0916\u0947\u0926 \u0939\u0948, \u0932\u0947\u0915\u093f\u0928 Hotstar \u0915\u0947 \u0932\u093f\u090f \u0906\u092a\u0915\u093e autopay mandate (ID: mnd_eval_32) cancel \u0915\u0930\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0939\u092e\u093e\u0930\u0947 specialist \u0915\u0940 approval \u091a\u093e\u0939\u093f\u090f\u0964 \u090f\u0915 specialist \u0907\u0938\u0947 review \u0915\u0930\u0947\u0917\u093e \u0914\u0930 \u0906\u092a\u0915\u094b \u091c\u0932\u094d\u0926\u0940 update \u092e\u093f\u0932\u0947\u0917\u093e\u0964 \u0906\u092a app \u0938\u0947 \u092d\u0940 \u0907\u0938\u0947 cancel \u0915\u0930 \u0938\u0915\u0924\u0947 \u0939\u0948\u0902\u0964",
+  "next_action_for_human": "Approve or reject mandate cancellation request mnd_eval_32 after verifying customer identity.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "cancel_mandate",
+      "params": {
+        "mandate_id": "mnd_eval_32"
+      },
+      "rationale": "The mandate is active and the user wants it cancelled. However, KB says email requests need human approval before cancelling."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi"
+      },
+      "rationale": "Inform the customer that cancellation requires human approval and a specialist will review it."
+    }
+  ],
+  "reasoning": "Facts: Active mandate mnd_eval_32 for Hotstar \u20b9299. Rule: KB says mandate cancellation by email/app needs human approval. Action: Route to risk team for approval, then send reply.",
+  "route_to_team": "risk"
+}

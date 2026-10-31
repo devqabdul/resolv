@@ -1,0 +1,14 @@
+{
+  "confidence": 0.6,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer reports a UPI payment failed but the amount was debited from their AXIS account and requests a refund. No specific transaction ID is provided, so it cannot be auto-matched. The agent should ask for the transaction ID/reference to trace the failed UPI debit and process the reversal.",
+  "ticket_type": "failed_payment_reversal"
+}

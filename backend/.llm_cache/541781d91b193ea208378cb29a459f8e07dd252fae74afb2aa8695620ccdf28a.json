@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer's KYC was rejected due to PAN-Aadhaar mismatch. They want to resubmit documents. Retrigger KYC and provide resubmission link with guidance on exact matching.",
+  "customer_reply_draft": "I\u2019m sorry about the KYC rejection. Please use this link to resubmit your PAN and Aadhaar: https://paytm.example/kyc/resubmit/cust_eval_29. Make sure the names and dates of birth match exactly across both documents before uploading. Once resubmitted, verification usually completes within 1 working day.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_29"
+      },
+      "rationale": "Customer needs to resubmit KYC after PAN-Aadhaar mismatch rejection."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Inform customer how to resubmit and what to check."
+    }
+  ],
+  "reasoning": "KYC rejected with PAN_AADHAAR_MISMATCH. Customer wants to resubmit. Retrigger KYC to allow resubmission, then send reply with link and instructions. No money action needed; not a human-only type.",
+  "route_to_team": null
+}

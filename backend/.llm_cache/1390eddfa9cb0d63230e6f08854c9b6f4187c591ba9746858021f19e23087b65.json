@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer reports sudden account block and urgently requests unblock. No transaction/refund/settlement/mandate IDs available. Human-only ticket type per policy. Escalated to risk team.",
+  "customer_reply_draft": "I\u2019m really sorry to hear your account was blocked suddenly. This needs specialist review, so I\u2019ve escalated it to our risk team right away. A specialist will look into this and reach out to you shortly with next steps.",
+  "next_action_for_human": "A specialist from the risk team should review the account block and contact the customer today to assist with unblocking.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs confirmation that their account-blocked issue is being escalated to a specialist for immediate review."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {
+        "note": "Account blocked - escalated to risk team for urgent unblock request."
+      },
+      "rationale": "Document the escalation reason and urgency for the receiving team."
+    }
+  ],
+  "reasoning": "Fact: Customer says account is blocked and needs unblock today. Fact: No transaction or refund IDs in context. Rule: account_blocked is a human-only ticket type per policy_summary. Action: Route to risk team and draft reply.",
+  "route_to_team": "risk"
+}

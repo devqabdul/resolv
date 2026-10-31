@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer's KYC (kyc_eval_25) was rejected due to a blurry photo. They want to know how to upload again. The context provides a resubmission link. We will retrigger the KYC to reset the status and send the customer a reply with the resubmission link.",
+  "customer_reply_draft": "Sorry for the inconvenience. Your KYC for kyc_eval_25 was rejected because the photo was unclear. You can resubmit it through this link: https://paytm.example/kyc/resubmit/cust_eval_25. Please make sure the image is clear and all details are visible before uploading.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_25"
+      },
+      "rationale": "The KYC was rejected for a blurry photo; retriggering KYC will reset the status and allow the customer to resubmit via the provided link."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Provide the customer with a clear, concise response in English explaining how to resubmit."
+    }
+  ],
+  "reasoning": "The ticket is a KYC resubmission request due to a blurry image. The KYC ID is kyc_eval_25 and the status is REJECTED with reason BLUR_IMAGE. The context provides a resubmission link. Retriggering KYC resets the status so the customer can resubmit. Then send a reply with the link. No human-only category applies.",
+  "route_to_team": null
+}

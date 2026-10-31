@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports UPI debit of Rs 2,499 from HDFC three days ago with order failed; refund not yet received. Transaction txn_48213_a is debited-not-credited with no refund initiated. RBI TAT deadline was 2026-10-29; already 2 days late, so Rs 200 compensation is due. Auto-refund limit Rs 5,000 applies, so auto-compensation up to Rs 1,000 can be credited without human approval.",
+  "ticket_type": "refund_status"
+}

@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": "rfd_eval_17",
+    "settlement_id": null,
+    "txn_id": "txn_eval_17"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "calm",
+  "summary_for_agent": "Customer reports a completed refund of \u20b92,400 (ARN: arn_eval17) for txn_eval_17 is not visible in their account. The refund status is COMPLETED in our system; likely a display/sync issue on the customer's app.",
+  "ticket_type": "refund_status"
+}

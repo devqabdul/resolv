@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_04"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer reports a failed booking where \u20b9900 was debited from their card three days ago. The transaction (txn_eval_04) shows status DEBITED_NOT_CREDITED with failure reason BANK_SWITCH_TIMEOUT. The customer is requesting a reversal. The transaction is within the RBI T+5 TAT (deadline 2026-11-02), so no compensation is due yet. Auto-refund is within the Rs 5000 limit, so this can be processed automatically.",
+  "ticket_type": "failed_payment_reversal"
+}

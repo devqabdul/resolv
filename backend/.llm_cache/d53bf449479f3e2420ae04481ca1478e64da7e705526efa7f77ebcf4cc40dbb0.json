@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": "rfd_riya_prev",
+    "settlement_id": null,
+    "txn_id": "txn_riya_prev"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer is asking about the status of refund rfd_riya_prev for Rs 1,200 from Urban Kart. The refund status in context is COMPLETED with an ETA of 2026-09-01, but the customer says money hasn't been received yet. This appears to be a follow-up on an older refund that may be delayed beyond the expected date.",
+  "ticket_type": "refund_status"
+}

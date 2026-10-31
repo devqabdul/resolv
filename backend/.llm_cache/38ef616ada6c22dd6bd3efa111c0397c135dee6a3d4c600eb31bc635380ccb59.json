@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer Riya M. (cust_riya) wants to raise a chargeback dispute for a double charge on UPI txn txn_48213_a (Rs 2,499) to merchant mer_urban_kart. The transaction is DEBITED_NOT_CREDITED with a completed refund rfd_18eb8fcc (ARN arn_462cabc0412b, ETA 2026-10-31). This is a human-only dispute_chargeback ticket per policy. The customer is frustrated and wants a chargeback. Must route to risk team; no money action to take.",
+  "customer_reply_draft": "I\u2019m sorry to hear you\u2019ve been charged twice and the merchant is not helping. I\u2019ve escalated this chargeback dispute to our risk team for specialist review. A specialist will assess your case and get back to you on +91 98XXXXXX21. Your transaction reference is txn_48213_a.",
+  "next_action_for_human": "Risk team to review the chargeback dispute for txn_48213_a and contact the customer with next steps.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer is raising a chargeback dispute which is a human-only ticket type per policy. A specialist must review and handle the dispute."
+    },
+    {
+      "name": "notify_customer",
+      "params": {
+        "reason": "Routing chargeback dispute to risk team for specialist review."
+      },
+      "rationale": "Informing the customer that their dispute is being escalated to the risk team."
+    }
+  ],
+  "reasoning": "Fact: The ticket is classified as dispute_chargeback, which is a human-only category per policy_summary. Rule: Human-only tickets must be routed to the risk team with no automated money action. Action: Route to risk and send a reply informing the customer a specialist is reviewing the chargeback.",
+  "route_to_team": "risk"
+}

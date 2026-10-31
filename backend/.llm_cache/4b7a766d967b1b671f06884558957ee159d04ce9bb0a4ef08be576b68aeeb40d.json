@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer's KYC (kyc_eval_03) was rejected due to address mismatch. They uploaded both front and back of Aadhaar but are unclear on the reason. The resubmission link is available in the context, so this can be resolved by retriggering KYC and guiding the customer to resubmit. No money action is needed.",
+  "customer_reply_draft": "We're sorry for the confusion. Your KYC was rejected because of an address mismatch. Please resubmit your Aadhaar using this link: https://paytm.example/kyc/resubmit/cust_eval_03. Once submitted, the review will be completed within 1 working day.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_03"
+      },
+      "rationale": "Customer's KYC was rejected due to address mismatch; resubmission link is available and the issue is not fraud or sanctions, so retriggering KYC is appropriate."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Need to inform the customer of the rejection reason, provide the resubmission link, and set expectations."
+    }
+  ],
+  "reasoning": "Facts: KYC kyc_eval_03 was rejected due to ADDRESS_MISMATCH. The resubmission link is present in the context. Rule: Non-fraud KYC rejections can be resolved by retriggering KYC. Action: retrigger_kyc and send_reply.",
+  "route_to_team": null
+}

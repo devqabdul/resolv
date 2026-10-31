@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_spike_0003"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports that a UPI transaction to Metro Cabs (txn_spike_0003) failed with status DEBITED_NOT_CREDITED, but the amount was debited from their AXIS account and they are requesting a reversal.",
+  "ticket_type": "failed_payment_reversal"
+}

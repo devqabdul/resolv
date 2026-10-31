@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports failed UPI payment txn_spike_0001 debited from AXIS but not credited to merchant; requested reversal. Transaction is DEBITED_NOT_CREDITED, refund_status NONE, days_late 0. Initiated reversal within RBI T+1 deadline. No compensation due.",
+  "customer_reply_draft": "We\u2019re sorry your UPI transaction failed but the amount was debited from your AXIS account. We have initiated a reversal for transaction txn_spike_0001 (Rs 1,450). The refund should reach your account within 1 working day, by 1 November 2026. You will receive a confirmation once it is processed.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1450.0,
+        "reason": "UPI_SWITCH_DOWN failure; amount debited but not credited to merchant",
+        "txn_id": "txn_spike_0001"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with refund_status NONE, so reversal is allowed and within RBI T+1 deadline."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 0,
+        "customer_id": "cust_spike_0001",
+        "reason": "Days late is 0, so no compensation due",
+        "txn_id": "txn_spike_0001"
+      },
+      "rationale": "Regulatory clock shows days_late: 0, compensation_due_inr: 0, so no compensation action needed."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs a clear update on the reversal status and timeline."
+    }
+  ],
+  "reasoning": "Fact: txn_spike_0001 is DEBITED_NOT_CREDITED with refund_status NONE and failure_reason UPI_SWITCH_DOWN. Rule: reversal allowed for DEBITED_NOT_CREDITED with no refund yet. Action: initiate_reversal for Rs 1,450. Fact: days_late is 0. Rule: no compensation due when days_late is 0. Action: no credit_compensation. Fact: transaction within T+1 deadline. Rule: auto-reversal allowed. Action: send_reply confirming reversal and ETA.",
+  "route_to_team": null
+}

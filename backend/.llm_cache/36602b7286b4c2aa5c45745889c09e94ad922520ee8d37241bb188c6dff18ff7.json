@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer reports three unauthorised UPI debits and suspects account hacking. No specific transaction IDs provided; needs human review for fraud investigation. Confidence 0.65 and ticket_type fraud_suspected trigger ROUTE per policy. No transactions or refunds in context to act on.",
+  "customer_reply_draft": "I'm sorry to hear about the three unauthorised UPI debits and your concern that your account may be compromised. This needs a specialist review, so I've flagged it for our risk team to investigate immediately. They will contact you shortly with next steps and any required actions to secure your account.",
+  "next_action_for_human": "Risk team to investigate the three unauthorised UPI debits, assess account compromise, and contact the customer with next steps.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer is frustrated and suspects fraud; a human specialist must review the three unauthorised UPI debits and any potential account compromise."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {
+        "note": "Customer reports three unauthorised UPI debits and suspects account hacking. No specific txn IDs provided. Requires risk team review for fraud investigation."
+      },
+      "rationale": "Document the fraud suspicion and lack of transaction IDs for the risk team."
+    }
+  ],
+  "reasoning": "Facts: Customer reports three unauthorised UPI debits and suspects hacking. No txn IDs or refunds provided; context shows empty transactions and refunds. Rule: fraud_suspected is human-only per policy_summary; confidence 0.65 is below 0.6 threshold for auto-route. Action: ROUTE to risk with create_internal_note and send_reply.",
+  "route_to_team": "risk"
+}

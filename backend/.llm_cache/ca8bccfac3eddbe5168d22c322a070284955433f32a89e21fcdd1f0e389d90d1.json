@@ -1,0 +1,19 @@
+{
+  "confidence": 0.9,
+  "entities": {
+    "amount_inr": null,
+    "issuer_bank": null,
+    "kyc_id": "kyc_eval_26",
+    "mandate_id": null,
+    "merchant_name": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports KYC rejection due to name mismatch. Provide the resubmission link from the context and ask them to re-upload clear documents matching their registered name.",
+  "ticket_type": "kyc_resubmission"
+}

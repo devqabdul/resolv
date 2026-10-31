@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports a failed UPI debit of \u20b912,000 on 24 Oct (txn_big) for a laptop; seller never got it. Transaction is DEBITED_NOT_CREDITED with BANK_SWITCH_TIMEOUT, 3 days old, 2 days past RBI T+1 TAT. No existing refund. Reversal amount exceeds auto-refund limit (Rs 5000), so human approval is required. Compensation of Rs 200 is due.",
+  "customer_reply_draft": "I\u2019m sorry this \u20b912,000 UPI debit for your laptop went through but the seller never received it. I\u2019ve raised a reversal request for transaction txn_big and added the Rs 200 late-fee compensation. Because the amount exceeds our auto-refund limit, a specialist needs to approve the reversal before it can be processed. You\u2019ll hear back from us within 1 working day once it\u2019s approved.",
+  "next_action_for_human": "Approve the reversal of \u20b912,000 for txn_big and confirm the Rs 200 compensation credit to cust_arjun.",
+  "path": "ESCALATE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 12000,
+        "reason": "UPI debit failed due to bank switch timeout; seller never received goods. Customer requests reversal.",
+        "txn_id": "txn_big"
+      },
+      "rationale": "Transaction txn_big is DEBITED_NOT_CREDITED with no existing refund, so reversal is permitted."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_arjun",
+        "reason": "RBI TAT breached by 2 days for a UPI failed debit.",
+        "txn_id": "txn_big"
+      },
+      "rationale": "Regulatory clock shows 2 days late; compensation due is Rs 200."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "app",
+        "language": "en"
+      },
+      "rationale": "Customer is frustrated and wants immediate action; a clear reply is required."
+    }
+  ],
+  "reasoning": "Fact: txn_big is DEBITED_NOT_CREDITED with no refund and is 2 days past RBI T+1 TAT. Rule: reversal is allowed for DEBITED_NOT_CREDITED with no refund, but amount exceeds auto-refund limit so human approval is required. Action: escalate to risk for approval, credit Rs 200 compensation, and inform customer.",
+  "route_to_team": "risk"
+}

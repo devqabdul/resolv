@@ -1,0 +1,18 @@
+{
+  "confidence": 0.6,
+  "entities": {
+    "amount_inr": null,
+    "issuer_bank": "AXIS",
+    "mandate_id": null,
+    "merchant_name": "AXIS",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a failed transaction where money was debited from their AXIS account and requests a reversal. No transaction ID provided. Needs human assistance to trace the debit and process the reversal.",
+  "ticket_type": "failed_payment_reversal"
+}

@@ -1,0 +1,18 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 12000,
+    "issuer_bank": "ICICI",
+    "mandate_id": null,
+    "merchant_name": "Urban Kart",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": "2026-10-28T10:00:00Z",
+    "txn_id": "txn_big"
+  },
+  "is_repeat_issue": true,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "This is a repeat failed payment reversal request for Rs 12,000 UPI transaction to Urban Kart (txn_big) that is 2 days past the RBI T+1 TAT. The customer is frustrated and wants a full reversal. Auto-refund limit is Rs 5,000, so this requires human approval. Also note that Rs 200 compensation is due automatically.",
+  "ticket_type": "failed_payment_reversal"
+}

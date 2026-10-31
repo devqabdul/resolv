@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer asked for refund reference for Rs 3,150 on order UK-7781 initiated 25 Oct. Refund ARN is arn_evaluk7781, ETA 2 Nov 2026. No action needed; provide reference and ETA.",
+  "customer_reply_draft": "Sorry for the delay. Your refund of Rs 3,150 for order UK-7781 has reference ARN arn_evaluk7781. It was initiated on 25 Oct and is expected to reach your account by 2 Nov. If you do not see it by then, please contact us again.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs the refund reference and ETA for their pending refund."
+    }
+  ],
+  "reasoning": "Facts: Customer wants reference for refund rfd_evaluk7781 on txn_evaluk7781, amount 3150 INR, initiated 2026-10-25, ETA 2026-11-02. Rule: Provide ARN and ETA in reply. No money action needed because refund is already initiated and within policy.",
+  "route_to_team": null
+}

@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer wants to update the mobile number linked to their wallet. This is a general profile/account query unrelated to any transaction, refund, settlement, KYC, or mandate in the context. No money actions apply. Route to human team for account profile assistance.",
+  "customer_reply_draft": "I\u2019m sorry, but I\u2019m unable to change the mobile number linked to your wallet directly. A specialist will review your request and get back to you shortly with the next steps.",
+  "next_action_for_human": "A specialist should review the request to change the mobile number linked to the customer's wallet and guide them through the verification/update process.",
+  "path": "ROUTE",
+  "priority": "P3",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer is asking a general account/profile query (changing mobile number linked to wallet) which is outside Resolv's allowed money actions and does not match any transaction, refund, settlement, KYC, or mandate in context. Confidence is above 0.6 but the query is not resolvable by the allowed actions. Route to a human agent with next_action_for_human explaining the need for specialist review."
+    }
+  ],
+  "reasoning": "Facts: Customer asks how to change mobile number linked to wallet. No transaction, refund, settlement, KYC, or mandate IDs are present in context. Understanding confirms this is a general account/profile query unrelated to payments. Rule: Only RESOLVE with allowed money actions, otherwise ROUTE. Since no allowed action can change a wallet mobile number, route to human. Action: send_reply with apology and note that a specialist will review.",
+  "route_to_team": "risk"
+}

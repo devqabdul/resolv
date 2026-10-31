@@ -1,0 +1,18 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "amount_inr": 15500.0,
+    "issuer_bank": null,
+    "mandate_id": null,
+    "merchant_name": "Eval Store 03",
+    "refund_id": null,
+    "settlement_id": "stl_eval_03",
+    "txn_date": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Merchant reports settlement of \u20b915,500 is on hold due to KYC pending, despite documents being verified last month. Settlement ID stl_eval_03 is ON_HOLD_KYC. Need to check KYC status and escalate if docs were already verified.",
+  "ticket_type": "settlement_delay"
+}

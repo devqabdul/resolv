@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer reports being debited by AXIS Bank but the merchant says no payment was received. No transaction ID is provided in the ticket, so confidence is below 0.6. Per policy, this must be routed to a human for investigation. No money action can be taken without the transaction ID.",
+  "customer_reply_draft": "I\u2019m sorry for the trouble you\u2019re facing with the AXIS Bank debit. Since the transaction ID isn\u2019t available in your message, I\u2019m escalating this to a specialist who will investigate the merchant\u2019s non-receipt claim and verify the debit on our end. A specialist will review this and get back to you within 24 hours. Your reference number is TKT-2025-06-20-001.",
+  "next_action_for_human": "Investigate the AXIS Bank debit and confirm whether the merchant has received the payment. Once confirmed, initiate a reversal if the payment was debited but not credited to the merchant. If a refund is due, process it and inform the customer of the ETA.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "email",
+        "language": "en"
+      },
+      "rationale": "Customer has not provided a transaction ID, so a human must investigate the AXIS debit and merchant non-receipt before any reversal or refund can be initiated."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {
+        "note": "Customer reports debited by AXIS Bank but merchant says no payment received. No txn_id provided in ticket. Route to human for investigation."
+      },
+      "rationale": "Document the missing transaction ID and the merchant non-receipt claim for the human agent."
+    }
+  ],
+  "reasoning": "Fact: Customer says AXIS debited them but merchant denies receipt; no txn_id is provided. Rule: Confidence below 0.6 routes to human. Action: ROUTE to risk team with a note to investigate before any reversal or refund.",
+  "route_to_team": "risk"
+}

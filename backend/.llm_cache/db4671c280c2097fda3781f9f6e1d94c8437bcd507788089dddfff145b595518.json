@@ -1,0 +1,18 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "amount_inr": 2499,
+    "issuer_bank": "OKHDFC",
+    "mandate_id": null,
+    "merchant_name": "Urban Kart",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": "2024-06-12",
+    "txn_id": "txn_8f2a9c1d"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports UPI payment of Rs 2,499 from OKHDFC debited 3 days ago but Urban Kart order failed; requesting refund.",
+  "ticket_type": "refund_status"
+}

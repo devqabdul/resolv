@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reported UPI payment of Rs 2,499 debited but order failed 3 days ago with no refund. Transaction txn_48213_a is DEBITED_NOT_CREDITED due to bank switch timeout. No refund exists yet. Regulatory clock: 2 days late beyond RBI T+1, compensation due Rs 200. Both reversal (Rs 2,499) and compensation (Rs 200) are within auto-approval limits (Rs 5,000 and Rs 1,000 respectively). Proposed: initiate reversal + credit compensation.",
+  "customer_reply_draft": "Hi Riya, I sincerely apologize for the delay. I have initiated a reversal of Rs 2,499 for transaction txn_48213_a, and credited Rs 200 as compensation for the delay. The reversal will reach your HDFC account within 1 working day. You should see both the amount and compensation reflected shortly. If you do not, please contact us again with this reference.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 2499.0,
+        "reason": "DEBITED_NOT_CREDITED due to BANK_SWITCH_TIMEOUT, no refund initiated yet, within auto-reversal limit of Rs 5000",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Transaction is debited-not-credited with no existing refund, amount is within Rs 5,000 auto-reversal limit."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_riya",
+        "reason": "2 days late beyond RBI T+1 deadline for UPI failed transaction, Rs 100/day",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Regulatory clock shows 2 days late, compensation due is Rs 200, within Rs 1,000 auto-compensation limit."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer requested callback but policy requires written confirmation of resolution steps."
+    }
+  ],
+  "reasoning": "Fact: txn_48213_a is debited-not-credited with no refund, amount Rs 2,499 within auto-reversal limit. Rule: initiate reversal for debited-not-credited with no refund. Fact: regulatory_clock shows 2 days late, compensation due Rs 200 within auto-compensation limit. Rule: credit_compensation for days late. Action: initiate_reversal + credit_compensation + send_reply.",
+  "route_to_team": null
+}

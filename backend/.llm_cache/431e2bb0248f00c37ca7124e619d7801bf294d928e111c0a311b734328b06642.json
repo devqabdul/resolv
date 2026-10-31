@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports wallet debit of \u20b91,050 on 28 Oct with order cancelled, 3 days elapsed and no refund yet. Transaction txn_eval_03 is DEBITED_NOT_CREDITED with BANK_SWITCH_TIMEOUT. RBI TAT exceeded by 2 days; \u20b9200 auto-compensation due. Initiated reversal and compensation.",
+  "customer_reply_draft": "Sir, humein maaf kijiye, aapke \u20b91,050 ka refund abhi tak process nahi hua. Humne reversal initiate kar diya hai, aur \u20b9200 ka compensation bhi add kar diya hai. Refund aapke account mein 1 working day mein aa jayega.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1050.0,
+        "reason": "Order cancelled, wallet debit of \u20b91,050 not reversed within RBI TAT; BANK_SWITCH_TIMEOUT",
+        "txn_id": "txn_eval_03"
+      },
+      "rationale": "Transaction txn_eval_03 is DEBITED_NOT_CREDITED with no refund yet, so reversal can be initiated."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_eval_07",
+        "reason": "RBI TAT exceeded by 2 days; auto-compensation due",
+        "txn_id": "txn_eval_03"
+      },
+      "rationale": "Regulatory clock shows 2 days late; compensation due is \u20b9200."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi-en"
+      },
+      "rationale": "Customer is frustrated and wrote in Hinglish; reply must be in Hinglish."
+    }
+  ],
+  "reasoning": "txn_eval_03 is DEBITED_NOT_CREDITED with no refund yet, so initiate_reversal is allowed. Regulatory clock shows 2 days late, so credit_compensation of \u20b9200 is due. No human-only types apply.",
+  "route_to_team": null
+}

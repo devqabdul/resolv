@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer asked about status of \u20b91,600 refund rfd_eval_14 for txn_eval_14. Refund is INITIATED with ETA 2026-11-02. No compensation due. No human approval needed as amount is under Rs 5,000 auto-refund limit.",
+  "customer_reply_draft": "\u092e\u093e\u092b\u093c \u0915\u0940\u091c\u093f\u090f, \u0906\u092a\u0915\u093e \u20b91,600 \u0915\u093e \u0930\u093f\u092b\u0902\u0921 (ARN: arn_eval14) \u092a\u0939\u0932\u0947 \u0939\u0940 Initiate \u0939\u094b \u091a\u0941\u0915\u093e \u0939\u0948 \u0914\u0930 \u092f\u0939 2026-11-02 \u0924\u0915 \u0906\u092a\u0915\u0947 \u0905\u0915\u093e\u0909\u0902\u091f \u092e\u0947\u0902 \u0906 \u091c\u093e\u090f\u0917\u093e\u0964 \u0915\u094b\u0908 \u0914\u0930 \u0938\u0939\u093e\u092f\u0924\u093e \u091a\u093e\u0939\u093f\u090f \u0939\u094b \u0924\u094b \u092c\u0924\u093e\u0907\u090f\u0964",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "sms",
+        "language": "hi"
+      },
+      "rationale": "Inform the customer about the refund status and ETA in their preferred language."
+    }
+  ],
+  "reasoning": "Fact: Refund rfd_eval_14 for txn_eval_14 is INITIATED with ETA 2026-11-02. Rule: Auto-refund limit is Rs 5,000, so no human approval needed. Action: Send reply with status and ETA in Hindi.",
+  "route_to_team": null
+}

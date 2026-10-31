@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_06"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a \u20b9450 UPI debit that failed 5 days ago and asks for a refund. Transaction txn_eval_06 shows status DEBITED_NOT_CREDITED with no refund yet. The ticket is 4 days past RBI TAT, so \u20b9400 auto-compensation is due. The amount is within the auto-refund limit of \u20b95,000.",
+  "ticket_type": "refund_status"
+}

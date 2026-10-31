@@ -1,0 +1,18 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 2499.0,
+    "issuer_bank": "HDFC",
+    "mandate_id": null,
+    "merchant_name": "Urban Kart",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": "2026-10-28T08:00:00Z",
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer Riya M. reports a UPI debit of Rs 2,499 from HDFC on 28 Oct 2026 that failed due to bank switch timeout; money was debited but the order failed and no refund has been received after 3 days. The transaction is within the auto-refund limit of Rs 5,000, and the regulatory clock shows 2 days late with Rs 200 compensation due.",
+  "ticket_type": "failed_payment_reversal"
+}

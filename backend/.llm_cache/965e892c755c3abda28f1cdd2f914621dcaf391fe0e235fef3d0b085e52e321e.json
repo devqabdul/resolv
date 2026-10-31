@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports a \u20b9450 UPI debit that failed 5 days ago. Transaction txn_eval_06 is DEBITED_NOT_CREDITED with no refund. 4 days past RBI TAT, so \u20b9400 compensation is due. Reversal and compensation both within auto-limits.",
+  "customer_reply_draft": "Sorry for the inconvenience. I\u2019ve initiated the reversal for your \u20b9450 transaction (txn_eval_06) and the \u20b9400 late-payment compensation. You should see the refund credited to your account within 1 working day, and the compensation will follow automatically.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 450,
+        "reason": "DEBITED_NOT_CREDITED with no refund yet",
+        "txn_id": "txn_eval_06"
+      },
+      "rationale": "Transaction is debited not credited and no refund exists, so reversal is allowed."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 400,
+        "customer_id": "cust_eval_10",
+        "reason": "4 days late beyond RBI TAT",
+        "txn_id": "txn_eval_06"
+      },
+      "rationale": "Regulatory clock shows 4 days late, so Rs 400 compensation is due."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "whatsapp",
+        "language": "en"
+      },
+      "rationale": "Customer asked for refund status; provide update and next steps."
+    }
+  ],
+  "reasoning": "Fact: txn_eval_06 is DEBITED_NOT_CREDITED, no refund exists, 4 days late. Rule: reverse debited-not-credited with no refund, credit compensation per days late. Action: initiate reversal + credit compensation + send reply.",
+  "route_to_team": null
+}

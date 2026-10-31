@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer asked for the reference number for a completed refund of \u20b91,250 on transaction txn_eval_18. Refund ARN is arn_eval18, status COMPLETED, ETA 2026-10-29. No action needed beyond providing the reference.",
+  "customer_reply_draft": "I am sorry for the inconvenience. Your refund reference number is ARN ARN_EVAL18 for \u20b91,250. Since the refund is already completed, the amount should have been credited to your SBI account by 29 October 2026. If you do not see it, please share a screenshot of your bank statement and we will look into it.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "app",
+        "language": "en"
+      },
+      "rationale": "Customer only asked for the refund reference number; no money action or escalation needed."
+    }
+  ],
+  "reasoning": "Facts: Customer wants the reference number for a completed refund of \u20b91,250 (refund_id rfd_eval_18, ARN arn_eval18). Rule: Provide the reference number and ETA when the refund is completed. Action: send_reply with the ARN and ETA.",
+  "route_to_team": null
+}

@@ -1,0 +1,14 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": "rfd_18eb8fcc",
+    "settlement_id": null,
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer wants to raise a chargeback dispute because the merchant charged her twice for a UPI transaction and refuses to help. The transaction (txn_48213_a) for Rs 2,499 is already marked as DEBITED_NOT_CREDITED with a completed refund (rfd_18eb8fcc). This is a human-only dispute_chargeback ticket.",
+  "ticket_type": "dispute_chargeback"
+}

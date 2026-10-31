@@ -1,0 +1,9 @@
+{
+  "confidence": 0.9,
+  "entities": {},
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports their account was suddenly blocked and urgently needs it unblocked today. This is a human-only ticket type per policy. No transaction, refund, settlement, or mandate IDs are mentioned or available.",
+  "ticket_type": "account_blocked"
+}

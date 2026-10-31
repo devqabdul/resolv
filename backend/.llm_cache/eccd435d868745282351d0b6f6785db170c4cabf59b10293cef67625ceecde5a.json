@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": "stl_eval_08",
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "calm",
+  "summary_for_agent": "The customer is reporting a failed settlement of \u20b946,500 for merchant Eval Store 08 and requests a re-push, while noting that KYC resubmission is in progress. The settlement status is FAILED due to merchant KYC pending verification.",
+  "ticket_type": "settlement_delay"
+}

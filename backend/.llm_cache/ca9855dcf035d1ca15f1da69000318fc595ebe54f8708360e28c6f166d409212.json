@@ -1,0 +1,28 @@
+{
+  "agent_summary": "Customer Spike Customer 2 reports UPI payment failed but AXIS debit occurred for txn_spike_0002 (\u20b91300). Transaction status DEBITED_NOT_CREDITED with UPI_SWITCH_DOWN and no refund yet. Proposed initiating reversal of \u20b91300 and sending Hinglish reply.",
+  "customer_reply_draft": "Sir, humein afsos hai ki aapka UPI payment fail ho gaya lekin AXIS account se paise debit ho gaye. Humne aapke \u20b91300 ke transaction txn_spike_0002 ka reversal process shuru kar diya hai. Refund 1 working day ke andar aapke account mein pahunch jayega. Koi aur sawal ho toh humein batayein.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1300.0,
+        "reason": "UPI payment failed due to UPI_SWITCH_DOWN but amount was debited from AXIS account; customer requested reversal.",
+        "txn_id": "txn_spike_0002"
+      },
+      "rationale": "Transaction txn_spike_0002 is DEBITED_NOT_CREDITED with no refund yet. Policy allows reversal for failed UPI debits within T+1."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "sms",
+        "language": "hi-en"
+      },
+      "rationale": "Customer wrote in Hinglish; reply must match language."
+    }
+  ],
+  "reasoning": "Facts: txn_spike_0002 is DEBITED_NOT_CREDITED, UPI_SWITCH_DOWN, no refund yet, created 2026-10-31, days_late=0. Rule: UPI failed debits must be reversed by T+1; reversal allowed. Action: initiate reversal of \u20b91300. Compensation due is 0.",
+  "route_to_team": null
+}

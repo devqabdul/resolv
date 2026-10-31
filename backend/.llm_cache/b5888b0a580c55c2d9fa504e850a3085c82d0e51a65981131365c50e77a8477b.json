@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_02"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a failed UPI payment of \u20b9550 debited from their HDFC bank account two days ago; refund status is NONE and the transaction is within the RBI T+1 TAT window.",
+  "ticket_type": "failed_payment_reversal"
+}

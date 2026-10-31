@@ -1,0 +1,24 @@
+{
+  "agent_summary": "Customer claims account will be blocked, requests \u20b95,000 refund to a friend's UPI ID (f***@okaxis), and says they lost their phone. Ticket type is account_blocked (human-only). No transaction/refund IDs provided. Policy requires human review for account_blocked. Customer is frustrated. No money action allowed.",
+  "customer_reply_draft": "I\u2019m sorry to hear about your phone and the urgency around your account. Because you\u2019ve mentioned your account may be blocked, this needs a specialist review for security. I\u2019ve escalated it to our risk team, and a specialist will contact you shortly to verify your identity and assist with your account. In the meantime, if you need immediate help, please call our support line.",
+  "next_action_for_human": "Risk team must verify customer identity, assess account-block risk, and review the third-party refund request before any action.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Account-blocked is a human-only ticket type per policy_summary; no money action can be taken for an unverified refund request to a third-party UPI ID."
+    },
+    {
+      "name": "notify_customer",
+      "params": {},
+      "rationale": "Flag urgent account-blocked concern for risk team review."
+    }
+  ],
+  "reasoning": "Fact: Customer reports account_blocked and asks for refund to external UPI. Rule: account_blocked is human-only per policy_summary. Action: ROUTE to risk, no money action, notify customer a specialist is reviewing.",
+  "route_to_team": "risk"
+}

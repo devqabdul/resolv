@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer asked for the ARN of their \u20b91,050 refund (rfd_eval_15). The ARN is arn_eval15 with an ETA of 2026-11-02. No money action needed.",
+  "customer_reply_draft": "Here is the ARN for your refund: arn_eval15. Your refund of \u20b91,050 is currently in progress and is expected to reach your account by 2 Nov 2026. If you do not see the amount by then, please reach out to us again.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Provide the refund ARN and ETA as requested by the customer."
+    }
+  ],
+  "reasoning": "Customer requested refund ARN for rfd_eval_15. Context confirms ARN is arn_eval15 and ETA is 2026-11-02. No policy violations or human-only categories. Reply with ARN and ETA.",
+  "route_to_team": null
+}

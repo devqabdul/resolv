@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_spike_0001"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports that transaction txn_spike_0001 (amount INR 1450, issuer AXIS) shows as failed/debit but the amount was debited from their AXIS account and they are requesting a reversal. The transaction status is DEBITED_NOT_CREDITED with failure reason UPI_SWITCH_DOWN, and no refund has been initiated yet.",
+  "ticket_type": "failed_payment_reversal"
+}

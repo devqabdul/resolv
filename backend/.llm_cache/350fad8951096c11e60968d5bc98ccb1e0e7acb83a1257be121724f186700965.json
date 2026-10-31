@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer requests urgent refund of Rs 7,500 to a friend's VPA. No txn_id, refund_id, or settlement_id provided. Amount exceeds Rs 5,000 auto-refund limit. No refund exists in context. Confidence 0.45 < 0.6. Route to human for manual verification.",
+  "customer_reply_draft": "I\u2019m sorry, but I\u2019m unable to process this refund request right away. The amount of Rs 7,500 exceeds our auto-refund limit, and I don\u2019t see a matching transaction or refund ID on file. A specialist will review your request and reach out to you shortly with next steps.",
+  "next_action_for_human": "Verify the original transaction, confirm the refund amount and recipient VPA, and process the refund if approved. Contact customer if details are missing.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs a clear response while the case is routed for manual review due to missing transaction/refund IDs and amount above auto-refund limit."
+    }
+  ],
+  "reasoning": "No transaction or refund ID exists in the context, and the requested amount (Rs 7,500) exceeds the auto-refund limit of Rs 5,000. Confidence is below 0.6, so policy requires routing to a human for manual verification. No money action can be taken safely.",
+  "route_to_team": "risk"
+}

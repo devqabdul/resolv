@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_spike_0001"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer reports a failed UPI transaction (txn_spike_0001) where the amount was debited from their AXIS account but not credited to the merchant; they are requesting a reversal. The transaction status is DEBITED_NOT_CREDITED with failure_reason UPI_SWITCH_DOWN and refund_status NONE. RBI TAT for UPI failed debits is T+1, so the reversal should be initiated by 2026-11-01.",
+  "ticket_type": "failed_payment_reversal"
+}

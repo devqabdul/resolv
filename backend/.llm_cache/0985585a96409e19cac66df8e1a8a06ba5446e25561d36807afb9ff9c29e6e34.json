@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer reports a failed transaction where money was debited from their AXIS account and requests a reversal. No transaction ID provided. Confidence is 0.6, which is at the threshold; policy says below 0.6 routes to human. Human-only categories do not apply, but the missing txn_id and lack of transactions in context means we cannot auto-resolve. We should route to a human team to trace the debit and process the reversal.",
+  "customer_reply_draft": "Sorry for the trouble. Since you haven't shared the transaction ID, I'm unable to trace the debit and process the reversal right now. A specialist will review your AXIS account and contact you shortly with the next steps.",
+  "next_action_for_human": "Trace the debit from the customer's AXIS account, identify the transaction, and process the reversal. Also verify if any compensation is due based on RBI TAT.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "No txn_id provided, so we cannot auto-reverse. Policy requires human tracing of the debit before reversal."
+    }
+  ],
+  "reasoning": "Customer reports a failed transaction with a debit from AXIS but no txn_id is provided and no transactions exist in context. Without the transaction ID, we cannot initiate a reversal. Policy requires human assistance to trace the debit. Confidence is 0.6, which is at the threshold, and the missing txn_id means we cannot auto-resolve. Therefore, we must route to the payments team.",
+  "route_to_team": "payments"
+}

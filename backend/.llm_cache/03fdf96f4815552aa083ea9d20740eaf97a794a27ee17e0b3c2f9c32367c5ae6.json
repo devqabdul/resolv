@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer requests refund for failed wallet top-up txn_eval_07 (\u20b91,550, DEBITED_NOT_CREDITED). No prior refund exists. Amount under \u20b95,000 auto-refund limit. Transaction is 1 day past RBI T+1 deadline, so \u20b9100 compensation is due. Propose reversal + compensation.",
+  "customer_reply_draft": "Hi Eval Customer 11, we are sorry for the inconvenience. We have initiated a reversal of \u20b91,550 for transaction txn_eval_07 and credited \u20b9100 as compensation for the delay. The reversal should reach your account within 1 working day.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1550.0,
+        "reason": "Failed wallet top-up (DEBITED_NOT_CREDITED) - BANK_SWITCH_TIMEOUT",
+        "txn_id": "txn_eval_07"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with no refund yet and amount is within auto-refund limit of \u20b95,000."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 100,
+        "customer_id": "cust_eval_11",
+        "reason": "RBI TAT breach: 1 day late (deadline was 2026-10-30)",
+        "txn_id": "txn_eval_07"
+      },
+      "rationale": "Regulatory clock shows 1 day late, compensation due is \u20b9100 per RBI policy."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "email",
+        "language": "en"
+      },
+      "rationale": "Inform customer of reversal initiation and compensation credit."
+    }
+  ],
+  "reasoning": "Facts: txn_eval_07 is DEBITED_NOT_CREDITED, no refund yet, \u20b91,550, 1 day past T+1 deadline. Rule: auto-refund up to \u20b95,000; compensation \u20b9100/day late. Action: initiate reversal + credit compensation.",
+  "route_to_team": null
+}

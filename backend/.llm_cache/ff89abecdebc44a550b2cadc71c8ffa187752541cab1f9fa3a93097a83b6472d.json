@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports failed transaction txn_spike_0001 (INR 1450, issuer AXIS) showing as failed but debited. Status is DEBITED_NOT_CREDITED, no refund yet. Initiated reversal. Regulatory clock shows 0 days late, so no compensation due.",
+  "customer_reply_draft": "Sorry for the inconvenience. We have initiated a reversal for transaction txn_spike_0001 for INR 1450. The amount will be credited back to your AXIS account within 1 working day. You do not need to do anything further.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1450.0,
+        "reason": "UPI_SWITCH_DOWN",
+        "txn_id": "txn_spike_0001"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with no refund yet, so reversal is appropriate."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 0,
+        "customer_id": "cust_spike_0001",
+        "reason": "Regulatory clock shows 0 days late, so no compensation is due.",
+        "txn_id": "txn_spike_0001"
+      },
+      "rationale": "Regulatory clock days_late is 0, so compensation_due_inr is 0."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer requested a reversal; reply needed."
+    }
+  ],
+  "reasoning": "Fact: txn_spike_0001 is DEBITED_NOT_CREDITED with no refund. Rule: DEBITED_NOT_CREDITED with no refund allows reversal. Action: initiate_reversal for INR 1450. Fact: days_late is 0. Rule: compensation due only if days_late > 0. Action: no compensation.",
+  "route_to_team": null
+}

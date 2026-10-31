@@ -1,0 +1,14 @@
+{
+  "confidence": 0.9,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": "stl_eval_06",
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "calm",
+  "summary_for_agent": "Merchant Eval Store 06 reports that their \u20b914,500 settlement (stl_eval_06) failed and requests a retrigger. The settlement reason is Bank rejected credit. Since the settlement has already failed and the merchant is asking to retrigger it, the agent should verify if retrigger is allowed per policy or if it needs to be escalated.",
+  "ticket_type": "settlement_delay"
+}

@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer reports a failed UPI payment of Rs 2,499 from r***@okhdfc made 3 days ago with no refund. This is a repeat ticket (tkt_48213) already resolved by Resolv, so it requires human review to verify the original resolution and confirm refund status.",
+  "customer_reply_draft": "We\u2019re sorry for the continued frustration. We\u2019ve flagged this for a specialist to review your original refund and confirm the current status. You\u2019ll hear back within 1 working day.",
+  "next_action_for_human": "Review the original ticket tkt_48213, verify whether the refund was processed, and confirm the refund status with the customer. If the refund was not processed, initiate it and apply compensation if applicable.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "create_internal_note",
+      "params": {
+        "note": "Repeat ticket tkt_48213 for same customer/merchant. Original ticket resolved by Resolv. Customer reports no refund after 3 days. Need human review to verify original resolution and ensure refund status."
+      },
+      "rationale": "Repeat issue already resolved by Resolv; requires human verification to confirm refund status and prevent duplicate action."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Acknowledge frustration and inform customer that a specialist is reviewing the case."
+    }
+  ],
+  "reasoning": "The ticket is a repeat of tkt_48213 which was already resolved by Resolv. The customer claims no refund was received 3 days later, which requires human verification to avoid duplicate actions and confirm actual refund status.",
+  "route_to_team": "risk"
+}

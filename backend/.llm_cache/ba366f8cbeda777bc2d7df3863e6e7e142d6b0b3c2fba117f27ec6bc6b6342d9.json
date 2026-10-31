@@ -1,0 +1,16 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 1500.0,
+    "issuer_bank": "ICICI",
+    "merchant_name": "mer_urban_kart",
+    "refund_id": "rfd_eval_13",
+    "txn_date": "2026-10-27T08:00:00Z",
+    "txn_id": "txn_eval_13"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "calm",
+  "summary_for_agent": "Customer is asking about a refund of \u20b91,500 for txn_eval_13 that shows as INITIATED but hasn't been credited yet. Refund ID is rfd_eval_13 with ETA 2026-11-02.",
+  "ticket_type": "refund_status"
+}

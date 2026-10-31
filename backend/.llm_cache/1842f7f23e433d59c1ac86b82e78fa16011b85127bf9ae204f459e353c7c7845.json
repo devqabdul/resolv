@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer paid Rs 2,499 via UPI from HDFC on 28 Oct for Urban Kart, order failed due to bank switch timeout, amount still debited after 3 days. Transaction is 2 days past RBI T+1 TAT. Initiate reversal for Rs 2,499 and credit Rs 200 compensation. Customer requested callback but no number provided; reply via app with reference and next steps.",
+  "customer_reply_draft": "I\u2019m sorry for the delay with your Rs 2,499 payment to Urban Kart. Your refund for txn_48213_a is being processed and should reach your HDFC account within 1 working day. You will also receive Rs 200 compensation for the delay. We will update you once the refund is completed.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 2499.0,
+        "reason": "UPI bank switch timeout, order failed, amount debited but not credited",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Transaction status is DEBITED_NOT_CREDITED with no existing refund; amount is under Rs 5,000 auto-refund limit."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_riya",
+        "reason": "RBI T+1 TAT exceeded by 2 days for UPI failed debit",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Regulatory clock shows 2 days late, compensation due is Rs 200."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer requested a callback but no phone number provided; reply via app with clear next steps and reference."
+    }
+  ],
+  "reasoning": "Fact: txn_48213_a is DEBITED_NOT_CREDITED, no refund exists, 2 days past RBI T+1 for UPI, compensation due Rs 200. Rule: auto-reverse under Rs 5k and auto-credit compensation up to Rs 1k. Action: initiate_reversal + credit_compensation + send_reply.",
+  "route_to_team": null
+}

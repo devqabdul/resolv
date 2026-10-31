@@ -1,0 +1,14 @@
+{
+  "confidence": 0.9,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": "stl_eval_04",
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Merchant reports a held settlement of \u20b914,000 because their KYC is pending. The settlement stl_eval_04 is on hold for this reason.",
+  "ticket_type": "settlement_delay"
+}

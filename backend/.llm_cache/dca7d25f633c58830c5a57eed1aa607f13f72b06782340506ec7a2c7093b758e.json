@@ -1,0 +1,18 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "amount_inr": null,
+    "issuer_bank": null,
+    "mandate_id": null,
+    "merchant_name": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports their account has been blocked without prior notice and wants the reason and an unblock. This is a human-only ticket type; escalate to a human agent for review.",
+  "ticket_type": "account_blocked"
+}

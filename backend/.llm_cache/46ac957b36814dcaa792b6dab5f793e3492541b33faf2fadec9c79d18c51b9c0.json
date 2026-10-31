@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports a failed UPI payment of \u20b9550 debited from HDFC two days ago. Transaction txn_eval_02 is DEBITED_NOT_CREDITED with no refund. Initiate reversal for \u20b9550 and credit \u20b9100 compensation (1 day late per RBI T+1).",
+  "customer_reply_draft": "I am sorry for the inconvenience. We have initiated a reversal for your failed UPI payment of \u20b9550 (txn_eval_02), and the refund should reach your HDFC account within 1 working day. Since the refund is slightly delayed, we have also credited \u20b9100 as compensation to your account. You will receive an SMS once the refund is processed.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 550,
+        "reason": "Failed UPI payment debited but not credited to merchant",
+        "txn_id": "txn_eval_02"
+      },
+      "rationale": "Transaction txn_eval_02 is DEBITED_NOT_CREDITED with no existing refund, so initiate_reversal is allowed."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 100,
+        "customer_id": "cust_eval_06",
+        "reason": "RBI T+1 TAT exceeded by 1 day (created 2026-10-29, today 2026-10-31)",
+        "txn_id": "txn_eval_02"
+      },
+      "rationale": "regulatory_clock shows days_late: 1 and compensation_due_inr: 100, so credit_compensation is required."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi-en"
+      },
+      "rationale": "Always end with a send_reply action in the customer's language."
+    }
+  ],
+  "reasoning": "Fact: txn_eval_02 is DEBITED_NOT_CREDITED, no refund exists, 2 days old, 1 day late. Rule: initiate reversal for debited-not-credited with no refund; credit compensation for days_late per regulatory_clock. Action: initiate_reversal + credit_compensation + send_reply.",
+  "route_to_team": null
+}

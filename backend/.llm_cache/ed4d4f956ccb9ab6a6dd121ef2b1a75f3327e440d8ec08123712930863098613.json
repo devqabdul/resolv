@@ -1,0 +1,18 @@
+{
+  "confidence": 0.55,
+  "entities": {
+    "amount_inr": null,
+    "issuer_bank": "AXIS",
+    "mandate_id": null,
+    "merchant_name": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer says they were debited by AXIS bank but the merchant claims no payment received, and requests an urgent refund. No transaction ID or amount is provided, and no matching transaction exists in context, so this requires human follow-up to trace the debit and verify the merchant claim.",
+  "ticket_type": "failed_payment_reversal"
+}

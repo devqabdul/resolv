@@ -1,0 +1,18 @@
+{
+  "confidence": 0.5,
+  "entities": {
+    "amount_inr": null,
+    "issuer_bank": "AXIS",
+    "mandate_id": null,
+    "merchant_name": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports money deducted from AXIS bank but payment failed, and wants to know when refund will be received. No transaction ID or refund ID is provided in the ticket, so I cannot look up the exact status.",
+  "ticket_type": "refund_status"
+}

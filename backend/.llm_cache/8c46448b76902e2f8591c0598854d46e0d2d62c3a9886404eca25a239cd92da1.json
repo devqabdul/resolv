@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer reports failed \u20b946,500 settlement for Eval Store 08 and asks for a re-push. KYC resubmission is in progress. Settlement stl_eval_08 is FAILED due to merchant KYC pending. Retriggering settlement is allowed per policy. No compensation due as this is a settlement delay, not a failed debit.",
+  "customer_reply_draft": "Sorry for the inconvenience. We have re-triggered settlement stl_eval_08 for \u20b946,500. It will be processed once your KYC verification is completed. You will receive a notification once the settlement is released.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_settlement",
+      "params": {
+        "settlement_id": "stl_eval_08"
+      },
+      "rationale": "Settlement stl_eval_08 failed due to pending merchant KYC. Customer requests re-push and KYC is in progress, so re-triggering settlement is appropriate."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs update on settlement status and next steps in their language."
+    }
+  ],
+  "reasoning": "Fact: Settlement stl_eval_08 for \u20b946,500 failed because merchant KYC is pending. Rule: A failed settlement can be re-triggered per KB. Action: Retrigger settlement stl_eval_08. No money action needed; compensation not applicable to settlement delay per regulatory_clock.",
+  "route_to_team": null
+}

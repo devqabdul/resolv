@@ -1,0 +1,14 @@
+{
+  "confidence": 0.75,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer wants to raise a chargeback dispute because the merchant charged her twice for txn_48213_a and refuses to help. The transaction is a failed UPI debit (DEBITED_NOT_CREDITED, BANK_SWITCH_TIMEOUT) with no refund yet. This is a human-only ticket type.",
+  "ticket_type": "dispute_chargeback"
+}

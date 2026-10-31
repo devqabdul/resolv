@@ -1,0 +1,9 @@
+{
+  "confidence": 0.95,
+  "entities": {},
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports KYC was rejected again due to an address mismatch and wants to know the next steps to resubmit.",
+  "ticket_type": "kyc_resubmission"
+}

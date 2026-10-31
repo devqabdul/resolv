@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Merchant Eval Store 06 reported a failed \u20b914,500 settlement (stl_eval_06) due to Bank rejected credit. The KB confirms failed settlements can be re-triggered. Proposed to re-trigger the settlement and inform the merchant. No compensation is due as this is a settlement issue, not a failed debit transaction.",
+  "customer_reply_draft": "We are sorry to hear that your \u20b914,500 settlement (reference stl_eval_06) failed. We have re-triggered the settlement, and it should be processed shortly. You will receive a confirmation once it is completed. If you have any further questions, please let us know.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_settlement",
+      "params": {
+        "settlement_id": "stl_eval_06"
+      },
+      "rationale": "The merchant's \u20b914,500 settlement (stl_eval_06) failed with reason 'Bank rejected credit', and the KB confirms a failed settlement can be re-triggered."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "email",
+        "language": "en"
+      },
+      "rationale": "Acknowledge the request, confirm the re-trigger, and provide the settlement reference and next steps."
+    }
+  ],
+  "reasoning": "Fact: Settlement stl_eval_06 for \u20b914,500 failed with reason 'Bank rejected credit'. Rule: KB states a failed settlement can be re-triggered. Action: Retrigger settlement and reply to merchant.",
+  "route_to_team": null
+}

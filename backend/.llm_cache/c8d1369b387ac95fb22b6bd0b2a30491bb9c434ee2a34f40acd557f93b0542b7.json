@@ -1,0 +1,19 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 2499.0,
+    "failure_reason": "BANK_SWITCH_TIMEOUT",
+    "issuer_bank": "HDFC",
+    "mandate_id": null,
+    "merchant_name": "mer_urban_kart",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": "2026-10-28T09:00:00Z",
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports UPI payment of Rs 2,499 debited but order failed 3 days ago with no refund yet. Transaction txn_48213_a is debited-not-credited due to bank switch timeout; refund status is NONE and it is now 2 days past RBI T+1 deadline, so auto-compensation of Rs 200 is due.",
+  "ticket_type": "failed_payment_reversal"
+}

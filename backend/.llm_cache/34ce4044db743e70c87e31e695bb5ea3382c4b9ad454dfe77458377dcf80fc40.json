@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": "rfd_eval_19",
+    "settlement_id": null,
+    "txn_id": "txn_eval_19"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer is asking for the ARN for a completed \u20b9650 refund (refund_id: rfd_eval_19) because their bank needs a reference number. The refund ARN is arn_eval19.",
+  "ticket_type": "refund_status"
+}

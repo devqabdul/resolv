@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_11"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a UPI payment of \u20b9250 debited from their Kotak bank account 3 days ago (txn_eval_11) but not credited to merchant Urban Kart; status is DEBITED_NOT_CREDITED with failure reason BANK_SWITCH_TIMEOUT. The transaction is 2 days past RBI T+1 TAT, so \u20b9200 late compensation is due under policy. Auto-refund limit is \u20b95,000, so the \u20b9250 can be auto-reversed and \u20b91,000 compensation auto-credited without human approval.",
+  "ticket_type": "failed_payment_reversal"
+}

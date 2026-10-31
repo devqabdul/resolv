@@ -1,0 +1,28 @@
+{
+  "agent_summary": "Customer wants a chargeback dispute for txn_48213_a (double charge, merchant unhelpful). Human-only ticket type: dispute_chargeback. Routed to risk team. No money actions taken.",
+  "customer_reply_draft": "I'm sorry for the trouble, Riya. Since this involves a chargeback dispute, I'm routing your case to our risk team for specialist review. A specialist will look into the double charge on txn_48213_a and contact you directly with next steps. You will hear back from us shortly.",
+  "next_action_for_human": "Risk team to review chargeback request for txn_48213_a and contact customer with resolution.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer-facing reply required after routing to risk team."
+    },
+    {
+      "name": "notify_customer",
+      "params": {
+        "channel": "in_app",
+        "customer_id": "cust_riya",
+        "subject": "Chargeback dispute escalated"
+      },
+      "rationale": "Inform customer that a specialist is reviewing the chargeback request."
+    }
+  ],
+  "reasoning": "Facts: customer requests chargeback dispute for txn_48213_a (DEBITED_NOT_CREDITED, BANK_SWITCH_TIMEOUT, no refund yet). Rule: dispute_chargeback is a human-only ticket type. Action: ROUTE to risk team, no money actions, send reply and notify customer.",
+  "route_to_team": "risk"
+}

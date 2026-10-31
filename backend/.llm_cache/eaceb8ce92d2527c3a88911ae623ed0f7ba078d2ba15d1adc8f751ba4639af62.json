@@ -1,0 +1,4 @@
+{
+  "internal_summary": "Multiple customers impacted by failed_payment_reversal on issuer AXIS due to UPI_SWITCH_DOWN. 10 tickets received between 2026-10-31T09:36:01.346174+00:00 and 2026-10-31T09:36:01.360466+00:00. Suggested next step: monitor UPI switch status and coordinate with AXIS/NPCI.",
+  "proactive_notice_draft": "We are aware of a temporary issue affecting UPI payments through AXIS Bank. If your payment failed, any amount debited will be automatically reversed within the RBI turnaround time. We apologise for the inconvenience."
+}

@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports UPI payment of Rs 2,499 debited 3 days ago for order failed, no refund yet. Transaction txn_48213_a is DEBITED_NOT_CREDITED, refund_status NONE, 2 days late. Initiated reversal for Rs 2,499 and credit_compensation for Rs 200. Customer requested callback; specialist will call back.",
+  "customer_reply_draft": "Hi Riya, we\u2019re sorry for the delay with your UPI payment of Rs 2,499 (txn_48213_a). We\u2019ve initiated the reversal and it will reach your HDFC account within 1 working day. As this is 2 days past the RBI timeline, we\u2019re also crediting Rs 200 compensation to your account. A specialist will review and call you shortly.",
+  "next_action_for_human": "A specialist will review the callback request and call the customer back shortly.",
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 2499.0,
+        "reason": "UPI payment debited but order failed; refund not initiated",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with refund_status NONE, so reversal is allowed."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_riya",
+        "reason": "2 days late per RBI TAT for UPI",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Regulatory clock shows 2 days late, compensation due is Rs 200."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "sms",
+        "language": "en"
+      },
+      "rationale": "Customer requested callback but we must reply via channel on record; SMS is appropriate."
+    }
+  ],
+  "reasoning": "Fact: txn_48213_a is DEBITED_NOT_CREDITED with no refund and 2 days late. Rule: Reverse debited-not-credited payments up to Rs 5,000 automatically; credit Rs 100/day late automatically. Action: initiate_reversal for Rs 2,499 and credit_compensation for Rs 200.",
+  "route_to_team": null
+}

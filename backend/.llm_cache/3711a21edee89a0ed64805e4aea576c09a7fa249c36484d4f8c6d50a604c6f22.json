@@ -1,0 +1,16 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "customer_id": "cust_eval_27",
+    "kyc_id": "kyc_eval_27",
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer's KYC was rejected due to an expired document and wants to know how to resubmit with a renewed document. A resubmission link is available in the KYC record.",
+  "ticket_type": "kyc_resubmission"
+}

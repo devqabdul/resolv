@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer reports settlement stl_chai_001 of Rs 48,500 has not arrived. Context confirms settlement is ON_HOLD_KYC due to pending merchant KYC verification. Expected release is 2026-10-30. No refunds or compensation are due. The settlement can be retriggered once KYC is completed.",
+  "customer_reply_draft": "We are sorry for the delay with your settlement stl_chai_001 of Rs 48,500. It is currently on hold because your merchant KYC verification is still pending. Once the KYC is approved, the settlement will be released on or before 30 Oct 2026. We recommend completing the KYC verification as soon as possible to avoid further delays.",
+  "next_action_for_human": "None; this is a standard KYC hold. No human approval is needed for the explanation or retrigger once KYC clears.",
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_settlement",
+      "params": {
+        "settlement_id": "stl_chai_001"
+      },
+      "rationale": "Settlement stl_chai_001 is on hold due to pending merchant KYC. Retriggering the settlement is the correct next step once KYC is completed. However, since KYC is still pending, the settlement cannot be released yet; we should notify the customer of the hold reason and expected timeline."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer asked why the settlement is on hold. We need to explain the KYC hold and the expected release date."
+    }
+  ],
+  "reasoning": "Facts: Settlement stl_chai_001 is on hold because merchant KYC is pending; expected release is 30 Oct 2026. Rule: For a settlement on hold due to KYC, explain the hold and expected release; retrigger once KYC is approved. Action: Send a reply explaining the hold and timeline. No money action is needed.",
+  "route_to_team": null
+}

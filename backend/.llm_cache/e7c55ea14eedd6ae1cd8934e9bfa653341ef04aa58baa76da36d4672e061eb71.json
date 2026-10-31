@@ -1,0 +1,12 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "refund_id": null,
+    "txn_id": "txn_eval_25"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer demands an immediate refund of INR 3,999 for a damaged phone purchase from Urban Kart (txn_eval_25) and threatens to raise a chargeback if not refunded promptly.",
+  "ticket_type": "refund_status"
+}

@@ -1,0 +1,33 @@
+{
+  "agent_summary": "Customer wants to cancel active LIC monthly mandate mnd_eval_34 and pay manually. KB policy states email requests need human approval. No past tickets. No transactions or refunds involved. Route to human for mandate cancellation approval.",
+  "customer_reply_draft": "We're sorry, but your request to cancel the LIC monthly mandate (mnd_eval_34) requires approval from a specialist. We've forwarded it for review, and you'll hear back shortly. Please continue manual payments in the meantime to avoid any missed premiums.",
+  "next_action_for_human": "Approve or reject the mandate cancellation request for mnd_eval_34 (LIC, Rs 2500/month). Confirm with customer once processed.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "cancel_mandate",
+      "params": {
+        "mandate_id": "mnd_eval_34"
+      },
+      "rationale": "Customer wants to cancel active LIC monthly mandate mnd_eval_34. KB states email requests need human approval before cancelling, so this must be routed to a human specialist for approval."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "app",
+        "language": "en"
+      },
+      "rationale": "Customer needs to be informed that a specialist is reviewing the cancellation request and they will hear back shortly."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {
+        "note": "Customer requested cancellation of LIC monthly mandate mnd_eval_34 via support. Awaiting human approval per KB policy."
+      },
+      "rationale": "Internal tracking note for the specialist team."
+    }
+  ],
+  "reasoning": "Fact: Customer wants to cancel mandate mnd_eval_34. Rule: KB says requests by email need human approval before cancelling. Action: Route to human team for approval; send reply explaining specialist review.",
+  "route_to_team": "risk"
+}

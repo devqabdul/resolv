@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer reports AXIS debit with failed payment and asks when refund will arrive. No txn_id or refund_id in ticket, confidence 0.5 (<0.6), so route to human for lookup.",
+  "customer_reply_draft": "I\u2019m sorry for the trouble. Since you didn\u2019t share a transaction or refund ID, I\u2019ll need a specialist to look up your AXIS debit and check the refund status for you. A team member will review this and get back to you shortly.",
+  "next_action_for_human": "Ask customer for transaction ID, UTR, or approximate date/amount so a specialist can locate the failed payment and check refund status.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi-en"
+      },
+      "rationale": "Customer needs help identifying the exact failed transaction and refund status, which requires human lookup since no txn_id or refund_id is provided and confidence is below 0.6."
+    }
+  ],
+  "reasoning": "Facts: Customer says money debited from AXIS but payment failed, wants refund ETA. No txn_id/refund_id provided. Context: confidence 0.5 below 0.6 threshold. Rule: below 0.6 routes to human. Action: ROUTE to risk with next_action_for_human to collect details.",
+  "route_to_team": "risk"
+}

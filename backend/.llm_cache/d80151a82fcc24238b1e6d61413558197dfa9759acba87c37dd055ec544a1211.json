@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer reports account blocked. Human-only ticket type requires manual review. No transactions, refunds, or other details provided.",
+  "customer_reply_draft": "I\u2019m sorry your account is blocked. A specialist is reviewing your request now, and you\u2019ll hear back from us shortly. Please keep an eye on your registered app or email for updates.",
+  "next_action_for_human": "A risk specialist must manually review the account block and contact the customer to explain the reason and next steps for unblocking.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi-en"
+      },
+      "rationale": "Account blocked is a human-only category; no automated action can unblock it. A specialist must review and respond."
+    }
+  ],
+  "reasoning": "Fact: customer says account is blocked. Rule: account_blocked is a human-only ticket type. Action: route to risk team with send_reply.",
+  "route_to_team": "risk"
+}

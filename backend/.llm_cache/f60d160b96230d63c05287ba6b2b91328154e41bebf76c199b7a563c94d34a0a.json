@@ -1,0 +1,20 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "amount_inr": null,
+    "customer_id": "cust_eval_30",
+    "issuer_bank": null,
+    "kyc_id": "kyc_eval_30",
+    "mandate_id": null,
+    "merchant_name": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer's KYC was rejected due to fraud suspicion and is requesting an immediate resubmission. Provide the resubmission link and explain that fraud-related rejections require risk review.",
+  "ticket_type": "kyc_resubmission"
+}

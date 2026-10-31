@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Merchant reports settlement stl_eval_04 (\u20b914,000) is on hold due to pending KYC. Retriggered KYC to resolve the hold. No money action needed as the settlement is not yet debited/credited.",
+  "customer_reply_draft": "Sorry for the inconvenience. Your settlement of \u20b914,000 (ID: stl_eval_04) is currently on hold because your KYC verification is still pending. We have retriggered your KYC (ID: kyc_eval_04) to speed up the verification. Once your KYC is approved, the settlement will be released automatically. You will hear back once the verification is complete.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_04"
+      },
+      "rationale": "KYC is pending and causing the settlement hold. Retriggering KYC is the correct fix per policy."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi-en"
+      },
+      "rationale": "Inform the merchant about the KYC status and next steps in their mixed language."
+    }
+  ],
+  "reasoning": "Fact: Settlement stl_eval_04 is ON_HOLD_KYC because kyc_eval_04 is PENDING. Rule: For a KYC-held settlement, retrigger_kyc is the allowed fix. Action: Retrigger KYC and inform merchant.",
+  "route_to_team": null
+}

@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_spike_0003"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports an AXIS bank debit of Rs 1150 for an order that did not go through, urgently requesting a refund. Transaction txn_spike_0003 is debited but not credited due to UPI_SWITCH_DOWN, with no refund initiated yet.",
+  "ticket_type": "failed_payment_reversal"
+}

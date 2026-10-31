@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer paid Rs 2,499 via UPI 3 days ago; order failed, amount debited, no refund yet. Transaction txn_48213_a is DEBITED_NOT_CREDITED. Initiating reversal of Rs 2,499 and Rs 200 compensation (2 days late). Customer also requested a callback; specialist will follow up.",
+  "customer_reply_draft": "Hi Riya, I\u2019m sorry for the delay. I\u2019ve initiated a reversal for txn_48213_a (Rs 2,499) and credited Rs 200 compensation for the delay. The refund will reach your account within 1 working day. A specialist will also review your callback request shortly.",
+  "next_action_for_human": "A specialist will review the customer's callback request and follow up with her directly.",
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 2499.0,
+        "reason": "Failed payment: order failed due to BANK_SWITCH_TIMEOUT, amount debited but not credited",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Transaction status is DEBITED_NOT_CREDITED with no existing refund, so initiate reversal for full amount."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_riya",
+        "reason": "2 days late beyond RBI T+1 UPI TAT deadline",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Regulatory clock shows 2 days late, compensation due is Rs 200 per policy."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "sms",
+        "language": "en"
+      },
+      "rationale": "Customer requested callback; provide update and reference number."
+    }
+  ],
+  "reasoning": "Transaction is DEBITED_NOT_CREDITED with no refund, so initiate reversal. Regulatory clock shows 2 days late, so credit Rs 200 compensation. Customer requested callback; route follow-up to human specialist.",
+  "route_to_team": null
+}

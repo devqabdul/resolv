@@ -1,0 +1,14 @@
+{
+  "confidence": 0.9,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_big"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "calm",
+  "summary_for_agent": "Customer paid Rs 12,000 via UPI to Urban Kart; the transaction was debited but failed due to bank switch timeout. Customer requests a full reversal of Rs 12,000. Transaction is 3 days old (2 days late), so Rs 200 compensation is due under RBI TAT. Auto-refund limit is Rs 5,000, so this requires human approval.",
+  "ticket_type": "failed_payment_reversal"
+}

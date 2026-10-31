@@ -1,0 +1,14 @@
+{
+  "confidence": 0.9,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_01"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a failed UPI payment of \u20b91200 that was debited yesterday and asks when the refund will arrive. The transaction is already marked DEBITED_NOT_CREDITED with no refund initiated yet, and the RBI TAT deadline is today (T+1).",
+  "ticket_type": "refund_status"
+}

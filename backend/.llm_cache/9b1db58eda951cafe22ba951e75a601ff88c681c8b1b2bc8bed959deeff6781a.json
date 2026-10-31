@@ -1,0 +1,18 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 12000.0,
+    "issuer_bank": "ICICI",
+    "mandate_id": null,
+    "merchant_name": "Urban Kart",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": "2026-10-28T09:00:00Z",
+    "txn_id": "txn_big"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "calm",
+  "summary_for_agent": "Customer paid Rs 12,000 by UPI to Urban Kart but the order failed; money was debited from ICICI and a full reversal is requested. Transaction txn_big shows DEBITED_NOT_CREDITED with failure reason BANK_SWITCH_TIMEOUT. The ticket is 3 days old and already 2 days past RBI TAT, so Rs 200 compensation is due. Auto-refund limit is Rs 5,000, so the remaining Rs 7,000 requires human approval.",
+  "ticket_type": "failed_payment_reversal"
+}

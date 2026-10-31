@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer paid \u20b92,499 UPI to Urban Kart on 25 Oct; money debited but order failed. She is frustrated it has been 3 days with no refund. Transaction txn_48213_a is DEBITED_NOT_CREDITED with BANK_SWITCH_TIMEOUT. Regulatory clock shows 2 days late, so \u20b9200 compensation is due. She says this is the second time, but no matching past ticket is found in the context.",
+  "ticket_type": "failed_payment_reversal"
+}

@@ -1,0 +1,29 @@
+{
+  "agent_summary": "Customer followed up on refund rfd_evaluk7781 (txn txn_evaluk7781) for Rs 3,150 initiated 25 Oct 2026, still INITIATED. ARN is arn_evaluk7781, ETA 2 Nov 2026. Refund is 1 day past RBI T+1 for UPI, so credit Rs 100 compensation. No human approval needed (under auto limits).",
+  "customer_reply_draft": "Sorry for the delay. Your refund reference number is ARN arn_evaluk7781 for Rs 3,150. It is currently INITIATED and expected to reach your HDFC account by 2 Nov 2026. We have also credited Rs 100 as late-refund compensation to your account.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer asked for the refund reference number and status; must reply with ARN and ETA."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 100,
+        "customer_id": "cust_eval_02",
+        "reason": "Refund rfd_eval_uk7781 initiated 2026-10-25 is still INITIATED beyond RBI T+1 for UPI; 1 day late.",
+        "txn_id": "txn_eval_uk7781"
+      },
+      "rationale": "UPI refund is 1 day past T+1 RBI TAT; regulatory_clock compensation_due_inr is 100."
+    }
+  ],
+  "reasoning": "Facts: UPI refund rfd_evaluk7781 for txn txn_evaluk7781 is INITIATED since 2026-10-25, ETA 2026-11-02, amount 3150. Policy: UPI T+1; each day late earns Rs 100. Regulatory clock: 1 day late, compensation due 100. Action: credit_compensation 100 and send_reply with ARN and ETA.",
+  "route_to_team": null
+}

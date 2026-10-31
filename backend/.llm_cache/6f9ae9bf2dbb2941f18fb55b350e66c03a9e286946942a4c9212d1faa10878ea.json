@@ -1,0 +1,33 @@
+{
+  "agent_summary": "Customer wants to raise a chargeback for txn_eval_21 (Rs 2150) because merchant delivered wrong product and refuses refund. This is a human-only ticket type (dispute_chargeback). No auto-actions available.",
+  "customer_reply_draft": "We're sorry to hear about the issue with the wrong product and the merchant's refusal to refund. Since this involves a chargeback, I'm routing your case to our Risk team for review. A specialist will look into the transaction and get back to you with next steps.",
+  "next_action_for_human": "Risk team to review the chargeback request and contact the customer with resolution options.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer raised a chargeback; policy requires human review for dispute_chargeback."
+    },
+    {
+      "name": "notify_customer",
+      "params": {
+        "reason": "Routing chargeback to risk team for merchant dispute review."
+      },
+      "rationale": "Human-only ticket type requires risk team intervention."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {
+        "note": "Customer wants chargeback due to wrong product delivery and merchant refusal to refund. Routed to risk."
+      },
+      "rationale": "Document context for human agent."
+    }
+  ],
+  "reasoning": "Customer explicitly requested a chargeback for a wrong product delivery with merchant refusal to refund. Understanding step classifies this as dispute_chargeback, a human-only category per policy_summary. Therefore path is ROUTE to risk team. No money action can be auto-executed. Must send a reply and create internal note.",
+  "route_to_team": "risk"
+}

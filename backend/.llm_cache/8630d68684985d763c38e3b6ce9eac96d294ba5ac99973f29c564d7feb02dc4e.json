@@ -1,0 +1,18 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 1499.0,
+    "issuer_bank": null,
+    "mandate_id": "mnd_eval_33",
+    "merchant_name": "CultFit",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer wants to cancel their active monthly CultFit mandate (mnd_eval_33, Rs 1499) before the next debit. Requires human approval per policy since cancellation requests by email need manual review.",
+  "ticket_type": "mandate_cancellation"
+}

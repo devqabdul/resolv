@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports failed UPI payment of \u20b99,500 debited 4 days ago, wants reversal today. Transaction txn_eval_24 is DEBITED_NOT_CREDITED with no refund. Amount exceeds auto-refund limit (Rs 5000), so human approval needed for full reversal. Regulatory clock: 3 days late, Rs 300 compensation auto-due. Route to human for approval.",
+  "customer_reply_draft": "I'm sorry for the delay with your \u20b99,500 payment (txn_eval_24). Since the amount exceeds our auto-refund limit, a specialist is reviewing the full reversal request and you will hear back shortly. Meanwhile, \u20b9300 compensation for the delay has been auto-credited to your account.",
+  "next_action_for_human": "A specialist needs to review and approve the full reversal of \u20b99,500 for txn_eval_24 since it exceeds the auto-refund limit. Once approved, initiate the reversal.",
+  "path": "ESCALATE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 9500,
+        "reason": "DEBITED_NOT_CREDITED; amount exceeds auto-refund limit of Rs 5000, requires human approval",
+        "txn_id": "txn_eval_24"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with no refund yet, so reversal is appropriate. However, amount Rs 9500 exceeds auto-refund limit Rs 5000, so human approval is required per policy."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 300,
+        "customer_id": "cust_eval_46",
+        "reason": "RBI TAT violation: 3 days late, Rs 100/day",
+        "txn_id": "txn_eval_24"
+      },
+      "rationale": "Regulatory clock shows 3 days late, compensation due is Rs 300 auto-credited."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Draft customer reply per style guide."
+    }
+  ],
+  "reasoning": "Fact: txn_eval_24 is DEBITED_NOT_CREDITED with no refund, amount Rs 9500. Rule: Auto-refund limit is Rs 5000; above that human approval is required. Action: ESCALATE to human for reversal approval, auto-credit Rs 300 compensation, and send reply.",
+  "route_to_team": "risk"
+}

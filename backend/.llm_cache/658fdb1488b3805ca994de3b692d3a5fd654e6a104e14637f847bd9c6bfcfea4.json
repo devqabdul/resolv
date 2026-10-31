@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer says AXIS bank debit happened but payment failed; asks refund timeline. No txn_id, refund_id, or settlement_id is present in the context. Confidence is 0.5 (<0.6), so human routing is required per policy.",
+  "customer_reply_draft": "\u092e\u093e\u092b\u093c \u0915\u0940\u091c\u093f\u090f, \u0932\u0947\u0915\u093f\u0928 refund \u0915\u093e status check \u0915\u0930\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0939\u092e\u0947\u0902 \u0906\u092a\u0915\u0947 transaction ID \u092f\u093e refund ID \u0915\u0940 \u091c\u093c\u0930\u0942\u0930\u0924 \u0939\u094b\u0917\u0940\u0964 \u0915\u0943\u092a\u092f\u093e \u0905\u092a\u0928\u0947 app \u092e\u0947\u0902 transaction history \u0938\u0947 \u092f\u0939 details share \u0915\u0930\u0947\u0902, \u0924\u093e\u0915\u093f \u0939\u092e \u0906\u092a\u0915\u094b exact update \u0926\u0947 \u0938\u0915\u0947\u0902\u0964",
+  "next_action_for_human": "Please ask the customer for the specific transaction ID or refund ID from their app/SMS so we can check the status and initiate reversal/compensation if applicable.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi"
+      },
+      "rationale": "No transaction or refund ID is available in the context to check refund status or initiate a reversal."
+    }
+  ],
+  "reasoning": "Fact: Customer reports debited-not-credited for AXIS bank with no transaction/refund ID in context. Rule: Confidence below 0.6 routes to human. Action: Route to human to collect missing IDs before proceeding.",
+  "route_to_team": null
+}

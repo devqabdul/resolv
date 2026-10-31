@@ -1,0 +1,14 @@
+{
+  "confidence": 0.9,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_12"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer is asking about a reversal for a card transaction of \u20b9800 that failed with BANK_SWITCH_TIMEOUT and is still DEBITED_NOT_CREDITED after 8 days. The merchant never confirmed the order.",
+  "ticket_type": "failed_payment_reversal"
+}

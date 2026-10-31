@@ -1,0 +1,14 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": true,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports that Rs 2,499 was debited via UPI from r***@okhdfc for an order that failed 3 days ago, with no refund received. This is a repeat ticket (tkt_79de051a) on a previously unresolved issue, and a prior ticket (tkt_48213) was resolved as refund_status.",
+  "ticket_type": "refund_status"
+}

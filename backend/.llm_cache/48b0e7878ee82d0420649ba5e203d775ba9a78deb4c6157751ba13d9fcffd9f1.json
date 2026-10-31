@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Merchant Eval Store 07 (mer_eval_07) reports failed settlement stl_eval_07 for \u20b948,000 due to pending KYC kyc_eval_07. Customer needs funds today for payroll. KYC status is PENDING with no rejection reason. Settlement expected 2026-10-29. No refunds or prior transactions in context. Human review required for urgent re-trigger and KYC verification.",
+  "customer_reply_draft": "I\u2019m sorry your settlement of \u20b948,000 is on hold and you need it for payroll today. Because this involves an urgent KYC and settlement re-trigger, I\u2019m routing this to our specialist team right away. A specialist is reviewing it now, and you\u2019ll hear back shortly with next steps. Your settlement reference is stl_eval_07 and your KYC reference is kyc_eval_07.",
+  "next_action_for_human": "Urgent human review: re-trigger settlement stl_eval_07 and verify/clear KYC kyc_eval_07 for merchant mer_eval_07. Merchant needs funds today for payroll.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer is frustrated and needs payroll funds today; human review is required for urgent KYC and settlement re-trigger."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {
+        "note": "Merchant needs payroll today. Settlement stl_eval_07 failed due to pending KYC kyc_eval_07. Urgent human review for re-trigger and KYC verification."
+      },
+      "rationale": "Document urgency for human team."
+    }
+  ],
+  "reasoning": "Facts: settlement stl_eval_07 failed for \u20b948,000 because KYC kyc_eval_07 is pending. Customer needs money today for payroll. No rejection reason given. Policy: human-only for urgent/risky cases; this is urgent payroll need. Action: ROUTE to risk team for urgent human review and re-trigger. No money action allowed.",
+  "route_to_team": "risk"
+}

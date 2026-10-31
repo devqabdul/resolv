@@ -1,0 +1,17 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 649.0,
+    "issuer_bank": null,
+    "mandate_id": "mnd_netflix",
+    "merchant_name": "Netflix",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer wants to cancel her Netflix autopay mandate (mnd_netflix) from next month. She is not requesting immediate cancellation but a future-dated cancellation. Active mandate status is ACTIVE with monthly frequency of INR 649.",
+  "ticket_type": "mandate_cancellation"
+}

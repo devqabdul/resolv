@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer reports debited by AXIS but merchant claims no payment received. No txn_id, refund_id, settlement_id, or amount provided. Context has no matching transactions. Confidence 0.55 < 0.6. Human follow-up required to trace debit and verify merchant claim.",
+  "customer_reply_draft": "We're sorry for the trouble. We've escalated this to our payments team to trace the debit from AXIS and verify the merchant's claim. A specialist will review the case and contact you within 24 hours with an update. Please keep your reference number handy in case we reach out for more details.",
+  "next_action_for_human": "Trace the AXIS debit and verify merchant claim; contact customer with findings.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs human follow-up to trace the debit and verify the merchant claim since no transaction ID or matching transaction exists in context."
+    }
+  ],
+  "reasoning": "Facts: Customer says debited by AXIS, merchant says no payment received, no txn_id or amount provided, no matching transaction in context, confidence 0.55. Rule: Confidence below 0.6 routes to human; no txn_id means cannot auto-reverse. Action: Route to risk team for human follow-up.",
+  "route_to_team": "risk"
+}

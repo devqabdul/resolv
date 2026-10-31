@@ -1,0 +1,14 @@
+{
+  "confidence": 0.65,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "TXN556677889"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer is asking for the refund status and ARN for transaction TXN556677889. The transaction and refund IDs are not present in the provided context, so I cannot confirm the refund details or provide the ARN.",
+  "ticket_type": "refund_status"
+}

@@ -1,0 +1,14 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_21"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer wants to raise a chargeback because the merchant delivered the wrong product and refuses to refund. This is a human-only ticket type.",
+  "ticket_type": "dispute_chargeback"
+}

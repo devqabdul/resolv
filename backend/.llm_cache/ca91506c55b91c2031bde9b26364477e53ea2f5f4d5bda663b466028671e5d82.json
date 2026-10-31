@@ -1,0 +1,24 @@
+{
+  "agent_summary": "Customer disputes an unauthorised transaction of Rs 4,999 and is simultaneously raising a dispute with their bank. The ticket is classified as dispute_chargeback/fraud, which is a human-only category. No exact matching transaction exists in the context (closest is txn_eval_22 for Rs 3,400). Per policy, this must be routed to the risk team for human review; no money action can be taken autonomously.",
+  "customer_reply_draft": "I\u2019m sorry you\u2019re dealing with this. We\u2019ve noted your dispute regarding the transaction of Rs 4,999, and since you\u2019re already raising this with your bank, a specialist from our risk team is reviewing the case for you. You\u2019ll hear back from us shortly with next steps.",
+  "next_action_for_human": "Route to risk team for human review. Ask the customer to share the transaction ARN or UTR from their bank so the team can verify the disputed transaction. Do not initiate any reversal or compensation until the dispute is confirmed.",
+  "path": "ROUTE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer is disputing a transaction and already with their bank; must inform them a specialist is reviewing and they will hear back."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {},
+      "rationale": "Log that the customer is simultaneously disputing with their bank and that the amount does not match any known transaction in our records."
+    }
+  ],
+  "reasoning": "Facts: Customer disputes a transaction of Rs 4,999 and is already disputing with their bank. No exact matching transaction exists in context. Policy: dispute_chargeback and fraud_suspected are human-only ticket types. Action: ROUTE to risk team with next_action_for_human to request bank ARN/UTR for verification before any money action.",
+  "route_to_team": "risk"
+}

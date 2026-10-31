@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": "rfd_eval_14",
+    "settlement_id": null,
+    "txn_id": "txn_eval_14"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "calm",
+  "summary_for_agent": "Customer is asking about the status of a \u20b91,600 refund (ID: rfd_eval_14, ARN: arn_eval14) for transaction txn_eval_14. The refund status is INITIATED with an ETA of 2026-11-02. The amount is within the auto-refund limit (\u20b95,000), so no human approval is needed.",
+  "ticket_type": "refund_status"
+}

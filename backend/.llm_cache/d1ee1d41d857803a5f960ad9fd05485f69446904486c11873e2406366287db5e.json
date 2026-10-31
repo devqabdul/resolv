@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer's KYC (kyc_eval_03) was rejected due to address mismatch after uploading Aadhaar. Retriggering the KYC process will re-evaluate the documents. No refund or compensation is applicable.",
+  "customer_reply_draft": "We're sorry your KYC was rejected again. The reason is an address mismatch between your Aadhaar and our records. Please use the resubmission link to re-upload your documents, and we will re-evaluate them shortly. If the issue persists, a specialist will review your case and contact you.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_03"
+      },
+      "rationale": "The KYC was rejected due to address mismatch. Retriggering the KYC process allows the system to re-evaluate the newly uploaded Aadhaar documents and may clear the rejection if the documents are now valid."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Provide a clear explanation of the rejection reason and guide the customer on next steps."
+    }
+  ],
+  "reasoning": "Fact: KYC kyc_eval_03 rejected due to ADDRESS_MISMATCH. Rule: For KYC resubmissions, retrigger_kyc is allowed. Action: Retrigger KYC and inform customer to resubmit via provided link.",
+  "route_to_team": null
+}

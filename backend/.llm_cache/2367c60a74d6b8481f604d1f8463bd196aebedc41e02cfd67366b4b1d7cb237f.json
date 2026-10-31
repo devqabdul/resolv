@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer's KYC (kyc_eval_27) was rejected because their document expired. They want to resubmit with a renewed one. The KYC record has a resubmission link. Retriggering KYC and sending the link to the customer resolves the issue.",
+  "customer_reply_draft": "We're sorry your KYC was rejected due to an expired document. You can resubmit your renewed document using this link: https://paytm.example/kyc/resubmit/cust_eval_27. Once submitted, the verification team will review it and update you shortly.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_27"
+      },
+      "rationale": "KYC was rejected due to expired document; retriggering with the renewed document via the available resubmission link will resolve the issue."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Inform the customer of the resubmission link and next steps in their language."
+    }
+  ],
+  "reasoning": "Fact: KYC kyc_eval_27 is REJECTED with reason EXPIRED_DOCUMENT, and a resubmission_link exists. Rule: For KYC resubmission, use retrigger_kyc with the available kyc_id and inform the customer of the link. Action: retrigger_kyc and send_reply.",
+  "route_to_team": null
+}

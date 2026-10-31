@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer asked about reversal for card txn_eval_12 (\u20b9800) that is still DEBITED_NOT_CREDITED after 8 days with no merchant confirmation. Initiated reversal and credited regulatory compensation of \u20b9300.",
+  "customer_reply_draft": "We are sorry for the inconvenience. I have initiated a reversal of \u20b9800 for transaction txn_eval_12, and a compensation of \u20b9300 has been credited for the delay. The reversal will be processed within 1 working day, and you will receive a confirmation shortly.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 800,
+        "reason": "Customer query: reversal for txn_eval_12 after 8 days, merchant never confirmed order",
+        "txn_id": "txn_eval_12"
+      },
+      "rationale": "Transaction txn_eval_12 is DEBITED_NOT_CREDITED with no existing refund, so reversal is allowed."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 300,
+        "customer_id": "cust_eval_16",
+        "reason": "Regulatory delay: 3 days late beyond card T+5 TAT",
+        "txn_id": "txn_eval_12"
+      },
+      "rationale": "Regulatory clock shows 3 days late, compensation due is Rs 300."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Required to inform customer of actions taken and next steps."
+    }
+  ],
+  "reasoning": "Transaction txn_eval_12 is DEBITED_NOT_CREDITED with no refund, so initiate_reversal is allowed. Regulatory clock shows 3 days late, so credit_compensation of \u20b9300 is due. Path is RESOLVE as this is a standard reversal within policy limits.",
+  "route_to_team": null
+}

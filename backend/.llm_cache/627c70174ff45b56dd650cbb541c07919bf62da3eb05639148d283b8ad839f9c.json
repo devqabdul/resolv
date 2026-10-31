@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer requested cancellation of Netflix mandate mnd_eval_50 for their brother. Policy requires human approval for mandate cancellation requests. Routed to risk team for approval.",
+  "customer_reply_draft": "Hi, I\u2019m sorry, but I can\u2019t cancel a mandate on behalf of someone else directly. A specialist will review this request for mandate mnd_eval_50 with Netflix (\u20b9649/month) and get back to you shortly. If your brother prefers, he can also cancel it himself via the Netflix app or merchant portal.",
+  "next_action_for_human": "Approve or deny mandate cancellation request for mnd_eval_50 (Netflix, \u20b9649/month) on behalf of brother. Verify proxy relationship and customer identity if needed.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer wants to cancel a mandate for their brother; policy requires human approval for email/mandate cancellation requests, so we must route to the risk team for approval and inform the customer."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {
+        "note": "Mandate cancellation requested by proxy (brother). Mandate ID: mnd_eval_50, Netflix, \u20b9649/month. Requires human approval per policy."
+      },
+      "rationale": "Document the request and the proxy relationship for the human reviewer."
+    }
+  ],
+  "reasoning": "Fact: Customer wants to cancel active mandate mnd_eval_50 for Netflix (\u20b9649/month) on behalf of their brother. Rule: Mandate cancellation requests by email/proxy require human approval per policy_summary. Action: ROUTE to risk team for human approval and send_reply to customer with next steps.",
+  "route_to_team": "risk"
+}

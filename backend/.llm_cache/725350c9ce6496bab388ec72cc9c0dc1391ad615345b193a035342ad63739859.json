@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer reports a suspected fraud/social engineering call and missing money. No txn_id or refund_id is present in the ticket. Human-only category fraud_suspected requires immediate risk team review per policy.",
+  "customer_reply_draft": "We're sorry to hear about this. Since you suspect a fraudulent call, we've escalated your case to our Risk team for urgent review. Please share any transaction details you have, and a specialist will contact you shortly.",
+  "next_action_for_human": "Risk team to review fraud report, contact customer to collect transaction details, and assist with dispute/chargeback if applicable.",
+  "path": "ESCALATE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer reports a suspected fraud call and missing money. No transaction ID is provided, so the case must be routed to the risk team for immediate review and to help the customer locate the debit."
+    },
+    {
+      "name": "notify_customer",
+      "params": {
+        "message": "Your case has been escalated to our Risk team for urgent review. Please share any transaction details you have so we can trace the debit."
+      },
+      "rationale": "Alert the customer that a specialist is now reviewing their fraud report."
+    }
+  ],
+  "reasoning": "Facts: Customer reports a Paytm impersonation call and missing money; no transaction ID provided. Rule: fraud_suspected is a human-only ticket type requiring escalation to risk. Action: ESCALATE to risk team and send a reply acknowledging escalation.",
+  "route_to_team": "risk"
+}

@@ -1,0 +1,14 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "mandate_id": "mnd_eval_31",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer wants to cancel their active Spotify monthly autopay mandate (mnd_eval_31). They no longer use the service. This can be cancelled from the app or merchant portal; email requests require human approval.",
+  "ticket_type": "mandate_cancellation"
+}

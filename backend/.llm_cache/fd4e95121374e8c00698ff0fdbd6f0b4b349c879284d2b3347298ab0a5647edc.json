@@ -1,0 +1,16 @@
+{
+  "confidence": 0.55,
+  "entities": {
+    "amount_inr": 12000,
+    "mandate_id": null,
+    "merchant_name": "Urban Kart",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer paid Rs 12,000 by UPI to Urban Kart, money debited, order failed, and requests a full reversal. No transaction ID is provided, so a human must look up the failed UPI debit and process the reversal (which exceeds the auto-refund limit of Rs 5,000).",
+  "ticket_type": "failed_payment_reversal"
+}

@@ -1,0 +1,16 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "kyc_id": "kyc_eval_02",
+    "mandate_id": null,
+    "merchant_id": "mer_eval_02",
+    "refund_id": null,
+    "settlement_id": "stl_eval_hold01",
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Merchant Eval Store 02 reports a settlement on hold for 3 days due to pending KYC, though they believe they submitted all documents. The settlement stl_eval_hold01 (INR 21,000) is held because merchant KYC is still pending verification, and there are no past tickets indicating this is a repeat issue.",
+  "ticket_type": "settlement_delay"
+}

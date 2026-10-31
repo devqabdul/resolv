@@ -1,0 +1,16 @@
+{
+  "confidence": 0.9,
+  "entities": {
+    "kyc_id": "kyc_eval_07",
+    "mandate_id": null,
+    "merchant_id": "mer_eval_07",
+    "refund_id": null,
+    "settlement_id": "stl_eval_07",
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Merchant Eval Store 07 reports a failed settlement of \u20b948,000 due to pending KYC, urgently needing funds for payroll today. KYC status is PENDING with no rejection reason.",
+  "ticket_type": "settlement_delay"
+}

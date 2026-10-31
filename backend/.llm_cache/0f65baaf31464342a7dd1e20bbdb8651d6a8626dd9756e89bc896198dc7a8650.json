@@ -1,0 +1,12 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "refund_id": null,
+    "txn_id": "txn_eval_01"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a failed UPI payment of Rs 1,200 that was debited but not credited (txn_eval_01), and asks when the refund will arrive. The transaction is 1 day old and still within RBI T+1 TAT.",
+  "ticket_type": "failed_payment_reversal"
+}

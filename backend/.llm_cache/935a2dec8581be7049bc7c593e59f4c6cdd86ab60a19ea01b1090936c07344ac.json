@@ -1,0 +1,18 @@
+{
+  "confidence": 0.85,
+  "entities": {
+    "amount_inr": 2499,
+    "issuer_bank": "okhdfc",
+    "mandate_id": null,
+    "merchant_name": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": "3 days ago",
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a failed UPI order from okhdfc 3 days ago with money debited and no refund received yet. Amount is Rs 2,499, which is within the auto-refund limit of Rs 5,000 and auto-compensation limit of Rs 1,000.",
+  "ticket_type": "refund_status"
+}

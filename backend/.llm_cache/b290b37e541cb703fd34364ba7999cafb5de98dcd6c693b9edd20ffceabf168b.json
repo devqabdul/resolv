@@ -1,0 +1,14 @@
+{
+  "confidence": 0.75,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_22"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer disputes an unauthorized transaction of Rs 4,999 and is already raising a dispute with their bank. This is a human-only ticket type (dispute_chargeback/fraud). No matching transaction in context for the exact amount; the closest transaction is txn_eval_22 for Rs 3,400. Advise agent to treat as fraud/dispute and escalate to risk/human review.",
+  "ticket_type": "dispute_chargeback"
+}

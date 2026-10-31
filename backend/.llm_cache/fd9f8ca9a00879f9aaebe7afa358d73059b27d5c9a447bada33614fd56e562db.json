@@ -1,0 +1,24 @@
+{
+  "agent_summary": "Customer asked for the ARN of their completed \u20b9650 refund (rfd_eval_19) because their bank needs a reference number. The refund is COMPLETED with ARN arn_eval19. No further action or money movement is needed.",
+  "customer_reply_draft": "Sorry for the inconvenience. Your refund ARN is arn_eval19 for \u20b9650. You can share this with your bank as the reference number. The refund has already been completed, so it should reflect in your account shortly.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi-en"
+      },
+      "rationale": "Provide the refund ARN to the customer so their bank can process the credit."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {},
+      "rationale": "Log the ARN request for audit trail."
+    }
+  ],
+  "reasoning": "Fact: The customer wants the ARN for refund rfd_eval_19 (\u20b9650, status COMPLETED). Rule: Provide the refund ARN and ETA. Action: send_reply with the ARN and create_internal_note. No money action or escalation needed.",
+  "route_to_team": null
+}

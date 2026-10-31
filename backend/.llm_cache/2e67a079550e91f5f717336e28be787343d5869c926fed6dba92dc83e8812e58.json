@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports failed UPI debit of \u20b91,800 on 2026-10-27, bank shows debit, no credit received. Transaction is DEBITED_NOT_CREDITED, 4 days old, 3 days past T+1 RBI TAT. Auto-refund limit (\u20b95,000) and auto-compensation limit (\u20b91,000) are within scope. Initiated reversal of \u20b91,800 and credited \u20b9300 compensation.",
+  "customer_reply_draft": "We\u2019re sorry your UPI payment of \u20b91,800 failed on 27 Oct and the amount is still debited. We\u2019ve initiated the reversal for the full \u20b91,800 and credited \u20b9300 as RBI-mandated compensation for the delay. The refund will reach your Kotak account within 1 working day. Your reference is txn_eval_10.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1800,
+        "reason": "UPI payment failed with BANK_SWITCH_TIMEOUT, amount debited but not credited",
+        "txn_id": "txn_eval_10"
+      },
+      "rationale": "Transaction status is DEBITED_NOT_CREDITED with no refund yet, so initiate reversal of \u20b91,800"
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 300,
+        "customer_id": "cust_eval_14",
+        "reason": "3 days late beyond RBI T+1 TAT for failed UPI debit",
+        "txn_id": "txn_eval_10"
+      },
+      "rationale": "Regulatory clock shows 3 days late, compensation due is \u20b9300 under RBI rules"
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Close the loop with a concise, apologetic reply in English"
+    }
+  ],
+  "reasoning": "Facts: txn_eval_10 is DEBITED_NOT_CREDITED, no refund exists, 3 days late, compensation due \u20b9300. Rule: auto-refund up to \u20b95,000 and auto-compensation up to \u20b91,000 are allowed. Action: initiate reversal for \u20b91,800 and credit \u20b9300 compensation, then send reply.",
+  "route_to_team": null
+}

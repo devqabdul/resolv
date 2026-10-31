@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reported a failed UPI payment of Rs 1200 debited yesterday. Transaction txn_eval_01 is DEBITED_NOT_CREDITED with no refund. RBI TAT deadline is today (T+1). Initiated reversal within auto-refund limit. No compensation due as 0 days late.",
+  "customer_reply_draft": "Sorry bhai, I completely understand your frustration. I have initiated the reversal for your failed UPI payment of Rs 1200 (txn_eval_01), and the refund should reach your account within 1 working day. Since the transaction is not late, no additional compensation is applicable right now. If you do not see the refund by tomorrow, please reach out to us again.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1200.0,
+        "reason": "Failed UPI payment debited but not credited",
+        "txn_id": "txn_eval_01"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with no refund yet, within auto-refund limit of Rs 5000."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 0,
+        "customer_id": "cust_eval_01",
+        "reason": "No days late as TAT deadline is today",
+        "txn_id": "txn_eval_01"
+      },
+      "rationale": "Regulatory clock shows 0 days late, so no compensation is due."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi-en"
+      },
+      "rationale": "Customer asked in Hinglish, needs a clear update on the reversal and refund timeline."
+    }
+  ],
+  "reasoning": "Fact: Transaction txn_eval_01 is DEBITED_NOT_CREDITED, amount Rs 1200, no refund initiated, created 2026-10-30, TAT deadline 2026-10-31. Rule: Auto-reverse debited-not-credited under Rs 5000. Rule: Compensation due only if days_late > 0. Action: Initiate reversal and send reply.",
+  "route_to_team": null
+}

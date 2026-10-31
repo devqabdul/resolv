@@ -1,0 +1,26 @@
+{
+  "agent_summary": "Customer's KYC (kyc_eval_30) was rejected with reason FRAUD_SUSPECTED. They requested immediate resubmission. Per policy, fraud-related KYC rejections require risk review and cannot be auto-resubmitted. Retrigger KYC is proposed to flag for review, but the path is ROUTE because fraud_suspected is a human-only ticket type. No money action is needed.",
+  "customer_reply_draft": "Sorry for the inconvenience. Your KYC was rejected due to a fraud suspicion flag, so it cannot be auto-resubmitted for security reasons. A specialist from our risk team is reviewing your case and will reach out within 24 hours. In the meantime, you can use this link to upload fresh documents: https://paytm.example/kyc/resubmit/cust_eval_30",
+  "next_action_for_human": "A risk specialist must review the fraud suspicion flag on kyc_eval_30 before any resubmission can proceed. Customer should be contacted within 24 hours.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "retrigger_kyc",
+      "params": {
+        "kyc_id": "kyc_eval_30"
+      },
+      "rationale": "Customer wants resubmission; KYC is rejected due to fraud suspicion which requires risk review per policy."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Provide the resubmission link and explain next steps to the customer."
+    }
+  ],
+  "reasoning": "The KYC rejection reason is FRAUD_SUSPECTED, which is a human-only category per policy_summary. Therefore, path must be ROUTE to risk. Retriggering KYC is allowed as an action but does not bypass the need for human review. No refund, compensation, or reversal is applicable. A send_reply is required to inform the customer and provide the resubmission link.",
+  "route_to_team": "risk"
+}

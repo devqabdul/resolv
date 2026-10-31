@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports failed UPI transaction txn_spike_0003 (Metro Cabs) with status DEBITED_NOT_CREDITED. No refund exists. Reversal initiated for Rs 1,200. Regulatory clock shows 0 days late, so no compensation due.",
+  "customer_reply_draft": "We're sorry for the inconvenience. We've initiated a reversal for transaction txn_spike_0003 of Rs 1,200, which failed due to a UPI switch issue. The reversed amount should reach your AXIS account within 1 working day. You'll receive a confirmation once it's processed.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1200.0,
+        "reason": "UPI switch down; transaction failed but debited from AXIS account",
+        "txn_id": "txn_spike_0003"
+      },
+      "rationale": "Transaction status is DEBITED_NOT_CREDITED with no existing refund; reversal is the correct resolution per policy."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 0,
+        "customer_id": "cust_spike_0003",
+        "reason": "Transaction is within T+1 RBI TAT; no compensation due",
+        "txn_id": "txn_spike_0003"
+      },
+      "rationale": "Regulatory clock shows 0 days late, so compensation_due_inr is 0 and no credit is required."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs confirmation that the reversal has been initiated and next steps."
+    }
+  ],
+  "reasoning": "Facts: txn_spike_0003 is DEBITED_NOT_CREDITED, no refund exists, amount debited from AXIS. Rule: initiate_reversal for debited-not-credited with no refund; credit_compensation only if days_late > 0. Action: initiate reversal for Rs 1,200 and inform customer of T+1 timeline.",
+  "route_to_team": null
+}

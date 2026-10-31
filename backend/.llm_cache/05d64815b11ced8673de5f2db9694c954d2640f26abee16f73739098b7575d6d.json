@@ -1,0 +1,24 @@
+{
+  "agent_summary": "Customer is asking for the refund status and ARN for transaction TXN556677889. The transaction and refund IDs are not present in the provided context, so I cannot confirm the refund details or provide the ARN.",
+  "customer_reply_draft": "I am sorry for the inconvenience. I am unable to locate the refund details for transaction TXN556677889 in our current records, so I cannot provide the ARN right now. A specialist is reviewing your case and will get back to you shortly with the status.",
+  "next_action_for_human": "A specialist needs to look up transaction TXN556677889 and its refund status to provide the ARN and ETA.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer asked for refund status and ARN for TXN556677889; the transaction and refund IDs are not present in the provided context, so I cannot confirm details or provide the ARN."
+    },
+    {
+      "name": "notify_customer",
+      "params": {},
+      "rationale": "Notifying the customer that a specialist is reviewing their refund status."
+    }
+  ],
+  "reasoning": "The customer wants the refund status and ARN for TXN556677889. The transaction and refund IDs are not present in the provided context, so I cannot confirm the refund details or provide the ARN. Confidence is below 0.6, so I must route to a human.",
+  "route_to_team": "risk"
+}

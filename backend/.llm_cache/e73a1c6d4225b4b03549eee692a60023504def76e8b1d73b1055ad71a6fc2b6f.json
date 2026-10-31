@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": "stl_eval_hold01",
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports settlement on hold for 3 days and app shows KYC pending, but claims everything was already submitted. Settlement stl_eval_hold01 is ON_HOLD_KYC for merchant Eval Store 02.",
+  "ticket_type": "settlement_delay"
+}

@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer frustrated that \u20b9250 was debited 6 days ago for a failed UPI payment and is demanding reversal plus compensation. Transaction txn_eval_08 is DEBITED_NOT_CREDITED with no refund yet, so initiate reversal. Regulatory clock shows 5 days late, so \u20b9500 compensation is due per RBI rules. Both actions are within auto limits.",
+  "customer_reply_draft": "We are sorry for the inconvenience caused. We have initiated a reversal of \u20b9250 for transaction txn_eval_08, and the compensation of \u20b9500 will be credited automatically within 1 working day. You should see the reversal and compensation reflected in your account shortly.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 250.0,
+        "reason": "Failed UPI payment debited 6 days ago, reversal initiated per policy",
+        "txn_id": "txn_eval_08"
+      },
+      "rationale": "Transaction txn_eval_08 is DEBITED_NOT_CREDITED with no refund yet, so reversal is permitted."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 500,
+        "customer_id": "cust_eval_12",
+        "reason": "5 days late per RBI TAT rules for failed UPI transactions",
+        "txn_id": "txn_eval_08"
+      },
+      "rationale": "regulatory_clock shows 5 days late and compensation_due_inr is 500, within auto-compensation limit of Rs 1000."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Required to close the loop with the customer."
+    }
+  ],
+  "reasoning": "txn_eval_08 is DEBITED_NOT_CREDITED with no refund yet, so initiate_reversal is allowed. regulatory_clock shows 5 days late and compensation_due_inr is 500, within auto limit, so credit_compensation is allowed. No human-only types apply.",
+  "route_to_team": null
+}

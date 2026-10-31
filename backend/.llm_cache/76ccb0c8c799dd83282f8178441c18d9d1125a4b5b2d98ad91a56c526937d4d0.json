@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer paid Rs 2,499 by UPI from HDFC on 28 Oct, transaction failed with BANK_SWITCH_TIMEOUT, money debited but not credited. She is frustrated that refund hasn't arrived after 3 days, and the ticket is 2 days past the RBI TAT deadline. Auto-refund up to Rs 5,000 is within policy; auto-compensation up to Rs 1,000 is also applicable (Rs 200 due). No past tickets for this issue.",
+  "ticket_type": "failed_payment_reversal"
+}

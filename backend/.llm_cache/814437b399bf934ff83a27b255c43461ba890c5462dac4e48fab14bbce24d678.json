@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer reports a debited-not-credited payment from their AXIS account and requests a refund, but no transaction ID is provided. The ticket must be routed to a human agent to identify the transaction and proceed with reversal and any applicable compensation.",
+  "customer_reply_draft": "I\u2019m sorry for the inconvenience. Since we don\u2019t have a transaction ID in your message, a specialist needs to look up the debited payment in your AXIS account before we can process the refund. They will review it and get back to you shortly with the next steps.",
+  "next_action_for_human": "Look up the failed transaction in the customer\u2019s AXIS account using available details, confirm the amount, and initiate a reversal plus any overdue compensation. If the amount exceeds Rs 5,000, seek approval before processing.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "No transaction ID is provided in the ticket, so the agent cannot initiate a reversal or compensation without a specific txn_id from the context. The policy requires a human to look up the transaction and handle amounts above the auto-refund limit if applicable. A specialist should review and contact the customer with the transaction details."
+    }
+  ],
+  "reasoning": "The ticket type is failed_payment_reversal but no txn_id is provided in the understanding or context, so I cannot call initiate_reversal or credit_compensation safely. Per policy, amounts above Rs 5,000 need human approval, and without a transaction ID the case must be routed to a human.",
+  "route_to_team": "risk"
+}

@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reported a failed UPI payment of Rs 1,200 (txn_eval_01) that was debited but not credited. The transaction is 1 day old and within RBI T+1 TAT. I initiated a reversal for the full amount and drafted a reply in Hinglish confirming the action and ETA. No compensation is due as days_late is 0.",
+  "customer_reply_draft": "Bhai, sorry ki aapka \u20b91,200 ka UPI payment fail ho gaya aur paise kat gaye. Humne txn_eval_01 ke liye reversal initiate kar diya hai. Aapka amount 1 working day ke andar aapke account mein wapas aa jayega. Koi aur help chahiye ho toh batayein.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1200,
+        "reason": "UPI payment failed with bank switch timeout, amount debited but not credited",
+        "txn_id": "txn_eval_01"
+      },
+      "rationale": "The transaction is DEBITED_NOT_CREDITED with no prior refund, so initiating a reversal is the correct action."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 0,
+        "customer_id": "cust_eval_01",
+        "reason": "Transaction is within RBI T+1 TAT, so no compensation is due.",
+        "txn_id": "txn_eval_01"
+      },
+      "rationale": "Days late is 0, so compensation_due_inr is 0 and no compensation needs to be credited."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi-en"
+      },
+      "rationale": "Draft a concise, empathetic reply in Hinglish confirming the reversal is in progress and explaining the refund timeline."
+    }
+  ],
+  "reasoning": "Fact: Transaction txn_eval_01 is DEBITED_NOT_CREDITED with no prior refund. Rule: Allowed to initiate reversal for such transactions. Fact: Days late is 0, so compensation is 0. Action: Initiate reversal and send reply.",
+  "route_to_team": null
+}

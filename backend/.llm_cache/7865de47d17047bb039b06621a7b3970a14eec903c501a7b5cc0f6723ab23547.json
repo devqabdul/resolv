@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer Riya M. reports UPI payment of Rs 2,499 debited on 2026-10-28 but order failed; no refund after 3 days. Transaction txn_48213_a is DEBITED_NOT_CREDITED with no prior refund. RBI TAT was 2026-10-29 and it is now 2 days late, so Rs 200 compensation is due. Amount is under auto-refund limit (Rs 5,000) and auto-compensation limit (Rs 1,000). Initiated reversal and compensation, drafted reply.",
+  "customer_reply_draft": "Hi Riya, I'm sorry for the delay with your Rs 2,499 UPI payment. I've initiated the reversal for txn_48213_a and your refund should reach your account within 1 working day. You'll also receive Rs 200 compensation for the 2-day delay, credited automatically.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P1",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 2499.0,
+        "reason": "UPI payment debited but order failed; customer awaiting refund past RBI T+1 deadline",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with no prior refund; amount is within auto-refund limit of Rs 5,000."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_riya",
+        "reason": "2 days late beyond RBI T+1 UPI TAT deadline",
+        "txn_id": "txn_48213_a"
+      },
+      "rationale": "Regulatory clock shows 2 days late, compensation due is Rs 200."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Draft a concise customer reply in English."
+    }
+  ],
+  "reasoning": "Facts: txn_48213_a is DEBITED_NOT_CREDITED, no prior refund, 2 days late beyond RBI T+1 UPI TAT, Rs 200 compensation due. Rule: Auto-refund up to Rs 5,000 and auto-compensation up to Rs 1,000 are allowed without human approval. Action: initiate reversal for Rs 2,499 and credit Rs 200 compensation, then send reply.",
+  "route_to_team": null
+}

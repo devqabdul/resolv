@@ -1,0 +1,18 @@
+{
+  "confidence": 0.75,
+  "entities": {
+    "amount_inr": null,
+    "issuer_bank": null,
+    "mandate_id": null,
+    "merchant_name": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": null,
+    "txn_id": "TXN999888777"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer wants a refund for TXN999888777, alleging the merchant sold a fake product. This is a chargeback/dispute case that requires human review, not an auto-refund.",
+  "ticket_type": "dispute_chargeback"
+}

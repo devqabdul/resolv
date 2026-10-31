@@ -1,0 +1,31 @@
+{
+  "agent_summary": "Customer wants to cancel active monthly CultFit mandate mnd_eval_33 (Rs 1499). Policy requires human approval for email-based cancellation requests. Routing to specialist team for review before next debit.",
+  "customer_reply_draft": "I understand you would like to stop your monthly CultFit mandate (mnd_eval_33) before the next debit. I have forwarded your request to our specialist team for manual review, as this type of cancellation requires approval. A specialist will review your mandate and contact you before the next debit is processed. You will hear back from us shortly.",
+  "next_action_for_human": "Review and approve cancellation of mandate mnd_eval_33 for customer cust_eval_33 before the next scheduled debit.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "cancel_mandate",
+      "params": {
+        "mandate_id": "mnd_eval_33"
+      },
+      "rationale": "Customer explicitly requested cancellation of mandate mnd_eval_33. Per policy, mandate cancellation requests by email require manual review before execution, so this must be routed to a human specialist."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "email",
+        "language": "en"
+      },
+      "rationale": "Acknowledge the cancellation request and inform the customer that a specialist is reviewing it before the next debit."
+    },
+    {
+      "name": "create_internal_note",
+      "params": {},
+      "rationale": "Document the customer's request to stop the monthly CultFit mandate before the next debit."
+    }
+  ],
+  "reasoning": "Customer requested cancellation of mandate mnd_eval_33. Policy states email-based mandate cancellation requests need manual review. No money action can be taken autonomously. Must route to human team for approval before next debit.",
+  "route_to_team": "risk"
+}

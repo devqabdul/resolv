@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer asked about a new-user offer. No transaction or refund details provided; this is an informational/sales inquiry. Confidence is 0.7, above the 0.6 threshold, but the ticket type is 'other' and outside support scope. Routed to a human for sales/marketing assistance.",
+  "customer_reply_draft": "Hi Eval, I\u2019m sorry, but I can only help with payments and transaction-related queries. For new-user offers and promotions, please check our website or reach out to our sales team. I\u2019ll flag your question so the right team can assist you.",
+  "next_action_for_human": "A specialist from the sales/marketing team should reach out to the customer regarding new-user offers for this month.",
+  "path": "ROUTE",
+  "priority": "P3",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "chat",
+        "language": "en"
+      },
+      "rationale": "Customer is asking about a new-user offer, which is a sales/marketing inquiry outside the scope of payments support. No transaction, refund, or settlement issue is present to resolve. The agent should inform the customer that this is a sales question and direct them to the appropriate channel."
+    }
+  ],
+  "reasoning": "The customer is asking about a new-user offer, which is a sales inquiry. There are no transactions, refunds, or settlements to resolve. The ticket type is 'other' and falls outside the scope of payments support. Confidence is 0.7, which is above the 0.6 routing threshold, but since this is a sales question, it should be routed to the sales team.",
+  "route_to_team": "sales"
+}

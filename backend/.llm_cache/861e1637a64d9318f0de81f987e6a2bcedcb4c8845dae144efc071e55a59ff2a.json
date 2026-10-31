@@ -1,0 +1,16 @@
+{
+  "confidence": 0.9,
+  "entities": {
+    "customer_id": "cust_eval_29",
+    "kyc_id": "kyc_eval_29",
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": null
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer's KYC was rejected due to a PAN-Aadhaar mismatch and wants to resubmit both documents. Provide the resubmission link and confirm that the documents must match exactly.",
+  "ticket_type": "kyc_resubmission"
+}

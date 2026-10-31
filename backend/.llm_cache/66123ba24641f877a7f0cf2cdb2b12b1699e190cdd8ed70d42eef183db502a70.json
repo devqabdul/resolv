@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports failed UPI payment with money debited from AXIS account. Transaction txn_spike_0001 is DEBITED_NOT_CREDITED, no refund initiated. Initiate reversal for Rs 1350 and send reply in Hinglish.",
+  "customer_reply_draft": "Sorry for the inconvenience. Your UPI payment of Rs 1350 (txn_spike_0001) failed due to a UPI switch issue, and the amount was debited from your AXIS account. We have initiated the reversal, and the refund should reach your AXIS account within 1 working day. If you do not see it by then, please contact us again.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 1350.0,
+        "reason": "UPI_SWITCH_DOWN failure, money debited from AXIS account but merchant not credited",
+        "txn_id": "txn_spike_0001"
+      },
+      "rationale": "Transaction txn_spike_0001 is DEBITED_NOT_CREDITED with no refund initiated yet, so reversal is the correct auto-fix."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 0,
+        "customer_id": "cust_spike_0001",
+        "reason": "Days late is 0, so no compensation is due per regulatory_clock.",
+        "txn_id": "txn_spike_0001"
+      },
+      "rationale": "Regulatory clock shows days_late: 0 and compensation_due_inr: 0, so no compensation is required."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi-en"
+      },
+      "rationale": "Customer wrote in Hinglish; reply must match language and close the loop."
+    }
+  ],
+  "reasoning": "Fact: txn_spike_0001 is DEBITED_NOT_CREDITED with no refund initiated. Rule: propose initiate_reversal for DEBITED_NOT_CREDITED with no refund. Fact: regulatory_clock.days_late is 0, so compensation_due_inr is 0. Rule: omit credit_compensation when amount is 0. Fact: customer used Hinglish. Rule: send_reply in same language.",
+  "route_to_team": null
+}

@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_big"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "calm",
+  "summary_for_agent": "Customer paid Rs 12,000 via UPI to Urban Kart, money was debited but order failed. Requests full reversal of Rs 12,000. Transaction txn_big is DEBITED_NOT_CREDITED with failure_reason BANK_SWITCH_TIMEOUT. The transaction is 3 days old, 2 days past RBI TAT (T+1), so Rs 200 compensation is due. Amount exceeds auto-refund limit (Rs 5,000) and auto-compensation limit (Rs 1,000), so this requires human approval for the full reversal.",
+  "ticket_type": "failed_payment_reversal"
+}

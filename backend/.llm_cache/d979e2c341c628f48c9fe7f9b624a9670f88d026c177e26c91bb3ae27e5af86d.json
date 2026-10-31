@@ -1,0 +1,17 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 3150.0,
+    "eta": "2026-11-02T08:00:00+00:00",
+    "issuer_bank": "HDFC",
+    "order_id": "UK-7781",
+    "refund_date_initiated": "2026-10-25",
+    "refund_id": "rfd_eval_uk7781",
+    "txn_id": "txn_eval_uk7781"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer is asking for the reference number for a Rs 3,150 UPI refund (order UK-7781) initiated on 25 Oct that has not yet been credited. The refund ARN is arn_evaluk7781 and ETA is 2 Nov.",
+  "ticket_type": "refund_status"
+}

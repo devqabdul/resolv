@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_spike_0002"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports UPI payment failed but AXIS bank debited Rs 1150. Transaction txn_spike_0002 shows status DEBITED_NOT_CREDITED with refund_status NONE. RBI TAT deadline is 2026-11-01, so auto-refund/compensation should apply if eligible.",
+  "ticket_type": "failed_payment_reversal"
+}

@@ -1,0 +1,19 @@
+{
+  "agent_summary": "Customer reports failed UPI with debited AXIS account, requests refund. No txn_id/refund_id in context. Confidence 0.6 (not above threshold). Need txn_id to auto-match and process reversal. Human escalation not strictly required but cannot auto-resolve without ID. Routing to human for guidance/requesting details.",
+  "customer_reply_draft": "Sir, hum samajh rahe hain ki aapke AXIS account se paise debit ho gaye hain lekin UPI payment fail ho gaya. Kripya transaction ID ya UTR number share karein taaki hum isse trace karke refund process kar sakein. Jaise hi details milengi, refund T+1 ke andar aapke account mein aa jayega.",
+  "next_action_for_human": "Request the customer to share the UPI transaction ID (UTR) or reference number from their AXIS statement so the agent can trace and initiate the reversal.",
+  "path": "ROUTE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "hi"
+      },
+      "rationale": "Customer needs to provide the transaction ID so we can trace and process the reversal; no txn_id is available in context."
+    }
+  ],
+  "reasoning": "Facts: Customer says UPI failed but AXIS debited; no txn_id provided. Rule: Reversal requires txn_id; without it we cannot auto-match. Action: Route to human to ask for UTR/txn_id before initiating reversal.",
+  "route_to_team": null
+}

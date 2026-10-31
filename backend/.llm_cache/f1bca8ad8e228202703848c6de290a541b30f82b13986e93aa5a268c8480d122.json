@@ -1,0 +1,18 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 1050.0,
+    "issuer_bank": "ICICI",
+    "mandate_id": null,
+    "merchant_name": "urban_kart",
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_date": "2026-10-28T08:00:00Z",
+    "txn_id": "txn_eval_03"
+  },
+  "is_repeat_issue": false,
+  "language": "hi-en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports wallet debit of \u20b91,050 on 28 Oct with order cancelled, 3 days elapsed and no refund yet. Transaction txn_eval_03 is DEBITED_NOT_CREDITED with BANK_SWITCH_TIMEOUT. RBI TAT exceeded by 2 days; \u20b9200 auto-compensation due. Need to confirm refund initiation and provide tracking.",
+  "ticket_type": "failed_payment_reversal"
+}

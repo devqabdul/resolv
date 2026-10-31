@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_eval_07"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "calm",
+  "summary_for_agent": "Customer requests a refund of \u20b91,550 for a wallet top-up that failed (status DEBITED_NOT_CREDITED, reason BANK_SWITCH_TIMEOUT) two days ago on 2026-10-29. The transaction is within the auto-refund limit of \u20b95,000. RBI TAT deadline was 2026-10-30, so compensation of \u20b9100 is also due.",
+  "ticket_type": "failed_payment_reversal"
+}

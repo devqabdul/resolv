@@ -1,0 +1,16 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 850.0,
+    "issuer_bank": "ICICI",
+    "merchant_name": "Urban Kart",
+    "refund_id": "rfd_eval_09",
+    "txn_date": "2026-10-28T08:00:00Z",
+    "txn_id": "txn_eval_09"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer paid \u20b9850 via UPI for Urban Kart (txn_eval_09), the payment failed but the money was debited. Refund rfd_eval_09 was initiated with an ETA of 2026-11-02, but the customer is following up for an update. The transaction is now 2 days past the RBI T+1 TAT deadline, so \u20b9200 in auto-compensation is due.",
+  "ticket_type": "refund_status"
+}

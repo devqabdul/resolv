@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Customer reports \u20b9250 UPI payment debited from Kotak 3 days ago (txn_eval_11) but not received by merchant Urban Kart. Status is DEBITED_NOT_CREDITED with failure reason BANK_SWITCH_TIMEOUT. Transaction is 2 days past RBI T+1 TAT, so \u20b9200 compensation is due. Transaction is within auto-refund limit (Rs 5,000), so reversal and compensation can be auto-processed without human approval.",
+  "customer_reply_draft": "We're sorry about the delay with your payment of \u20b9250. We've initiated a reversal for transaction txn_eval_11 and the refund should reach your Kotak account within 1 working day. As the payment was 2 days late, we're also crediting \u20b9200 as compensation.",
+  "next_action_for_human": null,
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 250,
+        "reason": "DEBITED_NOT_CREDITED with BANK_SWITCH_TIMEOUT; merchant not received",
+        "txn_id": "txn_eval_11"
+      },
+      "rationale": "Transaction is debited but not credited to merchant with no existing refund, and amount is within auto-refund limit of Rs 5,000."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_eval_15",
+        "reason": "RBI TAT exceeded by 2 days",
+        "txn_id": "txn_eval_11"
+      },
+      "rationale": "Transaction is 2 days past RBI T+1 TAT, so Rs 200 late compensation is due under policy."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs to be informed about the reversal and compensation."
+    }
+  ],
+  "reasoning": "Facts: Transaction txn_eval_11 is DEBITED_NOT_CREDITED, no refund exists, amount Rs 250, 2 days past RBI T+1 TAT, compensation due Rs 200. Rule: Auto-refund up to Rs 5,000 and auto-compensation up to Rs 1,000 are allowed without human approval. Action: initiate reversal for Rs 250 and credit compensation of Rs 200.",
+  "route_to_team": null
+}

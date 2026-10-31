@@ -1,0 +1,16 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "amount_inr": 3150.0,
+    "issuer_bank": "HDFC",
+    "merchant_name": "Urban Kart",
+    "refund_id": "rfd_eval_uk7781",
+    "txn_date": "2026-10-25T10:00:00Z",
+    "txn_id": "txn_eval_uk7781"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "neutral",
+  "summary_for_agent": "Customer is following up on a refund of Rs 3,150 initiated on 25 Oct 2026 (order #UK-7781) that is still showing as INITIATED and not yet credited to their HDFC account. They are requesting the reference number. The refund ARN is arn_evaluk7781 with an ETA of 2 Nov 2026. No past tickets exist for this issue.",
+  "ticket_type": "refund_status"
+}

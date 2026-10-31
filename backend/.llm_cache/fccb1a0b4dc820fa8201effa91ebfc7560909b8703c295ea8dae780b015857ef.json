@@ -1,0 +1,18 @@
+{
+  "confidence": 0.9,
+  "entities": {
+    "amount_inr": 2499.0,
+    "issuer_bank": "HDFC",
+    "mandate_id": null,
+    "merchant_name": "urban_kart",
+    "refund_id": "rfd_18eb8fcc",
+    "settlement_id": null,
+    "txn_date": "2026-10-28T08:00:00Z",
+    "txn_id": "txn_48213_a"
+  },
+  "is_repeat_issue": true,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer is raising a chargeback dispute because the merchant charged her twice and is refusing to help. This is a repeat ticket (same summary as tkt_dispute routed on 2026-10-31). The transaction txn_48213_a is debited-not-credited with a completed refund rfd_18eb8fcc, and the customer is now disputing the charge.",
+  "ticket_type": "dispute_chargeback"
+}

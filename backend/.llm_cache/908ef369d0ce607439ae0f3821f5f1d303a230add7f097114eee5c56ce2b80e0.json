@@ -1,0 +1,14 @@
+{
+  "confidence": 0.95,
+  "entities": {
+    "mandate_id": null,
+    "refund_id": null,
+    "settlement_id": null,
+    "txn_id": "txn_big"
+  },
+  "is_repeat_issue": false,
+  "language": "en",
+  "sentiment": "frustrated",
+  "summary_for_agent": "Customer reports a \u20b912,000 UPI debit on 24 Oct for a laptop that failed; seller never received it. Transaction txn_big is DEBITED_NOT_CREDITED with BANK_SWITCH_TIMEOUT. Requesting immediate reversal. Transaction is 3 days old, already 2 days past RBI TAT; compensation of \u20b9200 is due. Amount exceeds auto-refund limit, so human approval is required.",
+  "ticket_type": "failed_payment_reversal"
+}

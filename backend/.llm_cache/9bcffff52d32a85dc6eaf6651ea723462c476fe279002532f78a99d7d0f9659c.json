@@ -1,0 +1,38 @@
+{
+  "agent_summary": "Repeat failed payment reversal for Rs 12,000 UPI to Urban Kart (txn_big), status DEBITED_NOT_CREDITED, no prior refund. Regulatory clock: 2 days late, Rs 200 compensation due. Auto-refund limit is Rs 5,000, so reversal requires human approval. Past ticket tkt_48219 was escalated unresolved.",
+  "customer_reply_draft": "I'm sorry for the inconvenience. Your UPI transaction of Rs 12,000 to Urban Kart (txn_big) was debited but not credited, and I've initiated a full reversal request for you. Since this is above the auto-refund limit, a specialist is reviewing it and you'll hear back shortly. Additionally, Rs 200 compensation has been credited to your account for the delay. The reversal will reach your account within 1 working day once approved.",
+  "next_action_for_human": "A specialist must approve the Rs 12,000 reversal since it exceeds the Rs 5,000 auto-refund limit. Also verify whether the prior escalation tkt_48219 needs to be linked or closed.",
+  "path": "RESOLVE",
+  "priority": "P2",
+  "proposed_actions": [
+    {
+      "name": "initiate_reversal",
+      "params": {
+        "amount_inr": 12000,
+        "reason": "DEBITED_NOT_CREDITED - BANK_SWITCH_TIMEOUT, T+1 TAT missed",
+        "txn_id": "txn_big"
+      },
+      "rationale": "Transaction is DEBITED_NOT_CREDITED with no refund yet, so reversal is appropriate. Amount is above auto-refund limit (Rs 5,000) so it will wait for human approval."
+    },
+    {
+      "name": "credit_compensation",
+      "params": {
+        "amount_inr": 200,
+        "customer_id": "cust_arjun",
+        "reason": "RBI TAT compensation: 2 days late on UPI transaction",
+        "txn_id": "txn_big"
+      },
+      "rationale": "Regulatory clock shows 2 days late, so Rs 200 compensation is due automatically."
+    },
+    {
+      "name": "send_reply",
+      "params": {
+        "channel": "in_app",
+        "language": "en"
+      },
+      "rationale": "Customer needs a clear update on reversal and compensation."
+    }
+  ],
+  "reasoning": "Fact: txn_big is DEBITED_NOT_CREDITED, no refund exists, amount is Rs 12,000 (above auto limit), 2 days late, Rs 200 compensation due. Rule: propose initiate_reversal for DEBITED_NOT_CREDITED with no refund, even above limit; path stays RESOLVE because policy gate decides approval. Rule: credit_compensation with regulatory_clock.compensation_due_inr. Rule: always end with send_reply. Action: initiate_reversal + credit_compensation + send_reply.",
+  "route_to_team": null
+}
