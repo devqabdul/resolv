@@ -6,6 +6,17 @@ cd "$(dirname "$0")/.."
 : "${ANTHROPIC_API_KEY:?ANTHROPIC_API_KEY is required for the live warm-up}"
 BASE="${NEXT_PUBLIC_API_BASE:-http://localhost:8000}"
 
+# (decision: FIX4) pin the clock in .env so the warm run and the pitch hash identical prompts.
+[ -f .env ] || cp .env.example .env
+PIN="$(sed -n 's/^DEMO_NOW_OVERRIDE=\([^#[:space:]]*\).*/\1/p' .env | tail -1)"
+PIN="${PIN:-2026-11-01T10:00:00Z}"
+if grep -q '^DEMO_NOW_OVERRIDE=' .env; then
+  sed -i.bak "s/^DEMO_NOW_OVERRIDE=.*/DEMO_NOW_OVERRIDE=$PIN/" .env && rm -f .env.bak
+else
+  echo "DEMO_NOW_OVERRIDE=$PIN" >> .env
+fi
+echo "Warming with DEMO_NOW_OVERRIDE=$PIN"
+
 export LLM_MODE=live
 make backend &
 BACKEND_PID=$!
@@ -30,7 +41,6 @@ sleep 30
 make evals
 
 # Switch to replay for the pitch; keep other .env lines.
-[ -f .env ] || cp .env.example .env
 if grep -q '^LLM_MODE=' .env; then
   sed -i.bak 's/^LLM_MODE=.*/LLM_MODE=replay/' .env && rm -f .env.bak
 else
@@ -52,4 +62,5 @@ curl -fsS "$BASE/api/health" | grep -q '"llm_mode":"replay"' || { echo "health.l
 make test
 make lint
 
+echo "REMINDER: keep DEMO_NOW_OVERRIDE=$PIN in .env for the pitch, or the replay cache will miss."
 echo "Done. Review, then run: git add backend/.llm_cache backend/evals/report.* && git commit"
