@@ -1,5 +1,5 @@
 'use client';
-// Which side panels are open, persisted in localStorage ("resolv-layout"). Defaults (first visit,
+// Which panels are open (notifications = the Notifications group in the left sidebar), persisted in localStorage ("resolv-layout"). Defaults (first visit,
 // SSR, first paint) are everything open. Focus mode snapshots the previous state in `saved`;
 // opening or closing any single panel afterwards ends focus mode. The sidebar itself stays with
 // shadcn's SidebarProvider (cookie), only its previous state is remembered here for restoring.
