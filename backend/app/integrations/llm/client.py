@@ -32,6 +32,30 @@ def load_prompt(name: str) -> str:
     return (PROMPTS / f"{name}.md").read_text()
 
 
+def _flat_schema(schema: type[BaseModel]) -> dict[str, Any]:
+    """Pydantic JSON schema with $refs inlined and every property required.
+
+    (decision: SARVAM-1) sarvam-105b ignored $ref'd nested fields and optional fields, so
+    proposed_actions and customer_reply_draft came back empty and pydantic defaults hid it.
+    """
+    raw = schema.model_json_schema()
+    defs = raw.pop("$defs", {})
+
+    def walk(node: Any) -> Any:
+        if isinstance(node, dict):
+            if "$ref" in node:
+                return walk(dict(defs[node["$ref"].rsplit("/", 1)[-1]]))
+            out = {k: walk(v) for k, v in node.items() if k not in ("default", "title")}
+            if out.get("type") == "object" and "properties" in out:
+                out["required"] = list(out["properties"])
+            return out
+        if isinstance(node, list):
+            return [walk(v) for v in node]
+        return node
+
+    return walk(raw)
+
+
 class LLMClient:
     def __init__(self, sdk: Any = None, http: httpx.Client | None = None) -> None:
         # (decision: `sdk`/`http` let tests inject a fake Anthropic / Sarvam transport)
@@ -65,7 +89,7 @@ class LLMClient:
                     "function": {
                         "name": tool,
                         "description": f"Record the {schema.__name__} as structured output.",
-                        "parameters": schema.model_json_schema(),
+                        "parameters": _flat_schema(schema),
                     },
                 }
             ],
