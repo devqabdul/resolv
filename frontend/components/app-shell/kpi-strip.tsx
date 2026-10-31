@@ -22,7 +22,8 @@ const KPIS: { id: string; label: string; pick: (m: Metrics) => number; format?: 
 
 export default function KpiStrip() {
   const { data: m } = useMetrics(); // undefined on 404 / network error -> dashes
-  const { kpiOpen: open, motionOn } = useLayoutState();
+  const { motionOn } = useLayoutState();
+  const open = true; // metrics are required data: always shown (user, 31 Oct)
   const reduce = useReducedMotion();
   // Closed: stays mounted at height 0; the negative margin cancels the parent's gap-6.
   return (

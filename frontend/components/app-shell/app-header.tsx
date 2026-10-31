@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { ArrowsInIcon, ArrowsOutIcon, BellIcon, FlaskIcon, ChartBarIcon, MoonIcon, SunIcon } from "@phosphor-icons/react";
+import { ArrowsInIcon, ArrowsOutIcon, BellIcon, FlaskIcon, MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -41,7 +41,7 @@ export default function AppHeader() {
   const { data: health, error } = useHealth();
   const { resolvedTheme, setTheme } = useTheme();
   const { open: sidebarOpen, setOpen: setSidebarOpen } = useSidebar();
-  const { kpiOpen, focus, setPanel, enterFocus, exitFocus } = useLayoutState();
+  const { focus, enterFocus, exitFocus } = useLayoutState();
   const { data: notes } = useNotifications(50);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
@@ -82,14 +82,6 @@ export default function AppHeader() {
           onClick={toggleFocus}
         >
           {focus ? <ArrowsInIcon /> : <ArrowsOutIcon />}
-        </HeaderToggle>
-        <HeaderToggle
-          data-testid="kpi-toggle"
-          label={kpiOpen ? "Hide metrics" : "Show metrics"}
-          aria-pressed={kpiOpen}
-          onClick={() => setPanel("kpiOpen", !kpiOpen)}
-        >
-          <ChartBarIcon weight={kpiOpen ? "fill" : "regular"} />
         </HeaderToggle>
         <DemoDrawer
           trigger={
