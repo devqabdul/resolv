@@ -42,8 +42,10 @@ def attach_fast_path(ticket: TicketDTO, incident: Incident, run_id: str | None =
     with session.SessionLocal() as db:
         inc = db.get(Incident, incident.id)
         assert inc is not None
-        if db.get(IncidentTicket, (inc.id, ticket.id)) is None:  # cluster may have linked it
+        link = db.get(IncidentTicket, (inc.id, ticket.id))  # cluster may have linked it already
+        if link is None:
             db.add(IncidentTicket(incident_id=inc.id, ticket_id=ticket.id, via="fast_path"))
+        via = link.via if link else "fast_path"
         row = db.get(Ticket, ticket.id)
         if row is not None:
             row.incident_id, row.handling_mode = inc.id, HandlingMode.incident
@@ -54,8 +56,9 @@ def attach_fast_path(ticket: TicketDTO, incident: Incident, run_id: str | None =
         seen = ticket.created_at or now()
         inc.last_seen = max(inc.last_seen or seen, seen)
         db.commit()
-    payload = {"incident_id": incident.id, "via": "fast_path", "signature": ticket.signature}
-    audit.record(ticket.id, AuditKind.incident_linked, payload, run_id=run_id, actor="system")
+    payload = {"incident_id": incident.id, "via": via, "signature": ticket.signature}
+    if link is None:
+        audit.record(ticket.id, AuditKind.incident_linked, payload, run_id=run_id, actor="system")
     audit.record(ticket.id, AuditKind.incident_fast_path, payload, run_id=run_id)
     _, bank, _ = incident.signature.split("|")
     return FAST_PATH_REPLY.format(bank=bank, incident_id=incident.id)

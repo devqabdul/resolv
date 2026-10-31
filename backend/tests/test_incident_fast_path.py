@@ -69,7 +69,8 @@ def test_matching_ticket_takes_fast_path(
     assert "incident_fast_path" in kinds and "reply_sent" in kinds
     assert not {"understanding", "decision"} & set(kinds)
     fp = next(e for e in _events(tid) if e.kind == "incident_fast_path")
-    assert fp.payload_json["incident_id"] == inc.id
+    assert fp.payload_json["incident_id"] == inc.id and fp.payload_json["via"] == "fast_path"
+    assert kinds.count("incident_linked") == 1
     [text] = sent
     assert "AXIS UPI payments" in text and text.endswith(f"Ref {inc.id}")
     with session.SessionLocal() as db:
@@ -103,9 +104,10 @@ def test_spike_of_120_absorbed_and_health_fast(client: TestClient, paytm: PaytmC
 
 
 def test_background_spike_returns_ids_at_once(paytm: PaytmClient) -> None:
-    t0 = time.perf_counter()
     ids = demo.spike("AXIS", 25, 20, batch_delay_s=0.2, background=True)
-    assert len(ids) == 25 and time.perf_counter() - t0 < 0.4
+    assert len(ids) == 25
+    with pytest.raises(KeyError):  # third batch is >= 0.4 s away
+        context.load_ticket(ids[-1])
     deadline = time.time() + 5
     while time.time() < deadline:
         try:
