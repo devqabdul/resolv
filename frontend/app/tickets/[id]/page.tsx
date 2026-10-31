@@ -2,10 +2,10 @@
 // Ticket detail (T14). Sample response for layout work: frontend/fixtures/ticket_d1.json
 // (a captured GET /api/tickets/tkt_48213 after a D1 run); not imported at runtime.
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ArrowClockwiseIcon, LinkSimpleIcon, MagnifyingGlassIcon, WarningOctagonIcon } from "@phosphor-icons/react";
+import { ArrowClockwiseIcon, ArrowLeftIcon, LinkSimpleIcon, MagnifyingGlassIcon, WarningOctagonIcon } from "@phosphor-icons/react";
 import ApprovalActions from "@/components/ApprovalActions";
 import ContextCard from "@/components/ContextCard";
 import OverrideForm from "@/components/OverrideForm";
@@ -64,6 +64,7 @@ export default function TicketPage() {
 
   return (
     <>
+      <BackButton />
       <div className="flex flex-wrap items-center gap-3">
         <span className="font-mono text-2xl font-semibold tabular-nums">{t.id}</span>
         <Badge
@@ -180,5 +181,22 @@ function TicketSkeleton() {
         </div>
       </div>
     </>
+  );
+}
+
+// Back to wherever the user came from (queue, approvals, incident filter); falls back to the
+// queue when the ticket was opened directly (no in-app history). (decision: UI back button)
+function BackButton() {
+  const router = useRouter();
+  function goBack() {
+    const sameOrigin = typeof document !== "undefined" && document.referrer.startsWith(window.location.origin);
+    if (sameOrigin && window.history.length > 1) router.back();
+    else router.push("/");
+  }
+  return (
+    <Button data-testid="back-button" variant="ghost" size="sm" onClick={goBack} className="-ml-2 w-fit text-muted-foreground">
+      <ArrowLeftIcon data-icon="inline-start" />
+      Back
+    </Button>
   );
 }
