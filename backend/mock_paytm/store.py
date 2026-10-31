@@ -25,6 +25,19 @@ def now() -> datetime:
     return datetime.now(tz=UTC)
 
 
+def _base_now(step_minutes: int = 60) -> datetime:
+    """Anchor for seeded/generated timestamps (decision: FIX4).
+
+    DEMO_NOW_OVERRIDE when set, else now() floored to `step_minutes`, so a reset+seed in the same
+    window yields byte-identical ledger rows and the replay cache can hit. Offsets stay relative.
+    """
+    t = now()
+    if os.environ.get("DEMO_NOW_OVERRIDE", "").strip():
+        return t
+    floored = t.minute - t.minute % step_minutes if step_minutes < 60 else 0
+    return t.replace(minute=floored, second=0, microsecond=0)
+
+
 def iso(dt: datetime) -> str:
     return dt.isoformat()
 
@@ -47,7 +60,7 @@ def _txn(id_: str, cust: str, mer: str, amt: int, method: str, status: str, bank
 
 def seed() -> None:
     reset()
-    t = now()
+    t = _base_now()  # (decision: FIX4) hour-floored, replay-stable
     customers.update({
         "cust_riya": {"id": "cust_riya", "name": "Riya M.", "tier": "plus", "since": "2022-10-01",
                       "language": "en", "phone_masked": "+91 98XXXXXX21"},
@@ -102,10 +115,9 @@ _MERCHANTS = ["mer_urban_kart", "mer_chai_point", "mer_fresh_basket", "mer_metro
 def bank_outage(issuer_bank: str, count: int, minutes: int) -> dict:
     """Deterministic: same (issuer_bank, count) -> same ids and amounts."""
     rng = random.Random(f"{issuer_bank}:{count}")
-    t = now()
-    if not os.environ.get("DEMO_NOW_OVERRIDE", "").strip():
-        # (decision: 10-min floor keeps spike ids/timestamps replay-stable)
-        t = t.replace(minute=t.minute - t.minute % 10, second=0, microsecond=0)
+    # (decision: FIX4) shared anchor; 10-min floor (not hourly) keeps spike rows inside the
+    # 60-min incident window
+    t = _base_now(10)
     # offsets leave room for the floor lag so rows stay within the last `minutes`
     span = max(minutes * 60 - 600, 60)
     ids = []

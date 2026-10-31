@@ -56,7 +56,7 @@ export default function TicketPage() {
         {t.assigned_team && <span className="rounded bg-light px-2 py-0.5 text-sm font-bold text-navy ring-1 ring-navy/20">team: {t.assigned_team}</span>}
         <span data-testid="resolved-by" className="text-lg text-ink/70">{t.resolved_by ? <>resolved by <b className="text-navy">{t.resolved_by}</b></> : "unresolved"}</span>
         {incident && (
-          <Link data-testid="incident-chip" href={`/incidents/${incident.id}`} className="rounded bg-purple-600 px-3 py-1 text-base font-bold text-white">
+          <Link data-testid="incident-chip" href="/incidents" /* (decision: FIX4) no /incidents/[id] route; the list page shows all */ className="rounded bg-purple-600 px-3 py-1 text-base font-bold text-white">
             Incident {incident.title ?? incident.signature}
           </Link>
         )}

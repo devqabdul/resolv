@@ -57,6 +57,18 @@ def test_spike_clusters_into_one_incident(client: TestClient, paytm: PaytmClient
     assert len(linked) == len(ids) and all(e.actor == "system" for e in linked)
     assert client.post("/api/incidents/inc_nope/notify").status_code == 404
 
+    # (decision: FIX4) threaded path: returns COMMUNICATED at once, sends finish in the thread
+    import threading
+
+    assert incidents.send_notice(inc.id, background=True).status == "COMMUNICATED"
+    for t in threading.enumerate():
+        if t.name == "incident-notice":
+            t.join(timeout=10)
+    with session.SessionLocal() as db:
+        notes = db.scalars(select(AuditEvent).where(AuditEvent.kind == "notification")).all()
+    sent = [e.payload_json["sent"] for e in notes if e.payload_json.get("channel") == "customer"]
+    assert sent == [len(ids)] * 2
+
 
 def test_single_ticket_makes_no_incident(paytm: PaytmClient) -> None:
     demo.scenario("d1_failed_upi")

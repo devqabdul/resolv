@@ -477,11 +477,14 @@ AGENT_ENGINE=langgraph                       # langgraph | runner (fallback, sam
 MOCK_LATENCY_MS=120
 MOCK_REFUND_SETTLE_SECONDS=20
 SLACK_WEBHOOK_URL=
-EMBEDDINGS_ENABLED=true
+EMBEDDINGS_ENABLED=false                     # set true to enable fastembed similar-ticket retrieval (downloads ~130 MB on first run)
 INCIDENT_THRESHOLD=10
 INCIDENT_WINDOW_MINUTES=60
 QUEUE_CONCURRENCY=3
 DEMO_NOW_OVERRIDE=                           # optional fixed "now" for deterministic TAT maths
+# DEMO_NOW_OVERRIDE=2026-11-01T10:00:00Z # pin the clock for a deterministic pitch and warm run
 NEXT_PUBLIC_API_BASE=http://localhost:8000
 NEXT_PUBLIC_USE_FIXTURES=0                   # 1 = frontend renders from fixture JSON before the backend exists
 ```
+
+(decision: FIX4, 31 Oct) Pitch defaults: `EMBEDDINGS_ENABLED=false` (also the `app/config.py` default; no first-run model download on stage), `MOCK_LATENCY_MS=120`, `LLM_MODE=replay`. `DEMO_NOW_OVERRIDE` pins the clock for both Resolv and the mounted mock (`make backend` loads `.env` via `uv run --env-file`); `scripts/warm_cache.sh` sets it before warming, and the pitch MUST keep the same value so replay keys match. Without it, the mock floors seeded timestamps to the hour.
