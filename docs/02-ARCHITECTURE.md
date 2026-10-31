@@ -280,7 +280,7 @@ Base: `http://localhost:8000`. All JSON. Ids are strings. Times ISO-8601 UTC; "n
 | `POST /api/demo/seed` | — | loads canonical data (01 §10) + KB |
 | `POST /api/demo/ticket/{scenario}` | — | creates the named scenario ticket |
 | `POST /api/demo/spike` | `{issuer_bank: "AXIS", count: 120, minutes: 20}` | generates transactions + tickets |
-| `GET /api/health` | — | `{ok, llm_mode, db, mock_paytm}` |
+| `GET /api/health` | — | `{ok, llm_mode, llm_provider, db, mock_paytm}` (`llm_provider`: decision: SARVAM-1) |
 
 ### 6.2 Mock Paytm API (`/mock/paytm/v1`, or standalone `:8001/v1`)
 | Method & path | Notes |
@@ -420,6 +420,7 @@ Implemented guard (decision: T17, 31 Oct): uses `sla_due_at` only; folding in th
   - `live`: Anthropic SDK (`anthropic` Python), models from env (`LLM_MODEL_DECIDE=claude-sonnet-5-5`, `LLM_MODEL_UNDERSTAND=claude-haiku-5-5`), `temperature=0`, tool-use with the pydantic JSON schema, `max_tokens=1500`. Every response is written to the cache.
   - `replay`: cache hit → return stored response; miss → live (then cached). **Pitch runs in this mode after `scripts/warm_cache.sh`.**
   - `mock`: `llm/mock.py` — keyword rules produce a plausible `Understanding`/`Decision` for the 7 scenarios + spike variants. Last-resort fallback; also used in CI/tests.
+- **Provider switch (decision: SARVAM-1, 31 Oct).** `LLM_PROVIDER=sarvam|anthropic` (default `sarvam`, hackathon sponsor); optional `LLM_PROVIDER_UNDERSTAND` / `LLM_PROVIDER_DECIDE` overrides (empty = inherit). Sarvam: `POST {SARVAM_BASE_URL}/chat/completions` (default `https://api.sarvam.ai/v1`, model `SARVAM_MODEL=sarvam-105b`, header `api-subscription-key`) via `httpx`, timeout 20 s, one retry on timeout/429/5xx, `temperature=0`, `max_tokens=1500`, `reasoning_effort=null`; the pydantic schema is sent as one function tool forced with `tool_choice`, `function.arguments` is parsed and validated (a bare JSON `content` is accepted too). Fallback order on missing key, HTTP error, timeout, invalid JSON or validation failure: primary provider → Anthropic (only if a key is set) → `mock.respond`, each step logged `llm_fallback`. Mode semantics are unchanged; the cache key uses `"{provider}:{model}"` in place of `model`, and a response is cached under the provider that produced it.
 - Cache key: `sha256(mode-independent payload: model + system + messages + tool schema)`; store in `backend/.llm_cache/*.json` (committed to the repo after warming so a fresh clone can demo offline).
 - Prompts live in `agent/prompts/*.md` and are loaded at startup; `reply_style.md` fixes tone (short, apologise once, give reference number, say exactly what happens next, same language as customer, no promises beyond policy).
 - PII: `policy/pii.py` masks before any prompt; the LLM only sees `+91-98XXXXXX12`, `r***@gmail.com`, `riya@okaxis → r***@okaxis`.
@@ -469,6 +470,10 @@ Styling: Tailwind, navy/cyan palette matching the deck (`#002E6E`, `#00BAF2`), b
 DATABASE_URL=sqlite:///./resolv.db          # or postgresql+psycopg://resolv:resolv@localhost:5432/resolv
 LLM_MODE=replay                              # live | replay | mock
 ANTHROPIC_API_KEY=
+LLM_PROVIDER=sarvam                          # sarvam | anthropic (decision: SARVAM-1); fallback order: other provider with a key, then mock
+SARVAM_API_KEY=                              # Sarvam AI subscription key (header api-subscription-key)
+SARVAM_MODEL=sarvam-105b                     # Sarvam chat model id (docs.sarvam.ai/api/getting-started/models)
+SARVAM_BASE_URL=https://api.sarvam.ai/v1     # OpenAI-compatible; client posts to {base}/chat/completions
 LLM_MODEL_DECIDE=claude-sonnet-5-5
 LLM_MODEL_UNDERSTAND=claude-haiku-5-5
 LLM_CACHE_DIR=./.llm_cache

@@ -12,6 +12,13 @@ class Settings(BaseSettings):
     LLM_MODEL_DECIDE: str = "claude-sonnet-5-5"
     LLM_MODEL_UNDERSTAND: str = "claude-haiku-5-5"
     LLM_CACHE_DIR: str = "./.llm_cache"
+    # (decision: SARVAM-1) provider switch; per-step overrides are empty = inherit LLM_PROVIDER
+    LLM_PROVIDER: str = "sarvam"  # sarvam | anthropic
+    LLM_PROVIDER_UNDERSTAND: str = ""
+    LLM_PROVIDER_DECIDE: str = ""
+    SARVAM_API_KEY: str = ""
+    SARVAM_BASE_URL: str = "https://api.sarvam.ai/v1"
+    SARVAM_MODEL: str = "sarvam-105b"
     PAYTM_BASE_URL: str = "http://localhost:8000/mock/paytm/v1"
     AGENT_ENGINE: str = "langgraph"  # langgraph | runner
     MOCK_LATENCY_MS: int = 120

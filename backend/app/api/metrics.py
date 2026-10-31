@@ -37,6 +37,7 @@ def health() -> dict[str, object]:
     return {
         "ok": mock in {"mounted", "reachable"},
         "llm_mode": settings.LLM_MODE,
+        "llm_provider": settings.LLM_PROVIDER,  # (decision: SARVAM-1)
         "db": settings.DATABASE_URL.split(":", 1)[0].split("+", 1)[0],
         "mock_paytm": mock,
     }

@@ -41,6 +41,8 @@ make lint                       # ruff check + format
 ```
 Cockpit: `http://localhost:3000/?demo=1` (demo drawer). Health: `GET /api/health`.
 
+`LLM_PROVIDER=sarvam` (default; set `SARVAM_API_KEY`) uses Sarvam AI for LLM calls, with Anthropic (`ANTHROPIC_API_KEY`) then mock as fallback (decision: SARVAM-1).
+
 `LLM_MODE`: `live` = always call Anthropic and write the cache · `replay` = cache first, live on miss (**pitch mode**) · `mock` = `integrations/llm/mock.py` rules, no network (**tests/CI**). Models: `LLM_MODEL_DECIDE=claude-sonnet-5-5`, `LLM_MODEL_UNDERSTAND=claude-haiku-5-5`.
 
 Database: `DATABASE_URL=sqlite:///./resolv.db` by default; Postgres via `docker compose up -d` and `postgresql+psycopg://resolv:resolv@localhost:5432/resolv` (optional, T28).
