@@ -30,7 +30,7 @@ export default function NotificationsRail() {
       data-testid="notifications-panel"
       className={cn(
         "flex shrink-0 flex-col border-t bg-card xl:sticky xl:top-0 xl:h-svh xl:border-t-0 xl:border-l",
-        open ? "xl:w-80" : "xl:w-14",
+        open ? "xl:w-72" : "xl:w-14",
       )}
     >
       <div className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
@@ -83,7 +83,7 @@ export default function NotificationsRail() {
                       {ago(n.ts, now)}
                     </time>
                   </div>
-                  <p className="line-clamp-2 text-sm text-muted-foreground">{n.text}</p>
+                  <p className="line-clamp-2 text-sm break-words text-muted-foreground">{n.text}</p>
                 </li>
               );
             })}

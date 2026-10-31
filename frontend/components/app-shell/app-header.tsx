@@ -21,7 +21,7 @@ export default function AppHeader() {
   return (
     <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur-sm">
       <SidebarTrigger />
-      <Separator orientation="vertical" className="data-[orientation=vertical]:h-5" />
+      <Separator orientation="vertical" className="data-vertical:h-5 data-vertical:self-center" />
       <h1 className="text-base font-semibold">{title}</h1>
       <div className="ml-auto flex items-center gap-2">
         <Badge
