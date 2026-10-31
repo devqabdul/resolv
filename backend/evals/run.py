@@ -1,4 +1,4 @@
-"""Eval runner (docs/06 T22): `python -m evals.run [--mode mock|replay]`.
+"""Eval runner (docs/06 T22): `python -m evals.run [--mode mock|replay|live]`.
 
 Runs every dataset row through the real pipeline in-process (temp SQLite, mounted mock Paytm via
 ASGI, no background loops) and writes evals/report.md + evals/report.json.
@@ -41,12 +41,14 @@ def _setup(mode: str) -> None:
 class _CacheLog(logging.Handler):
     def __init__(self) -> None:
         super().__init__()
-        self.hit = self.miss = 0
+        self.hit = self.miss = self.sarvam = self.fb = 0
 
     def emit(self, record: logging.LogRecord) -> None:
         m = record.getMessage()
         self.hit += m.startswith("cache_hit")
         self.miss += m.startswith("cache_miss")
+        self.sarvam += m.startswith("llm_call provider=sarvam")  # (decision: SARVAM-1)
+        self.fb += m.startswith("llm_fallback")
 
 
 def run_rows(mode: str) -> list[dict]:
@@ -77,7 +79,7 @@ def run_rows(mode: str) -> list[dict]:
     rows = [json.loads(line) for line in (HERE / "dataset.jsonl").read_text().splitlines() if line]
     out = []
     for r in rows:
-        h0, m0 = cl.hit, cl.miss
+        h0, m0, s0, f0 = cl.hit, cl.miss, cl.sarvam, cl.fb
         tid = r["id"]
         tickets.create(r["channel"], r["text"], r.get("customer_id"), r.get("merchant_id"), tid)
         runner.run(tid)
@@ -90,9 +92,12 @@ def run_rows(mode: str) -> list[dict]:
                 .order_by(AuditEvent.id)
             ).all()
         money = sorted({e.name for e in ex if e.name in MONEY})
-        served = (
-            "mock" if mode == "mock" else ("replay" if cl.hit > h0 and cl.miss == m0 else "mock")
-        )
+        if mode == "mock" or cl.fb > f0:
+            served = "mock"
+        elif cl.sarvam > s0:
+            served = "sarvam"
+        else:
+            served = "replay" if cl.hit > h0 and cl.miss == m0 else "mock"
         out.append(
             {
                 "id": tid,
@@ -233,7 +238,7 @@ def markdown(m: dict) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--mode", choices=["mock", "replay"], default="replay")
+    ap.add_argument("--mode", choices=["mock", "replay", "live"], default="replay")
     mode = ap.parse_args(argv).mode
     _setup(mode)
     m = compute(run_rows(mode), mode)
