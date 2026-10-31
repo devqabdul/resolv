@@ -19,7 +19,7 @@ export default function AppHeader() {
   const title = TITLES[path.split("/")[1] ?? ""] ?? "Resolv";
   const up = !!health?.ok && !error;
   return (
-    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b bg-background/95 px-4 backdrop-blur-sm">
+    <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b bg-background px-4">
       <SidebarTrigger />
       <Separator orientation="vertical" className="data-vertical:h-5 data-vertical:self-center" />
       <h1 className="text-base font-semibold">{title}</h1>

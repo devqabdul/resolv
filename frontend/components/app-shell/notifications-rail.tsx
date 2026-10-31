@@ -66,7 +66,7 @@ export default function NotificationsRail() {
               return (
                 <li key={n.id} data-testid="notification-item" data-channel={n.channel} className="flex flex-col gap-1 border-b px-4 py-3">
                   <div className="flex items-center gap-2 text-sm">
-                    <span className="truncate font-medium">{n.target}</span>
+                    <span className="min-w-0 truncate font-medium">{n.target}</span>
                     {s && (
                       <Badge
                         data-testid="slack-mark"
@@ -83,7 +83,7 @@ export default function NotificationsRail() {
                       {ago(n.ts, now)}
                     </time>
                   </div>
-                  <p className="line-clamp-2 text-sm break-words text-muted-foreground">{n.text}</p>
+                  <p className="line-clamp-2 text-sm wrap-anywhere text-muted-foreground">{n.text}</p>
                 </li>
               );
             })}
