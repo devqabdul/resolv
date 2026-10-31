@@ -174,3 +174,10 @@ class ContextBundle(BaseModel):
     kb_snippets: list[KbSnippet] = Field(default_factory=list)
     regulatory_clock: RegulatoryClock | None = None
     policy_summary: str = ""
+
+
+class IncidentNotice(BaseModel):
+    """incident_notice.md structured output (decision: T15)."""
+
+    proactive_notice_draft: str
+    internal_summary: str

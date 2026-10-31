@@ -10,7 +10,7 @@ from app.agent import runner
 from app.api.audit import AuditEventOut
 from app.domain.enums import Channel, Path
 from app.domain.schemas import ProposedAction, TicketDTO
-from app.services import approvals, tickets
+from app.services import approvals, incidents, tickets
 
 router = APIRouter(prefix="/api/tickets")
 
@@ -61,7 +61,7 @@ class TicketDetail(BaseModel):
     run: RunOut | None
     timeline: list[AuditEventOut]
     approvals: list[ApprovalOut]
-    incident: dict[str, Any] | None = None  # (decision: T9; filled in T15)
+    incident: dict[str, Any] | None = None  # (decision: T9; IncidentSummary since T15)
 
 
 class TicketIn(BaseModel):
@@ -76,7 +76,15 @@ def _detail(ticket_id: str) -> dict[str, Any]:
     d = tickets.get_with_timeline(ticket_id)
     if d is None:
         raise HTTPException(404, f"ticket {ticket_id} not found")
-    return {**d, "incident": None}
+    inc_id = d["ticket"].incident_id
+    inc = incidents.get(inc_id) if inc_id else None
+    return {**d, "incident": _incident_summary(inc["incident"]) if inc else None}
+
+
+def _incident_summary(inc: Any) -> dict[str, Any]:
+    """(decision: T15) IncidentSummary for the ticket detail."""
+    keys = ("id", "signature", "title", "status", "ticket_count", "owner_team")
+    return {k: getattr(inc, k) for k in keys}
 
 
 @router.post("", response_model=TicketOut)

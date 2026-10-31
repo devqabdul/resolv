@@ -4,13 +4,20 @@
 `<context>{ContextBundle json}</context>`; without tags the whole text is the ticket.)
 """
 
+import json
 import re
 from typing import Any, TypeVar
 
 from pydantic import BaseModel
 
 from app.domain.enums import ActionName, Path, Priority, TicketType
-from app.domain.schemas import ContextBundle, Decision, ProposedAction, Understanding
+from app.domain.schemas import (
+    ContextBundle,
+    Decision,
+    IncidentNotice,
+    ProposedAction,
+    Understanding,
+)
 
 T = TypeVar("T", bound=BaseModel)
 _HINGLISH = ("kab", "mera", "meri", "paise", "kat ", "gaya", "nahi", "hai", "bhai", "aayega")
@@ -202,10 +209,30 @@ def _decide(user: str) -> Decision:
     return route("l1_support", "Unclear request.", "Read the ticket and reply.")
 
 
+def _incident_notice(user: str) -> IncidentNotice:
+    """(decision: T15) deterministic notice from the `<incident>{json}</incident>` block."""
+    inc = json.loads(_tag(user, "incident") or "{}")
+    bank, reason = inc.get("issuer_bank", "your bank"), inc.get("failure_reason", "an outage")
+    return IncidentNotice(
+        proactive_notice_draft=(
+            f"Sorry for the trouble. Some UPI payments via {bank} failed after the money was "
+            "debited. Any such amount is reversed automatically within the RBI turnaround time; "
+            "you do not need to do anything."
+        ),
+        internal_summary=(
+            f"{inc.get('ticket_count', 0)} tickets since {inc.get('first_seen', '?')}: UPI "
+            f"failures via {bank} ({reason}). Next: confirm the outage with {bank} and watch "
+            "auto-reversals."
+        ),
+    )
+
+
 def respond(system: str, user: str, schema: type[T]) -> T:
     """Mock structured answer for `schema` (system is unused; kept for client parity)."""
     if schema is Understanding:
         return _understand(user)  # type: ignore[return-value]
     if schema is Decision:
         return _decide(user)  # type: ignore[return-value]
+    if schema is IncidentNotice:
+        return _incident_notice(user)  # type: ignore[return-value]
     raise ValueError(f"The mock has no rules for {schema.__name__}.")

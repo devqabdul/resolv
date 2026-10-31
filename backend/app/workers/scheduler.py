@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from app.agent import runner
 from app.config import settings
 from app.domain.enums import AuditKind
-from app.services import audit, tickets
+from app.services import audit, incidents, tickets
 
 log = logging.getLogger(__name__)
 _stop = threading.Event()
@@ -26,7 +26,8 @@ def process_queue() -> list[str]:
 
 
 def cluster_incidents() -> None:
-    """Placeholder until T15/T16 (services/incidents.py)."""
+    """Group recent tickets by ledger signature into incidents (docs/02 §8)."""
+    incidents.cluster()
 
 
 def sla_guard() -> None:
@@ -55,7 +56,7 @@ def start() -> None:
     _stop.clear()
     for name, fn, every in [
         ("process_queue", process_queue, 1.0),
-        ("cluster_incidents", cluster_incidents, 15.0),
+        ("cluster_incidents", cluster_incidents, 5.0),  # (decision: T15) 5 s, not 15 s
         ("sla_guard", sla_guard, 30.0),
     ]:
         threading.Thread(target=_loop, args=(name, fn, every), name=name, daemon=True).start()
