@@ -39,7 +39,7 @@ export default function EvidencePage() {
         <Tile id="evals-gate-catch-rate" label="Gate catch (core)" value={`${j.gate_catch_core.caught}/${j.gate_catch_core.total}`} sub={`${j.gate_catch.caught}/${j.gate_catch.total} all`} tone={gateFull ? "text-green-600" : "text-amber-600"} />
         <Tile id="overrides-count" label="Human overrides" value={String(r.overrides_count)} />
       </div>
-      <Markdown testId="evidence-report">{r.markdown}</Markdown>
+      <Markdown testId="evals-report">{r.markdown}</Markdown>
     </div>
   );
 }
