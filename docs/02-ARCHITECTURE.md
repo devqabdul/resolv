@@ -338,11 +338,15 @@ actions:
     auto_if: params.amount_inr <= limits.auto_compensation_max_inr
   retrigger_settlement:
     money_moving: false
-    requires: [settlement.exists, settlement.status in [FAILED, ON_HOLD_KYC]]
+    requires:
+      - settlement.exists
+      - settlement.status in [FAILED, ON_HOLD_KYC]
     auto_if: merchant.kyc_status == VERIFIED
   retrigger_kyc:
     money_moving: false
-    requires: [kyc.exists, kyc.status in [REJECTED, PENDING]]
+    requires:
+      - kyc.exists
+      - kyc.status in [REJECTED, PENDING]
     auto: true
     block_if: kyc.rejection_reason in [FRAUD_SUSPECTED, SANCTIONS_HIT]   # route instead, never explain
   cancel_mandate:
@@ -363,6 +367,7 @@ incidents:
   threshold: 10
   signature_fields: [ticket_type, issuer_bank_or_merchant_id, failure_reason]
 ```
+The `requires:` entries for `retrigger_settlement` and `retrigger_kyc` are block lists because the nested flow-list form (`[x, y in [A, B]]`) is rejected by PyYAML; `backend/app/policy/rules.yaml` is authoritative (decision: T4, 31 Oct).
 
 ### 7.2 Engine semantics (`policy/engine.py`)
 ```python
@@ -370,7 +375,7 @@ def evaluate(decision: Decision, ctx: ContextBundle, ticket: TicketDTO, understa
 ```
 1. Ticket-level: if `understanding.ticket_type in human_only_ticket_types` → `HUMAN_ONLY` (all actions except `create_internal_note` dropped). If `confidence < threshold` and path is `RESOLVE` → force `ROUTE`.
 2. Per action: resolve object references (`txn`, `settlement`, `kyc`, `mandate`) **from the ContextBundle only** — unknown id ⇒ `BLOCKED: unknown_reference`. Evaluate `requires` (tiny expression evaluator over dotted paths; no `eval()`), apply `recompute`, `block_if`, then `auto`/`auto_if` → `AUTO_EXECUTE` else `NEEDS_APPROVAL`.
-3. Ticket outcome: `AUTO_EXECUTE` if all remaining actions auto; `NEEDS_APPROVAL` if any needs approval (auto ones still execute, except `send_reply`, which is replaced by a holding reply); `HUMAN_ONLY` as above.
+3. Ticket outcome: `AUTO_EXECUTE` if all remaining actions auto; `NEEDS_APPROVAL` if any needs approval: the ticket goes to handoff with a holding reply instead of `send_reply`, and nothing executes before the human decides. On approve, `services/approvals.decide` executes the approved action, then any not-yet-run `AUTO_EXECUTE` actions of the same gate summary, then verifies and closes (`resolved_by=human:<name>`); on reject → `ROUTED` (decision: T12, 31 Oct); `HUMAN_ONLY` as above.
 4. Every result carries human-readable `reasons[]` ("amount 12,000 > auto limit 5,000") — these are shown in the cockpit and in Slack nudges.
 
 ### 7.3 `policy/rbi_tat.py`
@@ -387,8 +392,8 @@ Demo check: txn 3 days old, UPI → `days_late = 2`, `compensation_due_inr = 200
 ## 8. Incident clustering (`services/incidents.py`)
 
 ```
-every 15 s:
-  tickets = open tickets created in last `window_minutes` whose `signature` column is set (at ingest, see below)
+every 5 s:   # (decision: T15, 31 Oct) was 15 s
+  tickets = all tickets (any status except CLOSED) created in last `window_minutes` whose `signature` column is set (at ingest, see below)
   groups  = group_by(ticket.signature)    # "<type>|<issuer_bank or merchant_id>|<failure_reason>", derived from the candidate txn, not from the LLM
   for sig, items in groups:
       if len(items) >= threshold:
@@ -397,7 +402,9 @@ every 15 s:
           if newly created:
               draft proactive notice + internal summary (LLM, cached) ; notify Slack #ops ; audit each ticket `incident_linked`
 ```
-**Fast path at ingest** (`agent/nodes/ingest.py`): if an `OPEN` incident exists whose signature matches the ticket's best-candidate transaction (same issuer bank + failure reason, same type keywords) → attach `via="fast_path"`, send holding reply from the incident template, status `INCIDENT_LINKED`, **no LLM call**. This is how 120 tickets are absorbed in seconds and what we say when asked "how does this scale during an outage?".
+Counting all non-CLOSED tickets rather than only open ones is deliberate: the queue worker can resolve spike tickets before the clusterer counts ten open ones (decision: T15, 31 Oct).
+
+**Fast path at ingest** (`agent/nodes/ingest.py`): if a non-`RESOLVED` incident (`OPEN` or `COMMUNICATED`; decision: T16, 31 Oct) exists whose signature matches the ticket's best-candidate transaction (same issuer bank + failure reason, same type keywords) → attach `via="fast_path"`, send holding reply from the incident template, status `INCIDENT_LINKED`, **no LLM call**. This is how 120 tickets are absorbed in seconds and what we say when asked "how does this scale during an outage?".
 
 **Signature is set at ingest, with no LLM call** (decision, 30 Oct): `ingest` fetches the last transactions for `customer_id`, picks the most recent `DEBITED_NOT_CREDITED`, stores it as `tickets.candidate_txn_id`, and writes `tickets.signature = f"failed_payment_reversal|{txn.issuer_bank}|{txn.failure_reason}"` (merchant tickets: `settlement_delay|{merchant_id}|{settlement.reason}` from the most recent non-SETTLED settlement; otherwise `NULL`). The type prefix is inferred from the ledger state, not from `understanding.ticket_type`, so the clusterer can fire on the first 10 spike tickets *before* any of them finishes `understand`. If `understand` later disagrees with the inferred type, the ticket keeps its signature; the incident is about the ledger pattern, not the wording. Spike tickets always carry `customer_id`.
 
@@ -405,7 +412,7 @@ Optional secondary signal: embedding cosine ≥ 0.85 between the ticket text and
 
 ## 9. SLA guard (`services/sla.py`)
 
-Every 30 s: for tickets in `NEW, PROCESSING, ROUTED, ESCALATED, AWAITING_APPROVAL`: `due = min(sla_due_at, regulatory_clock.tat_deadline if any)`; if `due − now < nudge_before_breach_minutes` and not yet nudged → `notify(slack, "#support-leads", "<ticket> breaches in 12 min — <reasons> — <cockpit link>")`, raise priority to `P1`, audit `notification`. Metrics counts `tat_breaches_prevented` = tickets resolved by Resolv whose `days_late` would have grown by ≥ 1 if left to the human queue (simple proxy: resolved with `compensation_due_inr > 0` within the session).
+Implemented guard (decision: T17, 31 Oct): uses `sla_due_at` only; folding in the RBI TAT deadline is a follow-up. Every 30 s: for tickets in `NEW, PROCESSING, ROUTED, ESCALATED, AWAITING_APPROVAL`: `due = min(sla_due_at, regulatory_clock.tat_deadline if any)`; if `due − now < nudge_before_breach_minutes` and not yet nudged → `notify(slack, "#support-leads", "<ticket> breaches in 12 min — <reasons> — <cockpit link>")`, raise priority to `P1`, audit `notification`. Metrics counts `tat_breaches_prevented` = tickets resolved by Resolv whose `days_late` would have grown by ≥ 1 if left to the human queue (simple proxy: resolved with `compensation_due_inr > 0` within the session).
 
 ## 10. LLM layer (`integrations/llm/`)
 
@@ -419,9 +426,9 @@ Every 30 s: for tickets in `NEW, PROCESSING, ROUTED, ESCALATED, AWAITING_APPROVA
 
 ## 11. Workers (`workers/scheduler.py`)
 
-Started in FastAPI `lifespan` as asyncio tasks (no Celery/Redis):
+Started in FastAPI `lifespan` as daemon threads, not asyncio tasks (decision: T8, 31 Oct; no Celery/Redis):
 - `process_queue`: every 1 s pick up to `QUEUE_CONCURRENCY` (default 3) tickets with status `NEW`, mark `PROCESSING`, run the graph in a thread (`anyio.to_thread`) so blocking HTTP/LLM calls don't stall the API.
-- `cluster_incidents`: every 15 s (§8).
+- `cluster_incidents`: every 5 s (§8; decision: T15, 31 Oct).
 - `sla_guard`: every 30 s (§9).
 All loops are wrapped so one exception never kills the loop (log + audit `error`).
 
