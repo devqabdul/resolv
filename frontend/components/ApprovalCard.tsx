@@ -1,19 +1,31 @@
 'use client';
 import Link from "next/link";
 import { useState } from "react";
+import { CaretRightIcon, WarningIcon } from "@phosphor-icons/react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { Textarea } from "@/components/ui/textarea";
+import { toneBadge } from "@/components/status-tone";
+import { ago } from "@/lib/format";
 import type { ApprovalItem } from "@/lib/api";
 import PriorityBadge from "./PriorityBadge";
 import TypeBadge from "./TypeBadge";
 
 const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
+const REF_KEYS = ["txn_id", "settlement_id", "mandate_id", "kyc_id", "refund_id"];
 
-function actionLine(a: ApprovalItem["action_json"]): string {
+function actionParts(a: ApprovalItem["action_json"]) {
   const p = (a.params ?? {}) as Record<string, unknown>;
-  const parts = [String(a.name ?? "action")];
-  if (typeof p.amount_inr === "number") parts.push(inr(p.amount_inr));
-  const ref = ["txn_id", "settlement_id", "mandate_id", "kyc_id", "refund_id"].find((k) => typeof p[k] === "string");
-  if (ref) parts.push(`on ${String(p[ref])}`);
-  return parts.join(" ");
+  const refKey = REF_KEYS.find((k) => typeof p[k] === "string");
+  return {
+    name: String(a.name ?? "action"),
+    amount: typeof p.amount_inr === "number" ? p.amount_inr : null,
+    ref: refKey ? String(p[refKey]) : null,
+  };
 }
 
 function reasonList(r: unknown): string[] {
@@ -23,64 +35,112 @@ function reasonList(r: unknown): string[] {
 
 export default function ApprovalCard({
   item,
+  now,
   onDecide,
-  error,
 }: {
   item: ApprovalItem;
-  error?: string;
+  now: number;
   onDecide: (item: ApprovalItem, approve: boolean, note: string, by: string) => Promise<void>;
 }) {
   const [note, setNote] = useState("");
   const [by, setBy] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [localErr, setErr] = useState<string | null>(null);
-  const err = localErr ?? error ?? null;
+  const [busy, setBusy] = useState<"approve" | "reject" | null>(null);
+  const [nameErr, setNameErr] = useState(false);
   const t = item.ticket;
+  const act = actionParts(item.action_json);
+  const reasons = reasonList(item.reasons_json);
 
   async function go(approve: boolean) {
     if (!by.trim()) {
-      setErr("Enter your name first.");
+      setNameErr(true);
       return;
     }
-    setBusy(true);
-    setErr(null);
-    // On success the card is removed optimistically; on failure the page re-adds it and shows `error`.
-    await onDecide(item, approve, note.trim(), by.trim());
+    setNameErr(false);
+    setBusy(approve ? "approve" : "reject");
+    try {
+      // On success the page removes the card; on failure it restores it and toasts.
+      await onDecide(item, approve, note.trim(), by.trim());
+    } finally {
+      setBusy(null);
+    }
   }
 
-  const btn = "rounded-lg px-6 py-3 text-xl font-bold disabled:opacity-50";
   return (
-    <article data-testid="approval-card" data-approval-id={item.id} data-ticket-id={item.ticket_id} className="overflow-hidden rounded-xl bg-white shadow-sm">
-      <header className="flex flex-wrap items-center gap-3 bg-navy px-5 py-3 text-white">
-        <Link href={`/tickets/${item.ticket_id}`} className="text-2xl font-bold underline decoration-cyan">{item.ticket_id}</Link>
-        <TypeBadge type={t?.ticket_type ?? null} />
-        <PriorityBadge priority={t?.priority ?? null} />
-        <span className="ml-auto rounded bg-amber-400 px-3 py-1 text-base font-bold text-ink">AWAITING APPROVAL</span>
-      </header>
-      <div className="space-y-4 p-5 text-lg text-ink">
-        <p className="line-clamp-2 text-ink/70">{t?.masked_text}</p>
-        <div data-testid="approval-action" className="rounded-lg bg-light px-4 py-3 font-mono text-2xl font-bold text-navy">{actionLine(item.action_json)}</div>
-        <div>
-          <h3 className="font-semibold text-navy">Gate reasons</h3>
-          <ul data-testid="approval-reasons" className="list-disc pl-6">
-            {reasonList(item.reasons_json).map((r, i) => <li key={i}>{r}</li>)}
+    <Card data-testid="approval-card" data-approval-id={item.id} data-ticket-id={item.ticket_id}>
+      <CardHeader>
+        <CardTitle className="flex flex-wrap items-center gap-2">
+          <Link href={`/tickets/${item.ticket_id}`} className="font-mono text-sm underline-offset-4 hover:underline">
+            {item.ticket_id}
+          </Link>
+          <TypeBadge type={t?.ticket_type ?? null} />
+          <PriorityBadge priority={t?.priority ?? null} />
+          <Badge className={toneBadge({ tone: "awaiting" })}>Awaiting approval</Badge>
+        </CardTitle>
+        <CardDescription className="font-mono tabular-nums">Requested {ago(item.requested_at, now)}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-4">
+        {t?.masked_text && <p className="line-clamp-2 text-muted-foreground">{t.masked_text}</p>}
+        <div data-testid="approval-action" className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 rounded-lg bg-muted px-4 py-3">
+          <span className="font-mono text-base font-medium">{act.name}</span>
+          {act.amount !== null && <span className="font-mono text-3xl font-semibold tabular-nums">{inr(act.amount)}</span>}
+          {act.ref && <span className="w-full font-mono text-sm text-muted-foreground sm:w-auto">{act.ref}</span>}
+        </div>
+        {reasons.length > 0 && (
+          <ul data-testid="approval-reasons" className="flex flex-col gap-1.5">
+            {reasons.map((r, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <WarningIcon weight="fill" className="mt-0.5 size-4 shrink-0 text-status-awaiting" />
+                <span>{r}</span>
+              </li>
+            ))}
           </ul>
-        </div>
-        <div>
-          <h3 className="font-semibold text-navy">Resolv reasoning</h3>
-          <p data-testid="approval-reasoning">{item.reasoning}</p>
-        </div>
-        {item.customer_reply_draft && (
-          <blockquote className="border-l-4 border-cyan pl-4 italic text-ink/80">{item.customer_reply_draft}</blockquote>
         )}
-        <div className="flex flex-wrap items-center gap-3">
-          <input data-testid="approval-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note" className="min-w-48 flex-1 rounded-lg border border-navy/30 px-3 py-3 text-lg" />
-          <input data-testid="approval-decided-by" required value={by} onChange={(e) => setBy(e.target.value)} placeholder="Your name" className="w-48 rounded-lg border border-navy/30 px-3 py-3 text-lg" />
-          <button data-testid="approval-approve" disabled={busy} onClick={() => go(true)} className={`${btn} bg-cyan text-navy`}>Approve</button>
-          <button data-testid="approval-reject" disabled={busy} onClick={() => go(false)} className={`${btn} border-2 border-navy text-navy`}>Reject</button>
-        </div>
-        {err && <p role="alert" className="text-base font-semibold text-red-600">{err}</p>}
-      </div>
-    </article>
+        <p data-testid="approval-reasoning" className="text-muted-foreground">{item.reasoning}</p>
+        {item.customer_reply_draft && (
+          <details className="group">
+            <summary className="flex cursor-pointer list-none items-center gap-1 text-sm font-medium">
+              <CaretRightIcon className="size-4 transition-transform group-open:rotate-90" />
+              Reply draft
+            </summary>
+            <blockquote className="mt-2 border-l-2 pl-3 text-muted-foreground">{item.customer_reply_draft}</blockquote>
+          </details>
+        )}
+      </CardContent>
+      <CardFooter>
+        <FieldGroup>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field>
+              <FieldLabel htmlFor={`note-${item.id}`}>Note</FieldLabel>
+              <Textarea id={`note-${item.id}`} data-testid="approval-note" rows={2} value={note} onChange={(e) => setNote(e.target.value)} placeholder="Optional" />
+            </Field>
+            <Field data-invalid={nameErr}>
+              <FieldLabel htmlFor={`by-${item.id}`}>Your name</FieldLabel>
+              <Input
+                id={`by-${item.id}`}
+                data-testid="approval-decided-by"
+                required
+                aria-invalid={nameErr}
+                value={by}
+                onChange={(e) => {
+                  setBy(e.target.value);
+                  setNameErr(false);
+                }}
+              />
+              {nameErr && <FieldError>Enter your name first.</FieldError>}
+            </Field>
+          </div>
+          <Field orientation="horizontal" data-testid="approval-actions">
+            <Button data-testid="approval-approve" disabled={busy !== null} onClick={() => go(true)}>
+              {busy === "approve" && <Spinner data-icon="inline-start" />}
+              Approve
+            </Button>
+            <Button data-testid="approval-reject" variant="outline" className="text-destructive" disabled={busy !== null} onClick={() => go(false)}>
+              {busy === "reject" && <Spinner data-icon="inline-start" />}
+              Reject
+            </Button>
+          </Field>
+        </FieldGroup>
+      </CardFooter>
+    </Card>
   );
 }
