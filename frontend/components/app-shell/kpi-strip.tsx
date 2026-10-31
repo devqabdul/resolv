@@ -2,6 +2,7 @@
 // One stat block per metric, hairline separators, dashes when /api/metrics is unreachable.
 // Labels never wrap; blocks size to content and the strip wraps as a whole on narrow screens.
 import { Fragment } from "react";
+import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -23,7 +24,8 @@ const KPIS: { id: string; label: string; pick: (m: Metrics) => number; format?: 
 export default function KpiStrip() {
   const { data: m } = useMetrics(); // undefined on 404 / network error -> dashes
   const { motionOn } = useLayoutState();
-  const open = true; // metrics are required data: always shown (user, 31 Oct)
+  // Always shown (user, 31 Oct), except on /dashboard which renders the full metrics itself.
+  const open = usePathname() !== "/dashboard";
   const reduce = useReducedMotion();
   // Closed: stays mounted at height 0; the negative margin cancels the parent's gap-6.
   return (
