@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { ArrowsInIcon, ArrowsOutIcon, BellIcon, ChartBarIcon, MoonIcon, SunIcon } from "@phosphor-icons/react";
+import { ArrowsInIcon, ArrowsOutIcon, BellIcon, FlaskIcon, ChartBarIcon, MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -12,6 +12,7 @@ import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLayoutState } from "@/components/app-shell/layout-state";
 import NotificationsDrawer from "@/components/app-shell/notifications-drawer";
+import DemoDrawer from "@/components/DemoDrawer";
 import { useHealth, useNotifications } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -90,6 +91,13 @@ export default function AppHeader() {
         >
           <ChartBarIcon weight={kpiOpen ? "fill" : "regular"} />
         </HeaderToggle>
+        <DemoDrawer
+          trigger={
+            <Button data-testid="demo-open" variant="ghost" size="icon" aria-label="Demo controls" title="Demo controls">
+              <FlaskIcon />
+            </Button>
+          }
+        />
         <NotificationsDrawer
           trigger={
             <Button data-testid="notifications-toggle" variant="ghost" size="icon" aria-label="Notifications" className="relative">

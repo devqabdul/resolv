@@ -2,12 +2,11 @@
 // Nav rail: collapses to icons. Live counts reuse the pages' SWR keys, so no extra polling.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FlaskIcon, ListChecksIcon, SealCheckIcon, SirenIcon, ChartBarIcon } from "@phosphor-icons/react";
+import { ListChecksIcon, SealCheckIcon, SirenIcon, ChartBarIcon } from "@phosphor-icons/react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu,
   SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarRail,
 } from "@/components/ui/sidebar";
-import DemoDrawer from "@/components/DemoDrawer";
 import { useApprovals, useIncidents } from "@/lib/api";
 
 export default function AppSidebar() {
@@ -53,16 +52,6 @@ export default function AppSidebar() {
                   </SidebarMenuItem>
                 );
               })}
-              <SidebarMenuItem>
-                <DemoDrawer
-                  trigger={
-                    <SidebarMenuButton data-testid="demo-open" tooltip="Demo controls" className="h-9 text-[0.9375rem]">
-                      <FlaskIcon />
-                      <span>Demo controls</span>
-                    </SidebarMenuButton>
-                  }
-                />
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
