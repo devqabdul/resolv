@@ -6,7 +6,6 @@ Resolv is an autonomous support teammate for payments customer service, built fo
 
 | Doc | Use it for |
 |---|---|
-| `docs/00-RESTRICTED-SCOPE.md` | Scope that ships (R1-R26), when present |
 | `docs/01-PRODUCT-SPEC.md` | What we build, demo moments D1-D5, canonical demo data |
 | `docs/02-ARCHITECTURE.md` | How: layout, state machine, contracts, API. Source of truth |
 | `docs/03-TECH-STACK-AND-MODULES.md` | Stack choices and module responsibilities |
