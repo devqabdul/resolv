@@ -54,15 +54,15 @@ def notify(target: str, text: str, incident_id: str | None = None) -> None:
     )
 
 
-def _draft(inc: Incident) -> IncidentNotice:
-    _, bank, reason = inc.signature.split("|")
+def _draft(sig: str, items: list[Ticket]) -> IncidentNotice:
+    _, bank, reason = sig.split("|")
     facts = {
-        "signature": inc.signature,
+        "signature": sig,
         "issuer_bank": bank,
         "failure_reason": reason,
-        "ticket_count": inc.ticket_count,
-        "first_seen": inc.first_seen.isoformat(),
-        "last_seen": inc.last_seen.isoformat(),
+        "ticket_count": len(items),
+        "first_seen": min(t.created_at for t in items).isoformat(),
+        "last_seen": max(t.created_at for t in items).isoformat(),
     }
     return LLMClient().structured(
         load_prompt("incident_notice"),
@@ -115,10 +115,13 @@ def cluster() -> list[str]:
 
 def _attach(sig: str, items: list[Ticket]) -> tuple[str, bool]:
     """get_or_create the incident for `sig`, attach `items` via cluster; (id, newly created)."""
+    live = select(Incident).where(Incident.signature == sig, Incident.status != "RESOLVED")
     with session.SessionLocal() as db:
-        inc = db.scalars(
-            select(Incident).where(Incident.signature == sig, Incident.status != "RESOLVED")
-        ).first()
+        new = db.scalars(live).first() is None
+    # The LLM call runs outside the write session so SQLite is not locked while it waits.
+    note = _draft(sig, items) if new else None
+    with session.SessionLocal() as db:
+        inc = db.scalars(live).first()
         new = inc is None
         if inc is None:
             inc = Incident(
@@ -144,8 +147,7 @@ def _attach(sig: str, items: list[Ticket]) -> tuple[str, bool]:
             db.scalar(select(func.count()).where(IncidentTicket.incident_id == inc.id)) or 0
         )
         inc.last_seen = max([inc.last_seen or now(), *(t.created_at for t in items)])
-        if new:
-            note = _draft(inc)
+        if note is not None and not inc.proactive_notice_draft:
             inc.proactive_notice_draft = note.proactive_notice_draft
             inc.internal_summary = note.internal_summary
         db.commit()
