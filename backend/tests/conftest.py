@@ -7,6 +7,7 @@ from pathlib import Path
 os.environ["LLM_MODE"] = "mock"
 os.environ["DATABASE_URL"] = f"sqlite:///{Path(tempfile.mkdtemp()) / 'test.db'}"
 os.environ["ANTHROPIC_API_KEY"] = ""
+os.environ["SARVAM_API_KEY"] = ""  # (decision: SARVAM-1) tests never reach Sarvam, even with a key in .env
 os.environ["DEMO_NOW_OVERRIDE"] = "2026-10-31T10:00:00Z"
 os.environ["MOCK_LATENCY_MS"] = "0"
 os.environ["EMBEDDINGS_ENABLED"] = "false"  # tests opt in to fastembed explicitly (T24)
