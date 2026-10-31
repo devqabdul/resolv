@@ -124,11 +124,13 @@ export default function AppHeader() {
     <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-3 border-b bg-background px-4">
       <SidebarTrigger />
       <Separator orientation="vertical" className="data-vertical:h-5 data-vertical:self-center" />
-      {section === "tickets" && ticketId ? (
+      {(section === "tickets" || section === "incidents") && ticketId ? (
         <Breadcrumb>
           <BreadcrumbList className="text-base">
             <BreadcrumbItem>
-              <BreadcrumbLink asChild><Link href="/">Queue</Link></BreadcrumbLink>
+              <BreadcrumbLink asChild>
+                {section === "incidents" ? <Link href="/incidents">Incidents</Link> : <Link href="/">Queue</Link>}
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
             <BreadcrumbItem>
