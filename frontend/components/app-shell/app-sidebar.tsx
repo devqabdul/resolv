@@ -2,21 +2,18 @@
 // Nav rail: collapses to icons. Live counts reuse the pages' SWR keys, so no extra polling.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BellIcon, FlaskIcon, ListChecksIcon, SealCheckIcon, SirenIcon, ChartBarIcon } from "@phosphor-icons/react";
+import { FlaskIcon, ListChecksIcon, SealCheckIcon, SirenIcon, ChartBarIcon } from "@phosphor-icons/react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu,
   SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarRail,
 } from "@/components/ui/sidebar";
 import DemoDrawer from "@/components/DemoDrawer";
-import { useNotificationFeed } from "@/components/app-shell/notifications-list";
-import NotificationsDrawer from "@/components/app-shell/notifications-drawer";
 import { useApprovals, useIncidents } from "@/lib/api";
 
 export default function AppSidebar() {
   const path = usePathname();
   const { data: approvals } = useApprovals("PENDING");
   const { data: incidents } = useIncidents();
-  const feed = useNotificationFeed();
   const nav = [
     { href: "/", label: "Queue", icon: ListChecksIcon, count: undefined },
     { href: "/approvals", label: "Approvals", icon: SealCheckIcon, count: approvals?.length },
@@ -56,17 +53,6 @@ export default function AppSidebar() {
                   </SidebarMenuItem>
                 );
               })}
-              <SidebarMenuItem>
-                <NotificationsDrawer
-                  trigger={
-                    <SidebarMenuButton data-testid="notifications-open" tooltip="Notifications" className="h-9 text-[0.9375rem]">
-                      <BellIcon />
-                      <span>Notifications</span>
-                    </SidebarMenuButton>
-                  }
-                />
-                {feed.recent > 0 && <SidebarMenuBadge className="top-2! font-mono">{feed.recent}</SidebarMenuBadge>}
-              </SidebarMenuItem>
               <SidebarMenuItem>
                 <DemoDrawer
                   trigger={
