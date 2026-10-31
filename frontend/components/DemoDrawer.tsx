@@ -26,7 +26,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 // Demo controls in a shadcn Drawer (bottom sheet) opened from the sidebar (user, 31 Oct): nothing docks on the page.
-export default function DemoDrawer({ trigger }: { trigger: React.ReactNode }) {
+export default function DemoDrawer({ trigger, open, onOpenChange }: { trigger: React.ReactNode; open?: boolean; onOpenChange?: (open: boolean) => void }) {
   const { mutate } = useSWRConfig();
   const [scenario, setScenario] = useState(SCENARIOS[0]);
   const [bank, setBank] = useState("AXIS");
@@ -75,7 +75,7 @@ export default function DemoDrawer({ trigger }: { trigger: React.ReactNode }) {
   );
 
   return (
-    <Drawer>
+    <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent data-testid="demo-drawer">
         <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 px-4 pb-6">
