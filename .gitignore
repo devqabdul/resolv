@@ -10,3 +10,4 @@ __pycache__
 .skill-contract/runs/
 .verify/
 .verify-run/
+backend/evals/.run/
