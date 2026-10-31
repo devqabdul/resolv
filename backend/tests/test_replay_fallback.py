@@ -70,6 +70,9 @@ def test_replay_miss_without_key_uses_mock(
     assert "llm_fallback mode=replay reason=no_api_key" in caplog.text
     assert llm_client.FALLBACKS and set(llm_client.FALLBACKS) == {"no_api_key"}
     assert calls == []
+    import app.main  # noqa: F401
+
+    assert logging.getLogger("app.integrations.llm.client").isEnabledFor(logging.INFO)
 
 
 def test_warm_cache_script_static() -> None:
