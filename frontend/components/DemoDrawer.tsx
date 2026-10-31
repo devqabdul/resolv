@@ -2,14 +2,12 @@
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 import { toast } from "sonner";
-import { CaretRightIcon } from "@phosphor-icons/react";
-import { useLayoutState } from "@/components/app-shell/layout-state";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { demoReset, demoSeed, demoSpike, demoTicket } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -27,9 +25,9 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-export default function DemoDrawer() {
+// Demo controls in a shadcn Drawer (bottom sheet) opened from the sidebar (user, 31 Oct): nothing docks on the page.
+export default function DemoDrawer({ trigger }: { trigger: React.ReactNode }) {
   const { mutate } = useSWRConfig();
-  const { demoOpen, setPanel } = useLayoutState();
   const [scenario, setScenario] = useState(SCENARIOS[0]);
   const [bank, setBank] = useState("AXIS");
   const [count, setCount] = useState(120);
@@ -76,43 +74,16 @@ export default function DemoDrawer() {
     </Button>
   );
 
-  // Collapsed: the drawer stays mounted (hidden) so its handles exist; a tab or pill reopens it.
   return (
-    <>
-      {!demoOpen && (
-        <>
-          <Button data-testid="demo-drawer-tab" variant="outline" className="w-fit 2xl:hidden" onClick={() => setPanel("demoOpen", true)}>
-            Show demo controls
-          </Button>
-          <button
-            type="button"
-            data-testid="demo-drawer-tab-vertical"
-            aria-label="Show demo controls"
-            onClick={() => setPanel("demoOpen", true)}
-            className="hidden h-28 w-10 items-center justify-center rounded-lg border bg-card text-sm font-medium [writing-mode:vertical-rl] hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none 2xl:flex"
-          >
-            Demo
-          </button>
-        </>
-      )}
-    <aside
-      data-testid="demo-drawer"
-      aria-label="Demo controls"
-      aria-hidden={!demoOpen}
-      className={cn("flex flex-col gap-4 rounded-xl border bg-card p-4 text-card-foreground", !demoOpen && "hidden")}
-    >
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="text-base font-semibold">Demo</h2>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon-sm" aria-label="Collapse demo drawer" onClick={() => setPanel("demoOpen", false)}>
-              <CaretRightIcon />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Collapse demo drawer</TooltipContent>
-        </Tooltip>
-      </div>
-      <div className="grid gap-4 md:grid-cols-3 2xl:grid-cols-1">
+    <Drawer>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      <DrawerContent data-testid="demo-drawer">
+        <div className="mx-auto flex w-full max-w-4xl flex-col gap-4 px-4 pb-6">
+        <DrawerHeader className="px-0">
+          <DrawerTitle>Demo controls</DrawerTitle>
+          <DrawerDescription>Reset data, inject a scenario or fire a spike. Results update the queue live.</DrawerDescription>
+        </DrawerHeader>
+      <div className="grid gap-4 md:grid-cols-3">
         <Section title="Data">
           <div className="grid grid-cols-2 gap-2">
             {action("Reset", "demo-reset", "Reset", async () => ((await demoReset()).ok ? "Reset done" : "not ok"))}
@@ -140,7 +111,8 @@ export default function DemoDrawer() {
       </div>
       <Separator />
       <p data-testid="demo-status" className="text-sm font-medium" aria-live="polite">{msg}</p>
-    </aside>
-    </>
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 }
