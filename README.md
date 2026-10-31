@@ -19,9 +19,12 @@ Prerequisites: Python 3.12 managed by `uv`, Node 24, `make`.
 
 ```
 cp .env.example .env     # add ANTHROPIC_API_KEY only if you will use live mode
+npm --prefix frontend ci # install frontend deps (a fresh clone has no node_modules)
 make dev                 # backend :8000 (mock Paytm mounted) + frontend :3000
 make seed                # reset and seed the demo data (scripts/demo_reset.sh)
 ```
+
+The backend venv is created automatically by `uv` on the first `make backend` or `make dev` (Python 3.12 is pinned in `backend/.python-version`).
 
 Open `http://localhost:3000/?demo=1` to get the demo drawer (Reset, Seed, inject the 7 scenarios, Spike AXIS 120). Health check: `GET http://localhost:8000/api/health`.
 
@@ -45,6 +48,8 @@ Set with the `LLM_MODE` env var in `.env`.
 | `mock` | Rule-based `integrations/llm/mock.py`, no network | Tests and CI |
 | `replay` | Cache first, live call on a miss; offline or no key falls back to mock | Pitch mode (the default in `.env.example`) |
 | `live` | Always calls Anthropic and writes the cache | Warming the cache |
+
+`.env.example` defaults to `LLM_MODE=replay`, so a fresh clone without a key falls back to the mock rules offline.
 
 Related env vars: `ANTHROPIC_API_KEY`, `LLM_MODEL_DECIDE=claude-sonnet-5-5`, `LLM_MODEL_UNDERSTAND=claude-haiku-5-5`, `LLM_CACHE_DIR`.
 

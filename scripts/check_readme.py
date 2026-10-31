@@ -9,7 +9,7 @@ from pathlib import Path
 
 # heading -> list of alternatives groups; each group needs at least one of its tokens
 REQUIRED = {
-    "Quick start": [["make dev"], ["make seed"], ["localhost:3000/?demo=1"]],
+    "Quick start": [["npm --prefix frontend ci"], ["make dev"], ["make seed"], ["localhost:3000/?demo=1"]],
     "LLM modes": [["`mock`"], ["`replay`"], ["`live`"], ["LLM_MODE"]],
     "Warm the replay cache (attended)": [["make warm", "warm_cache.sh"]],
     "Tests and evals": [["make test"], ["make evals"]],
