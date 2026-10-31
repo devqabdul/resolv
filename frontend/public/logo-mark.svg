@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Resolv mark: an R whose leg resolves into a check. Navy #002E6E, cyan #00BAF2. -->
+  <path d="M8 26V7h7.5a5.5 5.5 0 0 1 0 11H8" stroke="#002E6E" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M13 18l4.5 7L27.5 11" stroke="#00BAF2" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

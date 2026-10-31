@@ -1,6 +1,7 @@
 'use client';
 // Nav rail: collapses to icons. Live counts reuse the pages' SWR keys, so no extra polling.
 import Link from "next/link";
+import LogoMark from "@/components/app-shell/logo-mark";
 import { usePathname } from "next/navigation";
 import { SquaresFourIcon, ListChecksIcon, SealCheckIcon, SirenIcon, ChartBarIcon } from "@phosphor-icons/react";
 import {
@@ -23,9 +24,9 @@ export default function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="h-14 justify-center border-b px-4 group-data-[collapsible=icon]:px-2">
-        <Link href="/" className="text-xl font-semibold tracking-tight text-primary group-data-[collapsible=icon]:text-center">
+        <Link href="/" aria-label="Resolv" className="flex items-center gap-2 text-xl font-semibold tracking-tight text-primary dark:text-foreground group-data-[collapsible=icon]:justify-center">
+          <LogoMark className="size-7 shrink-0" />
           <span className="group-data-[collapsible=icon]:hidden">Resolv</span>
-          <span className="hidden group-data-[collapsible=icon]:inline">R</span>
         </Link>
       </SidebarHeader>
       <SidebarContent>
