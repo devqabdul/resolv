@@ -31,7 +31,6 @@ const WINDOWS = [
   { min: 1440, label: "24h", bucket: 120 },
 ] as const;
 const INCIDENT_TONE: Record<Incident["status"], Tone> = { OPEN: "awaiting", COMMUNICATED: "processing", RESOLVED: "resolved" };
-const pct = (n: number) => `${Math.round(n)}%`;
 const pct1 = (n: number) => `${n.toFixed(1)}%`;
 const hhmm = (t: number) => new Date(t).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false });
 const human = (s: string) => s.replaceAll("_", " ");
@@ -196,12 +195,7 @@ export default function DashboardPage() {
   const j = report?.json;
 
   const stats: { id: string; label: string; value: number | undefined; format?: (n: number) => string }[] = [
-    { id: "auto_resolution_rate", label: "Auto-resolved", value: m && m.auto_resolution_rate * 100, format: pct },
-    { id: "avg_first_response_sec", label: "Avg first response", value: m?.avg_first_response_sec, format: mmss },
     { id: "avg_resolution_sec", label: "Avg resolution", value: m?.avg_resolution_sec, format: mmss },
-    { id: "open", label: "Open", value: m?.open },
-    { id: "awaiting_approval", label: "Awaiting approval", value: m?.awaiting_approval },
-    { id: "incidents_open", label: "Open incidents", value: m?.incidents_open },
     { id: "tat_breaches_prevented", label: "TAT breaches prevented", value: m?.tat_breaches_prevented },
     { id: "overrides_count", label: "Human overrides", value: report?.overrides_count },
   ];

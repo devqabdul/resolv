@@ -36,8 +36,8 @@ const KPIS: Kpi[] = [
 export default function KpiStrip() {
   const { data: m } = useMetrics(); // undefined on 404 / network error -> dashes
   const { motionOn } = useLayoutState();
-  // Always shown (user, 31 Oct), except on /dashboard which renders the full metrics itself.
-  const open = usePathname() !== "/dashboard";
+  // Metric cards live on the Dashboard only (user, 31 Oct).
+  const open = usePathname() === "/dashboard";
   const reduce = useReducedMotion();
   const base = useRef<{ values: number[]; at: string } | null>(null);
   if (m && !base.current) {
