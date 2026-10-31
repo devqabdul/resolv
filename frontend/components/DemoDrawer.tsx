@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSWRConfig } from "swr";
 import { demoReset, demoSeed, demoSpike, demoTicket } from "@/lib/api";
 
@@ -17,12 +17,24 @@ export default function DemoDrawer() {
   const [busy, setBusy] = useState(false);
   const [toasts, setToasts] = useState<{ id: number; text: string; err: boolean }[]>([]);
   const nextId = useRef(0);
+  const timers = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+  useEffect(() => {
+    const pending = timers.current;
+    return () => {
+      pending.forEach(clearTimeout);
+      pending.clear();
+    };
+  }, []);
 
   // Toast stack, bottom-right, auto-dismiss after 4 s. (decision: T24A)
   function toast(text: string, err = false) {
     const id = nextId.current++;
     setToasts((t) => [...t, { id, text, err }]);
-    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 4000);
+    const h = setTimeout(() => {
+      timers.current.delete(h);
+      setToasts((t) => t.filter((x) => x.id !== id));
+    }, 4000);
+    timers.current.add(h);
   }
 
   // Runs one action, shows a one-line result, refreshes every /api/tickets key.
