@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { ArrowBendUpRightIcon } from "@phosphor-icons/react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
@@ -47,7 +47,6 @@ export default function OverrideForm({ ticketId, onDone }: { ticketId: string; o
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2"><ArrowBendUpRightIcon className="text-muted-foreground" />Override / Re-route</CardTitle>
-          <CardDescription>Pick a different path. The gate still checks every action.</CardDescription>
         </CardHeader>
         <CardContent className="@container flex flex-col gap-4">
           <div className="grid grid-cols-2 items-start gap-3 @xl:grid-cols-[7rem_minmax(0,1fr)_minmax(0,9rem)_auto]">

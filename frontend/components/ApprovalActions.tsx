@@ -46,7 +46,7 @@ export default function ApprovalActions({ approval, onDone }: { approval: Approv
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2 font-mono tabular-nums">
-          <span className="font-sans text-base font-medium">{humanAction(name)} <span className="font-mono text-sm text-muted-foreground">{name}</span></span>
+          <span className="font-sans text-base font-medium">{humanAction(name)}</span>
           {typeof amount === "number" && <span className="text-3xl font-semibold">{inr(amount)}</span>}
         </div>
         {reasons.length > 0 && (

@@ -121,7 +121,6 @@ export default function TicketPage() {
               Path: <span data-testid="ticket-path" className="font-mono font-medium">{t.path}</span>
             </Badge>
           )}
-          {t.assigned_team && <Badge variant="outline" className={pill}>Team {t.assigned_team}</Badge>}
           <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
             {t.resolved_by && "Resolved by"}
             <Badge
@@ -140,12 +139,6 @@ export default function TicketPage() {
               </Link>
             </Badge>
           )}
-          {/* Re-run stays visible (contract: handles visible without extra clicks); the menu repeats it. */}
-          <IconTip label={busy ? "Running" : "Re-run agent"}>
-            <Button data-testid="rerun-button" variant="outline" size="icon" disabled={busy} onClick={rerun} aria-label="Re-run agent">
-              {busy ? <Spinner /> : <ArrowClockwiseIcon />}
-            </Button>
-          </IconTip>
           <DropdownMenu>
             <IconTip label="More actions">
               <DropdownMenuTrigger asChild>
@@ -153,7 +146,7 @@ export default function TicketPage() {
               </DropdownMenuTrigger>
             </IconTip>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem disabled={busy} onSelect={rerun}><ArrowClockwiseIcon />Re-run</DropdownMenuItem>
+              <DropdownMenuItem data-testid="rerun-button" disabled={busy} onSelect={rerun}>{busy ? <Spinner /> : <ArrowClockwiseIcon />}Re-run</DropdownMenuItem>
               <DropdownMenuItem onSelect={copyId}><CopyIcon />Copy ticket id</DropdownMenuItem>
               <DropdownMenuItem asChild><Link href="/"><QueueIcon />Open in queue</Link></DropdownMenuItem>
             </DropdownMenuContent>
@@ -174,7 +167,6 @@ export default function TicketPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><ChatTextIcon className="text-muted-foreground" />Customer message</CardTitle>
-              <CardAction><span className="text-sm text-muted-foreground">PII masked</span></CardAction>
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
               <p data-testid="ticket-masked-text" className={cn("rounded-lg bg-muted p-3 leading-relaxed", !fullText && "line-clamp-3")}>

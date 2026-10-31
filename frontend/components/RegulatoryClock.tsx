@@ -3,9 +3,7 @@
 // T+N and the per-day rate are derived from the clock itself (days_since - days_late, comp / days_late),
 // so they only show once the txn is late (before that days_late is 0 and N is not recoverable).
 import { ClockIcon } from "@phosphor-icons/react";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toneBadge } from "@/components/status-tone";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { fmtDate, inr, num, str, type Obj } from "./TimelineEvent";
 
@@ -26,7 +24,6 @@ export default function RegulatoryClock({ clock }: { clock: Obj | null }) {
     <Card data-testid="regulatory-clock" data-late={late}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2"><ClockIcon className="text-muted-foreground" />RBI regulatory clock</CardTitle>
-        {late && <CardAction><Badge className={toneBadge({ tone: "failed" })}>Past TAT</Badge></CardAction>}
       </CardHeader>
       <CardContent>
         <dl className="grid grid-cols-2 gap-y-4 sm:grid-cols-4 sm:divide-x">
