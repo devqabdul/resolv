@@ -1,7 +1,10 @@
 """Health (docs/02 §6.1); `/api/metrics` and `/api/evals/report` join here later (decision: T9)."""
 
+import json
+from pathlib import Path
+
 import httpx
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from sqlalchemy import text
 
 from app.config import settings
@@ -42,3 +45,24 @@ def health() -> dict[str, object]:
 @router.get("/metrics")
 def get_metrics(window_minutes: int = 240) -> dict[str, object]:
     return metrics.compute(window_minutes)
+
+
+_EVALS = Path(__file__).resolve().parents[2] / "evals"
+
+
+@router.get("/evals/report")
+def evals_report() -> dict[str, object]:
+    """docs/02 §6.1 + D15: the committed eval report plus `overrides_count` (lines of overrides.jsonl).
+    (decision: T22) 404 when `evals.run` has not produced a report yet."""
+    js, md = _EVALS / "report.json", _EVALS / "report.md"
+    if not js.exists() or not md.exists():
+        raise HTTPException(404, "No eval report yet; run `python -m evals.run`.")
+    ov = _EVALS / "overrides.jsonl"
+    count = len([x for x in ov.read_text().splitlines() if x.strip()]) if ov.exists() else 0
+    data = json.loads(js.read_text())
+    return {
+        "generated_at": data["generated_at"],
+        "markdown": md.read_text(),
+        "json": data,
+        "overrides_count": count,
+    }
