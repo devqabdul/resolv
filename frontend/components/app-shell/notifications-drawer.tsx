@@ -1,5 +1,5 @@
 'use client';
-// Notifications in a shadcn Drawer sliding in from the left (user, 31 Oct). Trigger lives in the sidebar or header.
+// Notifications in a shadcn Drawer sliding in from the right (user, 31 Oct). Trigger lives in the sidebar or header.
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { Badge } from "@/components/ui/badge";
 import { NotificationsList, useNotificationFeed } from "@/components/app-shell/notifications-list";
@@ -7,7 +7,7 @@ import { NotificationsList, useNotificationFeed } from "@/components/app-shell/n
 export default function NotificationsDrawer({ trigger }: { trigger: React.ReactNode }) {
   const feed = useNotificationFeed();
   return (
-    <Drawer direction="left">
+    <Drawer direction="right">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent className="flex flex-col">
         <DrawerHeader className="border-b">
