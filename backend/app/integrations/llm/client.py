@@ -11,7 +11,14 @@ from app.integrations.llm import cache, mock
 
 log = logging.getLogger(__name__)
 T = TypeVar("T", bound=BaseModel)
+# (decision: T25) every replay->mock fallback is logged and appended here as its reason.
+FALLBACKS: list[str] = []
 PROMPTS = Path(__file__).parents[2] / "agent" / "prompts"
+
+
+def _fallback(reason: str) -> None:
+    FALLBACKS.append(reason)
+    log.info("llm_fallback mode=replay reason=%s", reason)
 
 
 def load_prompt(name: str) -> str:
@@ -66,6 +73,7 @@ class LLMClient:
                 return schema.model_validate(hit)
             log.info("cache_miss key=%s", key)
             if self._sdk is None and not settings.ANTHROPIC_API_KEY:
+                _fallback("no_api_key")
                 return mock.respond(system, user, schema)  # D10: no key -> mock
         elif self._sdk is None and not settings.ANTHROPIC_API_KEY:
             raise RuntimeError("LLM_MODE=live needs ANTHROPIC_API_KEY.")
@@ -75,6 +83,7 @@ class LLMClient:
             if mode != "replay":
                 raise
             log.exception("llm_call failed in replay; falling back to mock")
+            _fallback("llm_error")
             return mock.respond(system, user, schema)
         cache.put(settings.LLM_CACHE_DIR, key, out.model_dump(mode="json"))
         return out

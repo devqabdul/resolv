@@ -1,3 +1,4 @@
+import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -8,6 +9,12 @@ from app.api import approvals, audit, demo, incidents, metrics, tickets
 from app.db.session import init_db
 from app.workers import scheduler
 from mock_paytm.main import mock_app
+
+# (decision: T25) uvicorn only configures its own loggers; without this the INFO lines
+# (cache_hit/cache_miss, llm_fallback, tool_call, gate) are dropped.
+if not logging.getLogger().handlers:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+logging.getLogger("app").setLevel(logging.INFO)
 
 
 @asynccontextmanager
