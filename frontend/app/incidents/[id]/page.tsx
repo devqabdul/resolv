@@ -300,7 +300,7 @@ export default function IncidentPage({ params }: { params: Promise<{ id: string 
                 <Table>
                   <TableHeader>
                     <TableRow className="hover:bg-transparent">
-                      {["Time", "Ticket", "Kind"].map((c) => <TableHead key={c} className="px-2 text-sm text-muted-foreground">{c}</TableHead>)}
+                      {["Time", "Ticket", "Kind", "Actor"].map((c) => <TableHead key={c} className="px-2 text-sm text-muted-foreground">{c}</TableHead>)}
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -315,6 +315,7 @@ export default function IncidentPage({ params }: { params: Promise<{ id: string 
                         <TableCell className="px-2">
                           <Badge variant="outline" className="h-6 px-2.5 font-mono text-sm font-normal">{e.kind}</Badge>
                         </TableCell>
+                        <TableCell data-testid="audit-actor" className="px-2 font-mono text-sm">{e.actor}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
