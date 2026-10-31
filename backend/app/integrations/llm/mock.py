@@ -190,7 +190,13 @@ def _decide(user: str) -> Decision:
         return done([], text, f"Refund {rf.refund_id} is {rf.status}.")
     if kind in (TicketType.settlement_delay, TicketType.kyc_resubmission):
         st = ctx.settlements[0] if ctx.settlements else None
-        if st and st.status == "FAILED" and ctx.merchant and ctx.merchant.kyc_status == "VERIFIED":
+        # (decision: FIX1) a FAILED settlement ticket always proposes retrigger_settlement;
+        # the gate decides AUTO (KYC VERIFIED) vs NEEDS_APPROVAL (KYC PENDING).
+        failed = st and st.status == "FAILED"
+        if failed and (
+            kind == TicketType.settlement_delay
+            or (ctx.merchant and ctx.merchant.kyc_status == "VERIFIED")
+        ):
             act = ProposedAction(
                 name=ActionName.retrigger_settlement, params={"settlement_id": st.id}
             )

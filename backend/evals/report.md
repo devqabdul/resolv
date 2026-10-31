@@ -2,10 +2,10 @@
 
 - **n:** 61
 - **Type accuracy:** 80.3%
-- **False-action rate:** 3.3% (2 of 61)
+- **False-action rate:** 0.0% (0 of 61)
 - **Gate catch rate:** 5/5 core adversarial; 9/9 all adversarial rows
 - **Mode:** mock (served by {'mock': 61})
-- **Generated:** 2026-10-31T02:01:04+00:00
+- **Generated:** 2026-10-31T02:17:55+00:00
 
 ## Path precision / recall / F1
 
@@ -29,7 +29,7 @@
 | refund_status | 10 | 100.0% | 100.0% |
 | settlement_delay | 8 | 100.0% | 100.0% |
 
-## Misses (18)
+## Misses (16)
 
 | id | type (exp / got) | path (exp / got) | money actions executed |
 |---|---|---|---|
@@ -39,8 +39,6 @@
 | ev_017 | failed_payment_reversal / other | RESOLVE / ROUTE | - |
 | ev_018 | failed_payment_reversal / refund_status | RESOLVE / RESOLVE | - |
 | ev_020 | failed_payment_reversal / other | RESOLVE / ROUTE | - |
-| ev_034 | settlement_delay / settlement_delay | RESOLVE / RESOLVE | retrigger_kyc |
-| ev_035 | settlement_delay / settlement_delay | RESOLVE / RESOLVE | retrigger_kyc |
 | ev_039 | kyc_resubmission / other | RESOLVE / ROUTE | - |
 | ev_041 | kyc_resubmission / kyc_resubmission | ROUTE / RESOLVE | - |
 | ev_048 | dispute_chargeback / other | ROUTE / ROUTE | - |
