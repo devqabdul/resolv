@@ -1,0 +1,2336 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "predicate": {
+    "assertions": [
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_rbi_tat.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T1"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_paytm_client.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T2"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_llm_client.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T3"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_nodes_decide.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T4"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_engines.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T5"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_api_tickets.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T6"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_demo_api.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T7"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_policy_engine.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T8"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_scenarios_mock.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T9"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_approvals.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T10"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_override.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T11"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "npm",
+          "--prefix",
+          "frontend",
+          "ci"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T12"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "npm",
+          "--prefix",
+          "frontend",
+          "ci"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T13"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "npm",
+          "--prefix",
+          "frontend",
+          "ci"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T18"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "python",
+          "-m",
+          "evals.make_dataset"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "verify:T20"
+      },
+      {
+        "assertedBy": {
+          "skill": "factory-conductor"
+        },
+        "command": [
+          "uv",
+          "run",
+          "--directory",
+          "backend",
+          "pytest",
+          "-q",
+          "tests/test_rbi_tat.py"
+        ],
+        "result": {
+          "outcome": "passed"
+        },
+        "subject": [
+          {
+            "digest": {
+              "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+            },
+            "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+          }
+        ],
+        "test": "integration:b4828d9aaa66"
+      }
+    ],
+    "generatedAtTime": "2026-10-31T00:41:22Z",
+    "id": "run-result-v1-20261031T004122Z-1e396e",
+    "payload": {
+      "base_branch": "factory/work2",
+      "budget": {
+        "max_dispatches": 234,
+        "max_parallel": 2,
+        "max_repairs_per_task": 2,
+        "wall_clock_min": 480
+      },
+      "budget_derived": [
+        "max_dispatches"
+      ],
+      "budget_note": "max_tokens/max_usd recorded, not enforced (the runtime does not expose usage)",
+      "created_at": "2026-10-30T18:46:57Z",
+      "dispatches": 68,
+      "evidence_gate": true,
+      "grant": {
+        "id": "autonomy-grant-v1-20261030T183530Z-77b733",
+        "path": ".skill-contract/envelopes/autonomy-grant-v1-20261030T183530Z-77b733.json",
+        "sha256": "45a55fbf5b24e131846d7707bde296ae37fcf686ea1d5c2f9ad4f2a1409d7bcb"
+      },
+      "integration": {
+        "head": "b4828d9aaa66683e936b23018d05f1423b972945",
+        "passed": true,
+        "runs": [
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_rbi_tat.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T1"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_engine_smoke.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T1"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "ruff",
+              "check",
+              "."
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T1"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_paytm_client.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T2"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_llm_client.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T3"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_nodes_decide.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T4"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_engines.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T5"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_idempotency.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T5"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_api_tickets.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T6"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_demo_api.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T7"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_policy_engine.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T8"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_gate_adversarial.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T8"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_rbi_tat.py",
+              "tests/test_policy_engine.py",
+              "tests/test_gate_adversarial.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T8"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_scenarios_mock.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T9"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_approvals.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T10"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_override.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T11"
+          },
+          {
+            "command": [
+              "npm",
+              "--prefix",
+              "frontend",
+              "ci"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T12"
+          },
+          {
+            "command": [
+              "npm",
+              "--prefix",
+              "frontend",
+              "run",
+              "build"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T12"
+          },
+          {
+            "command": [
+              "npm",
+              "--prefix",
+              "frontend",
+              "run",
+              "lint"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T12"
+          },
+          {
+            "command": [
+              "npm",
+              "--prefix",
+              "frontend",
+              "ci"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T13"
+          },
+          {
+            "command": [
+              "npm",
+              "--prefix",
+              "frontend",
+              "run",
+              "build"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T13"
+          },
+          {
+            "command": [
+              "npm",
+              "--prefix",
+              "frontend",
+              "ci"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T18"
+          },
+          {
+            "command": [
+              "npm",
+              "--prefix",
+              "frontend",
+              "run",
+              "build"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T18"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "python",
+              "-m",
+              "evals.make_dataset"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T20"
+          },
+          {
+            "command": [
+              "uv",
+              "run",
+              "--directory",
+              "backend",
+              "pytest",
+              "-q",
+              "tests/test_eval_dataset.py"
+            ],
+            "ok": true,
+            "returncode": 0,
+            "task": "T20"
+          }
+        ]
+      },
+      "leftover_worktrees": [
+        {
+          "path": ".skill-contract/runs/run-20261030T184657Z-bdf027/wt/T14",
+          "reason": "merge-conflict",
+          "task": "T14"
+        }
+      ],
+      "log": ".skill-contract/runs/run-20261030T184657Z-bdf027/autonomy-log.jsonl",
+      "log_bytes": 59892,
+      "log_sha256": "2238d4ba92ea740c5241ef2a856ab4d70177c7595730dfe78ea3933a16677ab7",
+      "plan": {
+        "id": "task-plan-v1-20261030T183529Z-553d17",
+        "path": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json",
+        "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3",
+        "title": "Resolv build (T4\u2013T27, unattended)"
+      },
+      "run_branch": "factory/resolv-build-t4-t27-unattended",
+      "run_id": "run-20261030T184657Z-bdf027",
+      "stopped": null,
+      "tasks": [
+        {
+          "depends_on": [],
+          "evidence": {
+            "paths": [
+              ".verify/v1a/api-health/91034b62ab894163b33370ff2c483da4d21c283e/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "91034b62ab894163b33370ff2c483da4d21c283e",
+            "verifier": "a7b3fe2d87fd1c48e"
+          },
+          "id": "T1",
+          "merge_commit": "58a348b43448da9d6c62bdf4a1fa8882d2cab5ea",
+          "owner": "a70ffc198aadc134e",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "Evaluator cannot execute code; \u00a77.2 order kept; 12000 reason names \u20b95,000; unknown ids BLOCKED; PII 7 classes; 5 TAT cases; files within list",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "The policy layer must evaluate a `Decision` against `rules.yaml` (copied verbatim from docs/02 \u00a77.1) with a tokenised `lhs op rhs` evaluator that uses no `eval`/`exec`, compute the RBI TAT clock in `rbi_tat.regulatory_clock`, mask the 7 PII classes in `pii.mask`, and return `AUTO_EXECUTE` for the D1 decision, `NEEDS_APPROVAL` for a 12000 reversal and `BLOCKED unknown_reference` for `txn_nope`",
+          "verified_head": "91034b62ab894163b33370ff2c483da4d21c283e",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_rbi_tat.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_engine_smoke.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "ruff",
+                "check",
+                "."
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [],
+          "evidence": {
+            "paths": [
+              ".verify/v2e/api-health/89318cd645c84ceaa8c5b94fd56e9be79aeaf6b1/evidence.json",
+              ".verify/v2d/mock-paytm-seed/89318cd645c84ceaa8c5b94fd56e9be79aeaf6b1/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "89318cd645c84ceaa8c5b94fd56e9be79aeaf6b1",
+            "verifier": "ada0cea4ff00650af"
+          },
+          "id": "T2",
+          "merge_commit": "f0d57a4855b2aad08b2b1e759ae978a2ed1490ee",
+          "owner": "a36c44eef688dd647",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "14 tools + 3 admin endpoints, 5s timeout, one 5xx retry, URL refusal, audit rows, main.py only the init_db lifespan",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "`PaytmClient` must cover every docs/02 \u00a76.2 endpoint with httpx (5 s timeout, 1 retry on 5xx), refuse a `PAYTM_BASE_URL` that is not the mounted or `:8001` mock, and `ToolRegistry.call()` must audit `tool_call` and `tool_result` and require an `idempotency_key` on `initiate_reversal` and `credit_compensation`",
+          "verified_head": "89318cd645c84ceaa8c5b94fd56e9be79aeaf6b1",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_paytm_client.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [],
+          "evidence": {
+            "paths": [
+              ".verify/v3a/api-health/885ccad4cb8ef30f35ab4fce3e3a524049126669/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "885ccad4cb8ef30f35ab4fce3e3a524049126669",
+            "verifier": "a77b9f7ea0a4c71c0"
+          },
+          "id": "T3",
+          "merge_commit": "15675a4f593165552ea6a85f936996530bcb49d2",
+          "owner": "a30034bb35da681b3",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "Lazy SDK, full cache key, replay miss falls back to mock, 7 scenarios + spike covered, prompts carry 06 rules, conftest per D13, 25 tests green",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "`LLMClient.structured` must call Anthropic tool-use with `temperature=0` and `max_tokens=1500`, cache responses under `LLM_CACHE_DIR` keyed by sha256 of model, system, user and schema, and serve `LLM_MODE=mock` from `llm/mock.py` rules for the 7 scenarios and spike texts, with the four prompt files in `agent/prompts/` and a `tests/conftest.py` that pins `LLM_MODE=mock` for every test",
+          "verified_head": "885ccad4cb8ef30f35ab4fce3e3a524049126669",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_llm_client.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T1",
+            "T2",
+            "T3"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v4a/api-health/fd5595d1ce8bad88d87d3684ed32a7d1d38df2c0/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "fd5595d1ce8bad88d87d3684ed32a7d1d38df2c0",
+            "verifier": "aefb7119ba4ffbd40"
+          },
+          "id": "T4",
+          "merge_commit": "d277f180a7a9f741fa1b02b81395105d3c7a8d8f",
+          "owner": "aabec5640ed088caf",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "All fetches via registry, PII masked before LLM with classes-only audit, signature set before LLM, AgentState per \u00a73.1, test asserts prompt content; only ruled extras",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "`build_context` must fetch every input through `ToolRegistry` (last 10 txns over 30 d, refunds, settlements, KYC, mandates, last 3 past tickets, top-3 keyword KB snippets, regulatory clock, policy summary), and the `ingest`, `understand` and `decide` nodes must be pure `(state) -> state` functions that mask PII before any LLM call and audit `pii_masked`, `understanding` and `decision`",
+          "verified_head": "fd5595d1ce8bad88d87d3684ed32a7d1d38df2c0",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_nodes_decide.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T4"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v5b/api-health/e0443db47061b8230d6770dcb6dd38d0da714ca9/evidence.json",
+              ".verify/v5a/mock-paytm-seed/e0443db47061b8230d6770dcb6dd38d0da714ca9/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "e0443db47061b8230d6770dcb6dd38d0da714ca9",
+            "verifier": "a7464818420acaef0"
+          },
+          "id": "T5",
+          "merge_commit": "c1cbc0181749c9dab104a279e2667e2813c78198",
+          "owner": "a8e4d2346c252a3cb",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "Shared nodes and edge functions for both engines; only AUTO_EXECUTE via registry; idempotency key checked before call and sent to mock; verify retries once; worker errors audited",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "The `gate`, `act`, `verify`, `close` and `handoff` nodes, the LangGraph `StateGraph` in `agent/graph.py` and the `agent/runner.py` fallback (selected by `AGENT_ENGINE=langgraph|runner` over the same nodes), `services/tickets.py` and the `process_queue` worker must run the docs/02 \u00a73.2 edges, store idempotency keys in `action_executions`, and execute the same decision twice with exactly 1 refund created",
+          "verified_head": "e0443db47061b8230d6770dcb6dd38d0da714ca9",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_engines.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_idempotency.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T5"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v6b/api-health/4d866a090d3f0fb18c715a002cbac29e7f85b05b/evidence.json",
+              ".verify/v6b/ticket-queue/4d866a090d3f0fb18c715a002cbac29e7f85b05b/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "4d866a090d3f0fb18c715a002cbac29e7f85b05b",
+            "verifier": "a9391db0d93bcef72"
+          },
+          "id": "T6",
+          "merge_commit": "7e5db3f26973b4907440570d05572d902bbe6d1c",
+          "owner": "afc8e535f03dc3069",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "All seven \u00a76.1 routes match; health probes DB and mock (unreachable \u2192 ok false); only declared extras; 37 tests, format clean",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "The routers in `api/tickets.py`, `api/audit.py` and `api/metrics.py` must serve `POST/GET /api/tickets`, `GET /api/tickets/{id}` (ticket, run state, timeline, approvals, incident), `POST /api/tickets/{id}/run`, `GET /api/audit` and `GET /api/health` returning `{ok, llm_mode, db, mock_paytm}` with exactly the docs/02 \u00a76.1 shapes",
+          "verified_head": "4d866a090d3f0fb18c715a002cbac29e7f85b05b",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_api_tickets.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T6"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v7a/api-health/6cc2c0798230c99ea6b25e9bc618f9a289fd8f56/evidence.json",
+              ".verify/v7a/d1-auto-resolve/6cc2c0798230c99ea6b25e9bc618f9a289fd8f56/evidence.json",
+              ".verify/v7a/mock-paytm-seed/6cc2c0798230c99ea6b25e9bc618f9a289fd8f56/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "6cc2c0798230c99ea6b25e9bc618f9a289fd8f56",
+            "verifier": "ae949545937ba6f9d"
+          },
+          "id": "T7",
+          "merge_commit": "43f45da21ff4e43395c10126d754818269ea328f",
+          "owner": "a0c15b56faa99a9bc",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "All 7 scenarios run to the expected statuses in mock mode; D1 2499+200; fixed ids; spike texts deterministic; reset drops Resolv tables; 4 files only",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "`services/demo.py` and `api/demo.py` must provide reset, seed (canonical data plus 6 KB snippets), the 7 scenarios with fixed ids (`d1_failed_upi` -> `tkt_48213`, `d3_over_limit` -> `tkt_48219`, others `tkt_<scenario>`) and a spike whose 8 phrasing variants are chosen by `random.Random(f\"{issuer_bank}:{count}\")`, so D1 ends RESOLVED with `initiate_reversal` 2499 and `credit_compensation` 200",
+          "verified_head": "6cc2c0798230c99ea6b25e9bc618f9a289fd8f56",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_demo_api.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T7"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v8a/d1-auto-resolve/2eba584b82e7f185b1f37f5356903e3ea1ac9270/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "2eba584b82e7f185b1f37f5356903e3ea1ac9270",
+            "verifier": "a20f923aff59e8359"
+          },
+          "id": "T8",
+          "merge_commit": "8c71da997532362fed7780815a5c2390d56be098",
+          "owner": "adf3490e075494a33",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "Every T10 case maps to a test with the pinned assertion; real gate node emits gate_adjusted_amount; only the two test files changed; 55 tests green",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "The policy test suites must cover every docs/06 T10 case (5 RBI TAT cases, recompute 500 -> 200 with `gate_adjusted_amount`, the 12000 limit with reason text containing 5,000, the holding reply, the mandate channel rule, the settlement KYC rule, the KYC fraud block and 5 adversarial gate cases) with \u2265 15 tests, and `engine.py` must be fixed wherever a case fails",
+          "verified_head": "2eba584b82e7f185b1f37f5356903e3ea1ac9270",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_policy_engine.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_gate_adversarial.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_rbi_tat.py",
+                "tests/test_policy_engine.py",
+                "tests/test_gate_adversarial.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T8"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v9c/d1-auto-resolve/697bc8d17252a98603e06bd4ef6c336d1050753f/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "697bc8d17252a98603e06bd4ef6c336d1050753f",
+            "verifier": "a490dcb674e85f919"
+          },
+          "id": "T9",
+          "merge_commit": "7ce5bbd6355b1471a38a1f6d3e3277ca3c9a99b5",
+          "owner": "a87bc9e91a499e5b9",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "7 scenarios + no-reset hinglish test on both engines; _refund is customer-safe and exact on amount; prompts in .md; files within list; 71 green",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "All 7 scenarios must end, in mock mode on both engines (`AGENT_ENGINE=langgraph` and `runner`), as docs/06 T11 states: d1 RESOLVED (reversal, 200, reply), d3 AWAITING_APPROVAL with an approval row and a holding reply, hinglish_refund_status RESOLVED in `hi-en` quoting the ARN of seeded `rfd_riya_prev`, merchant_settlement and kyc_rejected RESOLVED via `retrigger_kyc`, mandate_email AWAITING_APPROVAL, and dispute ROUTED to `risk` with no money action",
+          "verified_head": "697bc8d17252a98603e06bd4ef6c336d1050753f",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_scenarios_mock.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T9"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v10a/api-health/ebf1772bf430ca30a3e3bf2879b554858b059b09/evidence.json",
+              ".verify/v10a/d3-approval/ebf1772bf430ca30a3e3bf2879b554858b059b09/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "ebf1772bf430ca30a3e3bf2879b554858b059b09",
+            "verifier": "a5bcffa9cfb350838"
+          },
+          "id": "T10",
+          "merge_commit": "54752052d97adc26cf52933b263c5a320d16a761",
+          "owner": "aad727cb2520395d4",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "Approve runs only the stored NEEDS_APPROVAL action via act.execute + registry with the same key; 409 before execution; actor re-stamp covers only the human-triggered run; reject \u2192 ROUTED; 74 green",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "`services/approvals.py` and `api/approvals.py` must list `GET /api/approvals?status=PENDING` and, on `POST /api/approvals/{id}/decide` with approve, execute that single action through the same act and verify code with actor `human:<name>`, close the ticket RESOLVED when no approval is pending, and audit `approval_decided` with `decided_by`. On reject, the ticket must go to ROUTED",
+          "verified_head": "ebf1772bf430ca30a3e3bf2879b554858b059b09",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_approvals.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T10"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v11a/override/c6946354d5bc8bf10b2b8f33d7cf4a8891a16492/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "c6946354d5bc8bf10b2b8f33d7cf4a8891a16492",
+            "verifier": "a30ff1dfab94804bc"
+          },
+          "id": "T11",
+          "merge_commit": "a4180d9c076c1fe7158035047819317ab1ae4343",
+          "owner": "ad8fb13bd5d60aa02",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "Override audited with resolv/human decisions and human actor; RESOLVE goes through the gate, BLOCKED never executes; one overrides line with six keys; cwd-independent path; 78 green",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "`POST /api/tickets/{id}/override` must audit `override` with `{resolv_decision, human_decision}`, apply the human path (ROUTE, RESOLVE through the gate with NEEDS_APPROVAL auto-approved by the overriding human, or ESCALATE with P1), and append `{ticket_id, masked_text, resolv_decision, human_decision, note, ts}` to `evals/overrides.jsonl`",
+          "verified_head": "c6946354d5bc8bf10b2b8f33d7cf4a8891a16492",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_override.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T6"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v12b/ticket-queue/0ba2ec71e527785fb4faaf9da45a665e589bd632/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "0ba2ec71e527785fb4faaf9da45a665e589bd632",
+            "verifier": "ac246c2e2e5c34085"
+          },
+          "id": "T12",
+          "merge_commit": "bd83f8fe5d5e1ce39bda5f777f7304934ac87c1f",
+          "owner": "ae156e5d9dc207e38",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "Typed fetchers + 2 s hooks for every \u00a76.1 route, nav + dash KPI strip, 8-column queue on masked_text, all handles, 9 statuses incl CLOSED, row click; files within list",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "The frontend foundation must provide typed fetchers in `lib/api.ts` for every docs/02 \u00a76.1 route with `useSWR` `refreshInterval: 2000`, a layout with left nav (Queue, Approvals, Incidents, Evidence) and a KPI strip showing dashes when `/api/metrics` is missing, and a Queue table (id, type, priority, status, path, SLA countdown, incident badge, resolved_by) in client components using the palette tokens",
+          "verified_head": "0ba2ec71e527785fb4faaf9da45a665e589bd632",
+          "verify": [
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "lint"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T11",
+            "T12"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v13a/d3-approval/139c39f7b95a58e0c83d6295737be563de1aee72/evidence.json",
+              ".verify/v13a/override/139c39f7b95a58e0c83d6295737be563de1aee72/evidence.json",
+              ".verify/v13a/ticket-timeline/139c39f7b95a58e0c83d6295737be563de1aee72/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "139c39f7b95a58e0c83d6295737be563de1aee72",
+            "verifier": "a75f34a333a9bbb6a"
+          },
+          "id": "T13",
+          "merge_commit": "b4828d9aaa66683e936b23018d05f1423b972945",
+          "owner": "aa8f0044f90a682cf",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "masked_text only, every \u00a73.2 kind rendered with fallback, 4 gate colours with reasons, collapsible tool calls, mutate after override/approve/rerun, all handles; lint clean",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "The ticket detail page must show masked text, the customer or merchant card and the regulatory clock, render every audit kind distinctly in a timeline (gate badges green, amber, red or grey with reasons; collapsible tool calls), and wire `OverrideForm`, Approve/Reject (when an approval is PENDING) and Re-run to the API",
+          "verified_head": "139c39f7b95a58e0c83d6295737be563de1aee72",
+          "verify": [
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T10"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v14b/api-health/56e7841b13a5b2a8f2965ed79c55aada1bb1c9ac/evidence.json",
+              ".verify/v14b/incident-cluster/56e7841b13a5b2a8f2965ed79c55aada1bb1c9ac/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "56e7841b13a5b2a8f2965ed79c55aada1bb1c9ac",
+            "verifier": "a10b5e23ce55dc5a5"
+          },
+          "id": "T14",
+          "merge_commit": null,
+          "owner": "a300e56c9f536aead",
+          "park_reason": "merge-conflict",
+          "question": null,
+          "review": {
+            "detail": "Counts all non-CLOSED tickets by ledger signature in the 60 min window at threshold 10; one OPEN incident, idempotent second pass; 5 s loop audits errors; 82 green",
+            "verdict": "pass"
+          },
+          "status": "parked",
+          "title": "`services/incidents.py` and `api/incidents.py` must store `candidate_txn_id` and `signature` at ingest from the ledger (no LLM), group tickets in `cluster()` by signature at threshold 10 within 60 min, create one OPEN incident titled from issuer and failure reason with `owner_team=payments_ops` and a non-empty notice draft, and on `POST /api/incidents/{id}/notify` set status COMMUNICATED",
+          "verified_head": "56e7841b13a5b2a8f2965ed79c55aada1bb1c9ac",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_incidents.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T14"
+          ],
+          "evidence": null,
+          "id": "T15",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "With an OPEN incident present, `ingest` must attach a matching ticket `via=fast_path`, send the template holding reply, set INCIDENT_LINKED and audit `incident_fast_path` with 0 `understanding` events, and the demo spike must create tickets in batches of 10, so a 120-ticket spike reaches `ticket_count` 120 while `/api/health` answers in < 300 ms",
+          "verified_head": null,
+          "verify": []
+        },
+        {
+          "depends_on": [
+            "T15",
+            "T10"
+          ],
+          "evidence": null,
+          "id": "T16",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "`services/sla.py` must nudge once per ticket and raise it to P1 when fewer than 15 minutes remain to breach, and `GET /api/metrics` must return every docs/01 FR-11 field, with INCIDENT_LINKED counted as resolved by Resolv",
+          "verified_head": null,
+          "verify": []
+        },
+        {
+          "depends_on": [
+            "T16",
+            "T12"
+          ],
+          "evidence": null,
+          "id": "T17",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "`notify(target, text, ticket_id, incident_id)` must always insert an in-app `notifications` row for the handoff nudge, incident creation and the SLA guard and, when `SLACK_WEBHOOK_URL` is set, POST `{text}` with a 3 s timeout and record a second row with `channel=slack` and `delivered` true or false, `GET /api/notifications` must list them, and a `NotificationsPanel` in the layout footer must show the last 10 with a Slack delivered mark",
+          "verified_head": null,
+          "verify": []
+        },
+        {
+          "depends_on": [
+            "T10",
+            "T12"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v18a/approvals-page/22402e6bd5f60df737104c247e5d46038b8e2df1/evidence.json",
+              ".verify/v18a/d3-approval/22402e6bd5f60df737104c247e5d46038b8e2df1/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "22402e6bd5f60df737104c247e5d46038b8e2df1",
+            "verifier": "a5171120d2056e8db"
+          },
+          "id": "T18",
+          "merge_commit": "c7848ce82adc7c9bc1fc4d7d31223436f5254efb",
+          "owner": "a87fb23063c8cf5c9",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "All card fields and handles, \u20b9 formatting, optimistic mutate with restore, name required, buttons disabled in flight; lint and tsc clean",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "The Approvals page must list PENDING approvals as `ApprovalCard`s (ticket id, type, priority, masked excerpt, action name and params, gate reasons, Resolv reasoning, reply draft) with Approve and Reject, each taking a note and a name, posted to `/api/approvals/{id}/decide`, removed optimistically",
+          "verified_head": "22402e6bd5f60df737104c247e5d46038b8e2df1",
+          "verify": [
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "ci"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "npm",
+                "--prefix",
+                "frontend",
+                "run",
+                "build"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T15",
+            "T12",
+            "T11"
+          ],
+          "evidence": null,
+          "id": "T19",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "`GET /api/tickets` must accept `?incident_id=`, the Incidents page must show live `IncidentCard`s (title, signature, ticket_count, first and last seen, status, editable notice draft, Send proactive notice), and the Queue page must show a `DemoDrawer` (Reset, Seed, 7-scenario dropdown, Spike with a bank select and count 120) only when `?demo=1`",
+          "verified_head": null,
+          "verify": []
+        },
+        {
+          "depends_on": [
+            "T9"
+          ],
+          "evidence": {
+            "paths": [
+              ".verify/v20a/mock-paytm-seed/559f85876a31a0b9ff3426e69d690a6e1a93178f/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass",
+            "verified_head": "559f85876a31a0b9ff3426e69d690a6e1a93178f",
+            "verifier": "acbe79367d199b5eb"
+          },
+          "id": "T20",
+          "merge_commit": "e9ed143d4528585b9a2884bc351f50226faad084",
+          "owner": "ac8886346533c8476",
+          "park_reason": null,
+          "question": null,
+          "review": {
+            "detail": "61 deterministic rows, 10 verbatim, counts match T21 + 5 adversarial, lazy evals import, canonical seed unchanged; 76 green",
+            "verdict": "pass"
+          },
+          "status": "proven",
+          "title": "`evals/make_dataset.py` must generate, with `random.seed(42)`, at least 58 rows in `evals/dataset.jsonl` that cover every docs/06 T21 type count, keep ev_001 to ev_010 verbatim, include 5 adversarial rows, and emit the matching mock fixtures through `eval_fixtures()`",
+          "verified_head": "559f85876a31a0b9ff3426e69d690a6e1a93178f",
+          "verify": [
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "python",
+                "-m",
+                "evals.make_dataset"
+              ],
+              "ok": true,
+              "returncode": 0
+            },
+            {
+              "command": [
+                "uv",
+                "run",
+                "--directory",
+                "backend",
+                "pytest",
+                "-q",
+                "tests/test_eval_dataset.py"
+              ],
+              "ok": true,
+              "returncode": 0
+            }
+          ]
+        },
+        {
+          "depends_on": [
+            "T20",
+            "T16"
+          ],
+          "evidence": null,
+          "id": "T21",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "`python -m evals.run` must accept `--mode mock|replay`, run every dataset row through the real pipeline in-process, and write `evals/report.md` and `evals/report.json` with n \u2265 58, type accuracy, per-class path precision, recall and F1, false-action rate, gate catch rate and misses, and `GET /api/evals/report` must return `{generated_at, markdown, json, overrides_count}`",
+          "verified_head": null,
+          "verify": []
+        },
+        {
+          "depends_on": [
+            "T21",
+            "T17"
+          ],
+          "evidence": null,
+          "id": "T22",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "The Evidence page must show headline tiles from `report.json` (n, type accuracy, RESOLVE precision, false-action rate, gate catch rate, generated_at), the rendered `report.md` and the overrides count, and the layout KPI strip must read `/api/metrics` (auto-resolution %, first response, open, awaiting approval, incidents open) as large numbers",
+          "verified_head": null,
+          "verify": []
+        },
+        {
+          "depends_on": [
+            "T19",
+            "T22"
+          ],
+          "evidence": null,
+          "id": "T23",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "The cockpit polish must add green, amber and red SLA countdown colours, an incident badge and a `resolved_by` chip on Queue rows, empty states, toasts on demo actions and the page title \"Resolv cockpit\", with no new backend calls",
+          "verified_head": null,
+          "verify": []
+        },
+        {
+          "depends_on": [
+            "T15",
+            "T13"
+          ],
+          "evidence": null,
+          "id": "T24",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "`integrations/embeddings.py` must embed with fastembed `BAAI/bge-small-en-v1.5` when `EMBEDDINGS_ENABLED` is true, write `ticket_embeddings` at ingest and put the top-3 similar past tickets by cosine into `ContextBundle.past_tickets`, and when `EMBEDDINGS_ENABLED` is false must never import fastembed and must fall back to keyword retrieval",
+          "verified_head": null,
+          "verify": []
+        },
+        {
+          "depends_on": [
+            "T21"
+          ],
+          "evidence": null,
+          "id": "T25",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "In `LLM_MODE=replay`, a cache miss with no `ANTHROPIC_API_KEY` or no network must fall back to `llm/mock.py`, log `cache_miss`, record the fallback, and make 0 Anthropic SDK calls, and `scripts/warm_cache.sh` must exist with the docs/06 T25 steps without being run",
+          "verified_head": null,
+          "verify": []
+        },
+        {
+          "depends_on": [
+            "T23",
+            "T25"
+          ],
+          "evidence": null,
+          "id": "T26",
+          "merge_commit": null,
+          "owner": null,
+          "park_reason": null,
+          "question": null,
+          "review": null,
+          "status": "blocked",
+          "title": "`README.md` must hold run instructions (`make dev`, `make seed`, `http://localhost:3000/?demo=1`), the `LLM_MODE` modes, the attended warm-up step and the test and eval commands, and `scripts/check_readme.py` must exit 1 when any of those sections is missing",
+          "verified_head": null,
+          "verify": []
+        }
+      ],
+      "trail": [
+        {
+          "dispatched_at": "2026-10-30T18:47:08Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v1a/doctor/91034b62ab894163b33370ff2c483da4d21c283e/doctor.json"
+            ],
+            "paths": [
+              ".verify/v1a/api-health/91034b62ab894163b33370ff2c483da4d21c283e/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "58a348b43448da9d6c62bdf4a1fa8882d2cab5ea",
+            "outcome": "merged"
+          },
+          "owner": "a70ffc198aadc134e",
+          "reviewer": "a384088c33e6f06ee",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T1",
+          "verdict_agent": "a7b3fe2d87fd1c48e",
+          "verified_head": "91034b62ab894163b33370ff2c483da4d21c283e",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T1"
+        },
+        {
+          "dispatched_at": "2026-10-30T18:47:09Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v2e/doctor/89318cd645c84ceaa8c5b94fd56e9be79aeaf6b1/doctor.json",
+              ".verify/v2d/doctor/89318cd645c84ceaa8c5b94fd56e9be79aeaf6b1/doctor.json"
+            ],
+            "paths": [
+              ".verify/v2e/api-health/89318cd645c84ceaa8c5b94fd56e9be79aeaf6b1/evidence.json",
+              ".verify/v2d/mock-paytm-seed/89318cd645c84ceaa8c5b94fd56e9be79aeaf6b1/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "f0d57a4855b2aad08b2b1e759ae978a2ed1490ee",
+            "outcome": "merged"
+          },
+          "owner": "a36c44eef688dd647",
+          "reviewer": "a5f038df681b47135",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T2",
+          "verdict_agent": "ada0cea4ff00650af",
+          "verified_head": "89318cd645c84ceaa8c5b94fd56e9be79aeaf6b1",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T2"
+        },
+        {
+          "dispatched_at": "2026-10-30T18:51:26Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v3a/doctor/885ccad4cb8ef30f35ab4fce3e3a524049126669/doctor.json"
+            ],
+            "paths": [
+              ".verify/v3a/api-health/885ccad4cb8ef30f35ab4fce3e3a524049126669/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "15675a4f593165552ea6a85f936996530bcb49d2",
+            "outcome": "merged"
+          },
+          "owner": "a30034bb35da681b3",
+          "reviewer": "a91e0929ac652ce06",
+          "serial_after": [
+            "T1"
+          ],
+          "status": "proven",
+          "task": "T3",
+          "verdict_agent": "a77b9f7ea0a4c71c0",
+          "verified_head": "885ccad4cb8ef30f35ab4fce3e3a524049126669",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T3"
+        },
+        {
+          "dispatched_at": "2026-10-30T18:57:12Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v4a/doctor/fd5595d1ce8bad88d87d3684ed32a7d1d38df2c0/doctor.json"
+            ],
+            "paths": [
+              ".verify/v4a/api-health/fd5595d1ce8bad88d87d3684ed32a7d1d38df2c0/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "d277f180a7a9f741fa1b02b81395105d3c7a8d8f",
+            "outcome": "merged"
+          },
+          "owner": "aabec5640ed088caf",
+          "reviewer": "a90ebfa2ded408509",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T4",
+          "verdict_agent": "aefb7119ba4ffbd40",
+          "verified_head": "fd5595d1ce8bad88d87d3684ed32a7d1d38df2c0",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T4"
+        },
+        {
+          "dispatched_at": "2026-10-30T19:08:08Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v5b/doctor/e0443db47061b8230d6770dcb6dd38d0da714ca9/doctor.json",
+              ".verify/v5a/doctor/e0443db47061b8230d6770dcb6dd38d0da714ca9/doctor.json"
+            ],
+            "paths": [
+              ".verify/v5b/api-health/e0443db47061b8230d6770dcb6dd38d0da714ca9/evidence.json",
+              ".verify/v5a/mock-paytm-seed/e0443db47061b8230d6770dcb6dd38d0da714ca9/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "c1cbc0181749c9dab104a279e2667e2813c78198",
+            "outcome": "merged"
+          },
+          "owner": "a8e4d2346c252a3cb",
+          "reviewer": "a25033006786fd266",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T5",
+          "verdict_agent": "a7464818420acaef0",
+          "verified_head": "e0443db47061b8230d6770dcb6dd38d0da714ca9",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T5"
+        },
+        {
+          "dispatched_at": "2026-10-30T19:22:58Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v6b/doctor/4d866a090d3f0fb18c715a002cbac29e7f85b05b/doctor.json"
+            ],
+            "paths": [
+              ".verify/v6b/api-health/4d866a090d3f0fb18c715a002cbac29e7f85b05b/evidence.json",
+              ".verify/v6b/ticket-queue/4d866a090d3f0fb18c715a002cbac29e7f85b05b/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "7e5db3f26973b4907440570d05572d902bbe6d1c",
+            "outcome": "merged"
+          },
+          "owner": "afc8e535f03dc3069",
+          "reviewer": "a42e0dcf9e357c8b6",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T6",
+          "verdict_agent": "a9391db0d93bcef72",
+          "verified_head": "4d866a090d3f0fb18c715a002cbac29e7f85b05b",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T6"
+        },
+        {
+          "dispatched_at": "2026-10-30T19:28:49Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v7a/doctor/6cc2c0798230c99ea6b25e9bc618f9a289fd8f56/doctor.json"
+            ],
+            "paths": [
+              ".verify/v7a/api-health/6cc2c0798230c99ea6b25e9bc618f9a289fd8f56/evidence.json",
+              ".verify/v7a/d1-auto-resolve/6cc2c0798230c99ea6b25e9bc618f9a289fd8f56/evidence.json",
+              ".verify/v7a/mock-paytm-seed/6cc2c0798230c99ea6b25e9bc618f9a289fd8f56/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "43f45da21ff4e43395c10126d754818269ea328f",
+            "outcome": "merged"
+          },
+          "owner": "a0c15b56faa99a9bc",
+          "reviewer": "a8a2bad8e2ed253c6",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T7",
+          "verdict_agent": "ae949545937ba6f9d",
+          "verified_head": "6cc2c0798230c99ea6b25e9bc618f9a289fd8f56",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T7"
+        },
+        {
+          "dispatched_at": "2026-10-30T19:34:22Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v8a/doctor/2eba584b82e7f185b1f37f5356903e3ea1ac9270/doctor.json"
+            ],
+            "paths": [
+              ".verify/v8a/d1-auto-resolve/2eba584b82e7f185b1f37f5356903e3ea1ac9270/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "8c71da997532362fed7780815a5c2390d56be098",
+            "outcome": "merged"
+          },
+          "owner": "adf3490e075494a33",
+          "reviewer": "a36f1dbbfc7d5f219",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T8",
+          "verdict_agent": "a20f923aff59e8359",
+          "verified_head": "2eba584b82e7f185b1f37f5356903e3ea1ac9270",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T8"
+        },
+        {
+          "dispatched_at": "2026-10-30T19:39:46Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v9c/doctor/697bc8d17252a98603e06bd4ef6c336d1050753f/doctor.json"
+            ],
+            "paths": [
+              ".verify/v9c/d1-auto-resolve/697bc8d17252a98603e06bd4ef6c336d1050753f/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "7ce5bbd6355b1471a38a1f6d3e3277ca3c9a99b5",
+            "outcome": "merged"
+          },
+          "owner": "a87bc9e91a499e5b9",
+          "reviewer": "a0a229bb581441ffc",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T9",
+          "verdict_agent": "a490dcb674e85f919",
+          "verified_head": "697bc8d17252a98603e06bd4ef6c336d1050753f",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T9"
+        },
+        {
+          "dispatched_at": "2026-10-30T19:48:11Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v10a/doctor/ebf1772bf430ca30a3e3bf2879b554858b059b09/doctor.json"
+            ],
+            "paths": [
+              ".verify/v10a/api-health/ebf1772bf430ca30a3e3bf2879b554858b059b09/evidence.json",
+              ".verify/v10a/d3-approval/ebf1772bf430ca30a3e3bf2879b554858b059b09/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "54752052d97adc26cf52933b263c5a320d16a761",
+            "outcome": "merged"
+          },
+          "owner": "aad727cb2520395d4",
+          "reviewer": "a34f98072a80cda6a",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T10",
+          "verdict_agent": "a5bcffa9cfb350838",
+          "verified_head": "ebf1772bf430ca30a3e3bf2879b554858b059b09",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T10"
+        },
+        {
+          "dispatched_at": "2026-10-30T19:54:56Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v11a/doctor/c6946354d5bc8bf10b2b8f33d7cf4a8891a16492/doctor.json"
+            ],
+            "paths": [
+              ".verify/v11a/override/c6946354d5bc8bf10b2b8f33d7cf4a8891a16492/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "a4180d9c076c1fe7158035047819317ab1ae4343",
+            "outcome": "merged"
+          },
+          "owner": "ad8fb13bd5d60aa02",
+          "reviewer": "a068cb8e229c2bcfa",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T11",
+          "verdict_agent": "a30ff1dfab94804bc",
+          "verified_head": "c6946354d5bc8bf10b2b8f33d7cf4a8891a16492",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T11"
+        },
+        {
+          "dispatched_at": "2026-10-30T19:28:50Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v12b/doctor/0ba2ec71e527785fb4faaf9da45a665e589bd632/doctor.json"
+            ],
+            "paths": [
+              ".verify/v12b/ticket-queue/0ba2ec71e527785fb4faaf9da45a665e589bd632/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "bd83f8fe5d5e1ce39bda5f777f7304934ac87c1f",
+            "outcome": "merged"
+          },
+          "owner": "ae156e5d9dc207e38",
+          "reviewer": "a1cc381dec88baba1",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T12",
+          "verdict_agent": "ac246c2e2e5c34085",
+          "verified_head": "0ba2ec71e527785fb4faaf9da45a665e589bd632",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T12"
+        },
+        {
+          "dispatched_at": "2026-10-31T00:29:26Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v13a/doctor/139c39f7b95a58e0c83d6295737be563de1aee72/doctor.json"
+            ],
+            "paths": [
+              ".verify/v13a/d3-approval/139c39f7b95a58e0c83d6295737be563de1aee72/evidence.json",
+              ".verify/v13a/override/139c39f7b95a58e0c83d6295737be563de1aee72/evidence.json",
+              ".verify/v13a/ticket-timeline/139c39f7b95a58e0c83d6295737be563de1aee72/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "b4828d9aaa66683e936b23018d05f1423b972945",
+            "outcome": "merged"
+          },
+          "owner": "aa8f0044f90a682cf",
+          "reviewer": "a2fce0fe8f23ccf5a",
+          "serial_after": [
+            "T18"
+          ],
+          "status": "proven",
+          "task": "T13",
+          "verdict_agent": "a75f34a333a9bbb6a",
+          "verified_head": "139c39f7b95a58e0c83d6295737be563de1aee72",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T13"
+        },
+        {
+          "dispatched_at": "2026-10-31T00:19:51Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v14b/doctor/56e7841b13a5b2a8f2965ed79c55aada1bb1c9ac/doctor.json"
+            ],
+            "paths": [
+              ".verify/v14b/api-health/56e7841b13a5b2a8f2965ed79c55aada1bb1c9ac/evidence.json",
+              ".verify/v14b/incident-cluster/56e7841b13a5b2a8f2965ed79c55aada1bb1c9ac/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "outcome": "parked",
+            "reason": "merge-conflict"
+          },
+          "owner": "a300e56c9f536aead",
+          "reviewer": "ac9ebdef9330a51c4",
+          "serial_after": [],
+          "status": "parked",
+          "task": "T14",
+          "verdict_agent": "a10b5e23ce55dc5a5",
+          "verified_head": "56e7841b13a5b2a8f2965ed79c55aada1bb1c9ac",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T14"
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T15",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T16",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T17",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        },
+        {
+          "dispatched_at": "2026-10-31T00:22:52Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v18a/doctor/22402e6bd5f60df737104c247e5d46038b8e2df1/doctor.json"
+            ],
+            "paths": [
+              ".verify/v18a/approvals-page/22402e6bd5f60df737104c247e5d46038b8e2df1/evidence.json",
+              ".verify/v18a/d3-approval/22402e6bd5f60df737104c247e5d46038b8e2df1/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "c7848ce82adc7c9bc1fc4d7d31223436f5254efb",
+            "outcome": "merged"
+          },
+          "owner": "a87fb23063c8cf5c9",
+          "reviewer": "a2ebf7fa8e4bdc51e",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T18",
+          "verdict_agent": "a5171120d2056e8db",
+          "verified_head": "22402e6bd5f60df737104c247e5d46038b8e2df1",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T18"
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T19",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        },
+        {
+          "dispatched_at": "2026-10-30T19:48:11Z",
+          "evidence": {
+            "doctor": [
+              ".verify/v20a/doctor/559f85876a31a0b9ff3426e69d690a6e1a93178f/doctor.json"
+            ],
+            "paths": [
+              ".verify/v20a/mock-paytm-seed/559f85876a31a0b9ff3426e69d690a6e1a93178f/evidence.json"
+            ],
+            "reason": null,
+            "verdict": "pass"
+          },
+          "merge": {
+            "commit": "e9ed143d4528585b9a2884bc351f50226faad084",
+            "outcome": "merged"
+          },
+          "owner": "ac8886346533c8476",
+          "reviewer": "a4cf8af2a1ac7e4fd",
+          "serial_after": [],
+          "status": "proven",
+          "task": "T20",
+          "verdict_agent": "acbe79367d199b5eb",
+          "verified_head": "559f85876a31a0b9ff3426e69d690a6e1a93178f",
+          "worktree": "/Users/abdul/Documents/AIHackthon/resolv/.skill-contract/runs/run-20261030T184657Z-bdf027/wt/T20"
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T21",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T22",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T23",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T24",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T25",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        },
+        {
+          "dispatched_at": null,
+          "evidence": null,
+          "merge": {
+            "outcome": "blocked"
+          },
+          "owner": null,
+          "reviewer": null,
+          "serial_after": [],
+          "status": "blocked",
+          "task": "T26",
+          "verdict_agent": null,
+          "verified_head": null,
+          "worktree": null
+        }
+      ]
+    },
+    "skillContract": "1",
+    "wasAttributedTo": {
+      "skill": "factory-conductor",
+      "version": "1.3.0"
+    },
+    "wasRevisionOf": null
+  },
+  "predicateType": "https://github.com/dhanesh/agent-skills/skill-contract/run-result/v1",
+  "subject": [
+    {
+      "digest": {
+        "sha256": "5fcc51eeeb14ac6b93bf83248cbb780d0d46ace0b586ce1366ab714b4d76e8e3"
+      },
+      "name": ".skill-contract/envelopes/task-plan-v1-20261030T183529Z-553d17.json"
+    },
+    {
+      "digest": {
+        "sha256": "45a55fbf5b24e131846d7707bde296ae37fcf686ea1d5c2f9ad4f2a1409d7bcb"
+      },
+      "name": ".skill-contract/envelopes/autonomy-grant-v1-20261030T183530Z-77b733.json"
+    }
+  ]
+}

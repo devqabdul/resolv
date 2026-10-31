@@ -12,6 +12,7 @@ from app.db.models import Incident, IncidentTicket, Notification, Ticket
 from app.domain.enums import AuditKind, HandlingMode, TicketStatus
 from app.domain.schemas import IncidentNotice, TicketDTO
 from app.integrations.llm.client import LLMClient, load_prompt
+from app.integrations.notify import notify
 from app.services import audit, context
 from app.services.tickets import new_id
 from app.util.clock import now
@@ -75,23 +76,6 @@ def signature_for(ticket: TicketDTO, run_id: str | None = None) -> tuple[str | N
 def title_for(sig: str) -> str:
     _, bank, reason = sig.split("|")
     return f"UPI failures via {bank} ({reason})"
-
-
-def notify(target: str, text: str, incident_id: str | None = None) -> None:
-    """In-app notification row + audit (decision: T15; Slack lands in T17)."""
-    with session.SessionLocal() as db:
-        db.add(
-            Notification(
-                channel="inapp", target=target, text=text, delivered=True, incident_id=incident_id
-            )
-        )
-        db.commit()
-    audit.record(
-        incident_id or "system",
-        AuditKind.notification,
-        {"channel": "inapp", "target": target},
-        actor="system",
-    )
 
 
 def _draft(sig: str, items: list[Ticket]) -> IncidentNotice:
@@ -202,7 +186,7 @@ def _attach(sig: str, items: list[Ticket]) -> tuple[str, bool]:
             actor="system",
         )
     if new:
-        notify("#ops", summary, inc_id)
+        notify("#ops", summary, incident_id=inc_id)
     return inc_id, new
 
 

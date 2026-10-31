@@ -1,9 +1,8 @@
 from app.agent.state import AgentState
-from app.db import session
-from app.db.models import Notification
 from app.domain.enums import ActionName, AuditKind, GateOutcome, TicketType
 from app.domain.enums import Path as DecisionPath
 from app.integrations.helpdesk.internal import helpdesk
+from app.integrations.notify import notify
 from app.policy.rbi_tat import load_rules
 from app.services import approvals, audit, tickets
 from app.util.clock import now
@@ -26,27 +25,6 @@ def _team(state: AgentState) -> str:
     if kind in MONEY_TYPES:
         return "payments_ops"
     return "l1_support"
-
-
-def _nudge(ticket_id: str, team: str, text: str, run_id: str | None) -> None:
-    # (decision: T8 stub, replaced by integrations/notify in T18) in-app row + audit only.
-    with session.SessionLocal() as db:
-        db.add(
-            Notification(
-                channel="inapp",
-                target=f"team:{team}",
-                text=text,
-                delivered=True,
-                ticket_id=ticket_id,
-            )
-        )
-        db.commit()
-    audit.record(
-        ticket_id,
-        AuditKind.notification,
-        {"channel": "inapp", "target": f"team:{team}"},
-        run_id=run_id,
-    )
 
 
 def handoff(state: AgentState) -> AgentState:
@@ -103,5 +81,11 @@ def handoff(state: AgentState) -> AgentState:
     )
     tickets.transition(t.id, outcome, run_id=run_id, **fields)
     nxt = (dec.next_action_for_human if dec else None) or "Review the ticket."
-    _nudge(t.id, team, f"{t.id} is {outcome} for {team}: {nxt}", run_id)
+    reasons = "; ".join(dict.fromkeys(x for r in pending for x in r.reasons))
+    text = f"{t.id} is {outcome} for {team}: {nxt}"
+    if reasons:
+        text += f" (gate: {reasons})"
+    text += f" http://localhost:3000/tickets/{t.id}"
+    # (decision: T18) one notify() for all nudges; actor stays the default `resolv` here.
+    notify(f"team:{team}", text, t.id, run_id=run_id, actor="resolv")
     return {**state, "outcome": outcome}

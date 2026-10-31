@@ -69,16 +69,19 @@ export interface TicketDetail {
   incident: Incident | null;
 }
 
+// (decision: T20) matches backend IncidentOut.
 export interface Incident {
   id: string;
-  title?: string;
   signature: string;
-  status: string;
-  ticket_count?: number;
-  first_seen_at?: string;
-  last_seen_at?: string;
-  notice_draft?: string | null;
-  [key: string]: unknown;
+  title: string;
+  status: "OPEN" | "COMMUNICATED" | "RESOLVED";
+  ticket_count: number;
+  first_seen: string;
+  last_seen: string;
+  owner_team: string | null;
+  proactive_notice_draft: string | null;
+  internal_summary: string | null;
+  notified_at: string | null;
 }
 
 export interface IncidentDetail {
@@ -87,9 +90,16 @@ export interface IncidentDetail {
   notifications: Notification[];
 }
 
+// (decision: T18) typed from docs/02 §5/§6.1; id is the integer row id.
 export interface Notification {
-  id: string;
-  [key: string]: unknown;
+  id: number;
+  ts: string;
+  channel: "slack" | "inapp";
+  target: string;
+  text: string;
+  delivered: boolean;
+  ticket_id?: string | null;
+  incident_id?: string | null;
 }
 
 export interface Metrics {
@@ -148,10 +158,11 @@ export const getAudit = (q: { ticket_id?: string; kind?: string; limit?: number 
 export const getNotifications = (limit?: number) => get<Notification[]>(`/api/notifications${qs({ limit })}`);
 export const getEvalsReport = () => get<EvalsReport>("/api/evals/report");
 export const getHealth = () => get<Health>("/api/health");
-export const demoReset = () => post<unknown>("/api/demo/reset");
-export const demoSeed = () => post<unknown>("/api/demo/seed");
-export const demoTicket = (scenario: string) => post<Ticket>(`/api/demo/ticket/${scenario}`);
-export const demoSpike = (b: { issuer_bank: string; count: number; minutes: number }) => post<unknown>("/api/demo/spike", b);
+// (decision: T20) demo responses per backend app/api/demo.py.
+export const demoReset = () => post<{ ok: boolean }>("/api/demo/reset");
+export const demoSeed = () => post<{ ok: boolean; kb_docs: number }>("/api/demo/seed");
+export const demoTicket = (scenario: string) => post<{ id: string }>(`/api/demo/ticket/${scenario}`);
+export const demoSpike = (b: { issuer_bank: string; count: number; minutes: number }) => post<{ created: number; ticket_ids: string[] }>("/api/demo/spike", b);
 
 // ---- SWR hooks, every one polls every 2 s ----
 const usePoll = <T,>(key: string | null, fetcher: () => Promise<T>, cfg?: SWRConfiguration<T>) =>

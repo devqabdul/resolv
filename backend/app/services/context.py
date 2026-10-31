@@ -16,6 +16,7 @@ from app.domain.schemas import (
     TicketDTO,
     Transaction,
 )
+from app.integrations import embeddings
 from app.integrations.paytm.client import PaytmError
 from app.policy.pii import mask
 from app.policy.rbi_tat import load_rules, regulatory_clock
@@ -142,7 +143,7 @@ def _words(text: str) -> set[str]:
 
 
 def kb_snippets(text: str, k: int = 3) -> list[KbSnippet]:
-    """Top-k KB docs by keyword overlap (decision: keyword scoring now; embeddings in T24)."""
+    """Top-k KB docs by keyword overlap (decision: keyword scoring; past_tickets uses embeddings, T24)."""
     with session.SessionLocal() as db:
         rows = db.scalars(select(KbDoc)).all()
     docs = [(KbSnippet(id=d.id, title=d.title, content=d.content), d.tags or "") for d in rows] or [
@@ -154,7 +155,18 @@ def kb_snippets(text: str, k: int = 3) -> list[KbSnippet]:
     return [d for score, d in scored[:k] if score > 0]
 
 
-def past_tickets(t: TicketDTO, n: int = 3) -> list[PastTicket]:
+def _past(r: Ticket) -> PastTicket:
+    return PastTicket(
+        id=r.id,
+        ticket_type=r.ticket_type,
+        status=r.status,
+        summary=(r.masked_text or mask(r.raw_text)[0])[:200],  # never raw text (PII)
+        resolved_by=r.resolved_by,
+        created_at=r.created_at,
+    )
+
+
+def _recent_past(t: TicketDTO, n: int) -> list[PastTicket]:
     who = Ticket.customer_id == t.customer_id if t.customer_id else None
     if who is None and t.merchant_id:
         who = Ticket.merchant_id == t.merchant_id
@@ -162,18 +174,26 @@ def past_tickets(t: TicketDTO, n: int = 3) -> list[PastTicket]:
         return []
     q = select(Ticket).where(who, Ticket.id != t.id).order_by(Ticket.created_at.desc()).limit(n)
     with session.SessionLocal() as db:
-        rows = db.scalars(q).all()
-    return [
-        PastTicket(
-            id=r.id,
-            ticket_type=r.ticket_type,
-            status=r.status,
-            summary=(r.masked_text or mask(r.raw_text)[0])[:200],  # never raw text (PII)
-            resolved_by=r.resolved_by,
-            created_at=r.created_at,
-        )
-        for r in rows
-    ]
+        return [_past(r) for r in db.scalars(q).all()]
+
+
+def _similar_past(t: TicketDTO, n: int) -> list[PastTicket]:
+    ids = [i for i, _ in embeddings.similar_tickets(t.id, k=n)]
+    if not ids:
+        return []
+    with session.SessionLocal() as db:
+        rows = {r.id: r for r in db.scalars(select(Ticket).where(Ticket.id.in_(ids)))}
+    return [_past(rows[i]) for i in ids if i in rows]
+
+
+def past_tickets(t: TicketDTO, n: int = 3) -> list[PastTicket]:
+    """Last n by recency; when embeddings are on, plus top-n by cosine, de-duplicated, recency
+    first, at most 2n (decision: T24, per docs/02 §4)."""
+    out = _recent_past(t, n)
+    if embeddings.enabled():
+        seen = {p.id for p in out}
+        out += [p for p in _similar_past(t, n) if p.id not in seen]
+    return out
 
 
 def build_context(
