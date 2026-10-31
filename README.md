@@ -1,48 +1,96 @@
-# Resolv — spec pack (Paytm Build for India AI Hackathon, Track 3: Autonomous AI Teammates)
+# Resolv
 
-## What we are building (the gist)
+## What it is
 
-Resolv is a Python backend plus a web cockpit that takes a payments-support ticket and *finishes* it. Tickets are seeded by us (no real helpdesk). Each one runs through five fixed steps — **understand → decide → policy gate → act → verify** — where the LLM does only two jobs: turn messy customer text into a structured understanding (ticket type, transaction, amount, sentiment, language), and propose a decision (resolve / route / escalate, plus the exact actions). Everything that touches money passes a deterministic policy gate written in code, not prompts: the RBI T+1 reversal rule with ₹100/day compensation, a ₹5,000 auto-refund limit, and human-only categories (disputes, fraud). Actions execute against a **mock Paytm API we build ourselves** (transactions, refunds, compensation, settlements, KYC, mandates), so the demo never depends on anything external. Every step is written to an audit log, and the cockpit shows it as a per-ticket timeline with Override and Approve buttons.
+Resolv is an autonomous support teammate for payments customer service, built for the Paytm Build for India AI Hackathon finals (Track 3, Team Xeon). It takes a ticket and finishes it through five fixed steps: understand, decide, policy gate, act, verify. The LLM only proposes a `Decision`; a deterministic policy gate in code decides whether money moves, so the model never touches money. Actions run against a mock Paytm API we built, so the demo needs nothing external. On top of the loop sit an incident clusterer (a spike of identical failures becomes one incident), an SLA guard that nudges before a breach, and an eval harness that reports the false-action rate.
 
-Three things on top of that loop make it a teammate rather than a bot: an **incident clusterer** that spots a spike of identical failures (we inject a "bank outage" of ~120 tickets live) and collapses it into one incident with a drafted proactive notice; an **SLA guard** that nudges Slack before a breach; and an **eval harness** with ~60 labelled tickets that reports resolve-vs-route precision and the false-action rate — the "evidence" slide. Five resolvable ticket types, SQLite by default with Postgres + pgvector via Docker Compose, a Next.js cockpit with five pages, the Anthropic API behind a replay cache so the live demo is deterministic even if the venue wifi dies.
-
-## The documents
-
-| File | What it is | Read it when |
-|---|---|---|
-| `01-PRODUCT-SPEC.md` | What we build, demo moments D1–D5, ticket taxonomy, functional requirements, canonical demo data, acceptance criteria | Before anything else |
-| `02-ARCHITECTURE.md` | Repo layout, agent state machine, LLM contracts, data model, API contracts, `rules.yaml`, clustering, fallbacks, env vars. **Source of truth** | Before coding; whenever a name or contract is in doubt |
-| `03-TECH-STACK-AND-MODULES.md` | Stack choices with reasons; module-by-module responsibilities and interfaces | When answering "why X?" |
-| `04-TECHNOLOGIES.md` | Per-technology reference: version, install, config, how we use it, gotchas, fallback | When installing or when something misbehaves |
-| `06-IMPLEMENTATION-PLAN.md` | Tasks T1…T29 in build order with files, acceptance commands and the prompt to paste into Claude Code | Task by task |
-| `CLAUDE.md` | Instructions for Claude Code: hard rules, how to run, conventions, required tests, fallbacks, demo facts | Goes at the repo root |
-
-### Reading order
-
-- **Human:** `01` → `02` → `03` → `04` → `06`.
-- **Claude Code:** `CLAUDE.md` → `02` → `06` (then each task's own section references).
-
-## Handing this folder to Claude Code
-
-1. Create the repo (`mkdir resolv && cd resolv && git init`).
-2. Copy this folder to `docs/` and move `CLAUDE.md` to the repo root: `cp -r <this folder> docs && mv docs/CLAUDE.md .`
-3. Create `.env` from the values in `02 §15` (API key, `LLM_MODE=mock` for the first tasks).
-4. Start Claude Code in the repo and paste:
-   > Read CLAUDE.md and docs/06-IMPLEMENTATION-PLAN.md, then do T1.
-5. After each task: run its **Accept** commands yourself, `git commit`, then paste the next task's **Prompt**.
-
-## Demo moments
-
-| Demo moment | What the judges see |
+| Doc | Use it for |
 |---|---|
-| **D1** | Failed-UPI ticket resolved with no human: reversal + ₹200 RBI compensation + reply, full timeline |
-| **D2** | 120-ticket bank-outage spike becomes one incident with a drafted proactive notice; fast path, no 120 LLM calls |
-| **D3** | ₹12,000 reversal → NEEDS_APPROVAL → human approves → executes, audited with name |
-| **D4** | Human override recorded and appended to the eval set |
-| **D5** | Evidence page: n≈60, path precision, false-action rate, gate catch rate; live KPI tiles |
+| `docs/01-PRODUCT-SPEC.md` | What we build, demo moments D1-D5, canonical demo data |
+| `docs/02-ARCHITECTURE.md` | How: layout, state machine, contracts, API. Source of truth |
+| `docs/03-TECH-STACK-AND-MODULES.md` | Stack choices and module responsibilities |
+| `docs/04-TECHNOLOGIES.md` | Per-technology reference and gotchas |
+| `docs/06-IMPLEMENTATION-PLAN.md` | Task order with acceptance commands |
+| `CLAUDE.md` | Hard rules, conventions, canonical demo facts |
 
-## Three facts to repeat in the pitch
+## Quick start
 
-1. **The LLM proposes, the policy gate disposes** — the model never touches money; rules are code and are unit-tested.
-2. **Spikes become incidents** — 1,000 tickets from one bank outage become one incident, one owner, one proactive notice, no LLM call per ticket.
-3. **Evidence, not claims** — a labelled eval set with a reported false-action rate; human overrides feed it.
+Prerequisites: Python 3.12 managed by `uv`, Node 24, `make`.
+
+```
+cp .env.example .env     # add ANTHROPIC_API_KEY only if you will use live mode
+npm --prefix frontend ci # install frontend deps (a fresh clone has no node_modules)
+make dev                 # backend :8000 (mock Paytm mounted) + frontend :3000
+make seed                # reset and seed the demo data (scripts/demo_reset.sh)
+```
+
+The backend venv is created automatically by `uv` on the first `make backend` or `make dev` (Python 3.12 is pinned in `backend/.python-version`).
+
+Open `http://localhost:3000/?demo=1` to get the demo drawer (Reset, Seed, inject the 7 scenarios, Spike AXIS 120). Health check: `GET http://localhost:8000/api/health`.
+
+Demo flow:
+
+1. Seed from the drawer (or `make seed`).
+2. Inject `d1_failed_upi` and watch the row resolve: reversal of 2,499, 200 compensation, reply, `RESOLVED`.
+3. Click Spike AXIS 120 and open the Incidents page: one incident, later tickets attach with no LLM call.
+4. Inject `d3_over_limit` and open the Approvals page: the 12,000 reversal waits for a human.
+5. Approve as a name; the ticket resolves and the audit shows who approved.
+6. Open the Evidence page for the eval report and KPI tiles.
+
+The other scenarios are `hinglish_refund_status`, `merchant_settlement`, `kyc_rejected`, `mandate_email` and `dispute`.
+
+## LLM modes
+
+Set with the `LLM_MODE` env var in `.env`.
+
+| Mode | Behaviour | Use it for |
+|---|---|---|
+| `mock` | Rule-based `integrations/llm/mock.py`, no network | Tests and CI |
+| `replay` | Cache first, live call on a miss; offline or no key falls back to mock | Pitch mode (the default in `.env.example`) |
+| `live` | Always calls Anthropic and writes the cache | Warming the cache |
+
+`.env.example` defaults to `LLM_MODE=replay`, so a fresh clone without a key falls back to the mock rules offline.
+
+Related env vars: `ANTHROPIC_API_KEY`, `LLM_MODEL_DECIDE=claude-sonnet-5-5`, `LLM_MODEL_UNDERSTAND=claude-haiku-5-5`, `LLM_CACHE_DIR`.
+
+## Warm the replay cache (attended)
+
+This is the one step a human runs with a key before the pitch. It needs `ANTHROPIC_API_KEY` and network.
+
+```
+export ANTHROPIC_API_KEY=...   # your key
+make warm                      # runs scripts/warm_cache.sh
+```
+
+`make warm` starts the backend in `live` mode, resets and seeds, injects all 7 scenarios and the AXIS spike so every prompt lands in the cache, runs `make evals`, switches `LLM_MODE=replay` in `.env`, restarts and checks `/api/health` reports `replay`, then runs `make test` and `make lint`. It does not commit. Afterwards, review and commit:
+
+```
+git add backend/.llm_cache backend/evals/report.* && git commit
+```
+
+## Tests and evals
+
+```
+make test     # pytest -q in backend/ (LLM_MODE=mock, no network)
+make lint     # ruff check + ruff format --check
+make evals    # python -m evals.run -> backend/evals/report.md and report.json
+uv run --directory backend --extra optional pytest -q tests/test_embeddings_fastembed.py
+```
+
+The last command runs the embeddings test, which needs the `optional` extra (fastembed). The eval report lands in `backend/evals/report.md` and `report.json`. `GET /api/evals/report` returns `generated_at`, the report `markdown`, the `json` and `overrides_count` (human overrides appended to the eval set); it answers 404 until a report exists. The Evidence page renders it.
+
+## Architecture at a glance
+
+A FastAPI backend (SQLite, mock Paytm mounted at `/mock/paytm/v1`) runs each ticket through the agent nodes (`AGENT_ENGINE=langgraph`, or `runner` as the sequential fallback). Background loops cluster incidents and guard SLAs. A Next.js 15 cockpit polls the API every 2 seconds. `docs/02-ARCHITECTURE.md` is the source of truth for names and contracts.
+
+- Pages: Queue `/`, `/tickets/[id]`, `/approvals`, `/incidents`, `/evidence`.
+- API: `GET /api/health`, `GET /api/metrics`, `GET /api/evals/report`, `POST /api/demo/reset`, `/api/demo/seed`, `/api/demo/ticket/{scenario}`, `/api/demo/spike`; full list in docs/02 section 6.1.
+
+## Safety rails
+
+- Policy gate: every proposed action passes `app/policy/engine.py` and executes only through `ToolRegistry.call()` after `AUTO_EXECUTE` or a human approval.
+- Idempotency: each execution is keyed by `sha256(ticket_id + name + canonical params)`, so a retry never double-refunds.
+- PII masking: `app/policy/pii.py` masks before any LLM call; the UI shows `masked_text` and raw identifiers are never logged.
+- No real Paytm: `PAYTM_BASE_URL` must point at the mounted mock (`/mock/paytm/v1`) or the standalone mock on `:8001`.
+- Unknown references: ids not in the `ContextBundle` are `BLOCKED unknown_reference`.
+- Audit everything: every tool call, node, approval, override, notification and incident link is written with an `actor`.
