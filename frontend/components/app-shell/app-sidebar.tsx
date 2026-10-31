@@ -4,22 +4,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BellIcon, FlaskIcon, ListChecksIcon, SealCheckIcon, SirenIcon, ChartBarIcon } from "@phosphor-icons/react";
 import {
-  Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu,
-  SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarRail, useSidebar,
+  Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu,
+  SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarRail,
 } from "@/components/ui/sidebar";
-import { Badge } from "@/components/ui/badge";
 import DemoDrawer from "@/components/DemoDrawer";
-import { NotificationsList, useNotificationFeed } from "@/components/app-shell/notifications-list";
-import { useLayoutState } from "@/components/app-shell/layout-state";
-import { cn } from "@/lib/utils";
+import { useNotificationFeed } from "@/components/app-shell/notifications-list";
+import NotificationsDrawer from "@/components/app-shell/notifications-drawer";
 import { useApprovals, useIncidents } from "@/lib/api";
 
 export default function AppSidebar() {
   const path = usePathname();
   const { data: approvals } = useApprovals("PENDING");
   const { data: incidents } = useIncidents();
-  const { setOpen } = useSidebar();
-  const { notificationsOpen, setPanel } = useLayoutState();
   const feed = useNotificationFeed();
   const nav = [
     { href: "/", label: "Queue", icon: ListChecksIcon, count: undefined },
@@ -61,6 +57,17 @@ export default function AppSidebar() {
                 );
               })}
               <SidebarMenuItem>
+                <NotificationsDrawer
+                  trigger={
+                    <SidebarMenuButton data-testid="notifications-open" tooltip="Notifications" className="h-9 text-[0.9375rem]">
+                      <BellIcon />
+                      <span>Notifications</span>
+                    </SidebarMenuButton>
+                  }
+                />
+                {feed.recent > 0 && <SidebarMenuBadge className="top-2! font-mono">{feed.recent}</SidebarMenuBadge>}
+              </SidebarMenuItem>
+              <SidebarMenuItem>
                 <DemoDrawer
                   trigger={
                     <SidebarMenuButton data-testid="demo-open" tooltip="Demo controls" className="h-9 text-[0.9375rem]">
@@ -71,41 +78,6 @@ export default function AppSidebar() {
                 />
               </SidebarMenuItem>
             </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        {/* Icon rail: one bell button; clicking it expands the sidebar and shows notifications. */}
-        <SidebarGroup className="hidden shrink-0 group-data-[collapsible=icon]:block">
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  tooltip="Notifications"
-                  className="h-9"
-                  onClick={() => {
-                    setOpen(true);
-                    setPanel("notificationsOpen", true);
-                  }}
-                >
-                  <BellIcon />
-                  <span>Notifications</span>
-                </SidebarMenuButton>
-                {feed.recent > 0 && (
-                  <Badge className="pointer-events-none absolute -top-1 -right-1 h-4 min-w-4 px-1 font-mono text-[0.625rem] tabular-nums">
-                    {feed.recent > 99 ? "99+" : feed.recent}
-                  </Badge>
-                )}
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        {/* Stays mounted when hidden (header toggle or icon rail) so the test handles keep existing. */}
-        <SidebarGroup className={cn("min-h-0 flex-1 group-data-[collapsible=icon]:hidden", !notificationsOpen && "hidden")}>
-          <SidebarGroupLabel className="gap-2">
-            Notifications
-            <Badge variant="secondary" className="font-mono tabular-nums">{feed.recent}</Badge>
-          </SidebarGroupLabel>
-          <SidebarGroupContent className="flex min-h-0 flex-1 flex-col">
-            <NotificationsList feed={feed} />
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

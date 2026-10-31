@@ -11,6 +11,7 @@ import { Kbd } from "@/components/ui/kbd";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLayoutState } from "@/components/app-shell/layout-state";
+import NotificationsDrawer from "@/components/app-shell/notifications-drawer";
 import { useHealth, useNotifications } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +40,7 @@ export default function AppHeader() {
   const { data: health, error } = useHealth();
   const { resolvedTheme, setTheme } = useTheme();
   const { open: sidebarOpen, setOpen: setSidebarOpen } = useSidebar();
-  const { notificationsOpen, kpiOpen, focus, setPanel, enterFocus, exitFocus } = useLayoutState();
+  const { kpiOpen, focus, setPanel, enterFocus, exitFocus } = useLayoutState();
   const { data: notes } = useNotifications(50);
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
@@ -89,20 +90,18 @@ export default function AppHeader() {
         >
           <ChartBarIcon weight={kpiOpen ? "fill" : "regular"} />
         </HeaderToggle>
-        <HeaderToggle
-          data-testid="notifications-toggle"
-          label={notificationsOpen ? "Hide notifications" : "Show notifications"}
-          aria-pressed={notificationsOpen}
-          className="relative"
-          onClick={() => setPanel("notificationsOpen", !notificationsOpen)}
-        >
-          <BellIcon weight={notificationsOpen ? "fill" : "regular"} />
-          {!notificationsOpen && recent > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 flex min-w-4 items-center justify-center rounded-full bg-primary px-1 font-mono text-[0.625rem] leading-4 text-primary-foreground tabular-nums">
-              {recent > 99 ? "99+" : recent}
-            </span>
-          )}
-        </HeaderToggle>
+        <NotificationsDrawer
+          trigger={
+            <Button data-testid="notifications-toggle" variant="ghost" size="icon" aria-label="Notifications" className="relative">
+              <BellIcon />
+              {recent > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 flex min-w-4 items-center justify-center rounded-full bg-primary px-1 font-mono text-[0.625rem] leading-4 text-primary-foreground tabular-nums">
+                  {recent > 99 ? "99+" : recent}
+                </span>
+              )}
+            </Button>
+          }
+        />
         <Separator orientation="vertical" className="data-vertical:h-5 data-vertical:self-center" />
         <Badge
           variant="outline"
