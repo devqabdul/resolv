@@ -1,5 +1,6 @@
 'use client';
 // Approve / Reject for a PENDING approval on this ticket (D3).
+import ReviewerSelect, { DEFAULT_REVIEWER } from "@/components/reviewer-select";
 import { useState } from "react";
 import { toast } from "sonner";
 import { CheckIcon, GavelIcon, XIcon } from "@phosphor-icons/react";
@@ -7,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { toneBadge } from "@/components/status-tone";
@@ -16,7 +16,7 @@ import { humanAction, inr, obj } from "./TimelineEvent";
 
 export default function ApprovalActions({ approval, onDone }: { approval: Approval; onDone: () => void }) {
   const [note, setNote] = useState("");
-  const [by, setBy] = useState("");
+  const [by, setBy] = useState(DEFAULT_REVIEWER);
   const [busy, setBusy] = useState<"approve" | "reject" | null>(null);
   const [missingName, setMissingName] = useState(false);
   const name = String(approval.action_json.name ?? "action");
@@ -58,8 +58,8 @@ export default function ApprovalActions({ approval, onDone }: { approval: Approv
             <Textarea id="approval-note" data-testid="approval-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Optional" rows={2} />
           </Field>
           <Field data-invalid={missingName || undefined}>
-            <FieldLabel htmlFor="approval-decided-by">Your name</FieldLabel>
-            <Input
+            <FieldLabel htmlFor="approval-decided-by">Reviewer</FieldLabel>
+            <ReviewerSelect
               id="approval-decided-by"
               data-testid="approval-decided-by"
               value={by}

@@ -1,4 +1,5 @@
 'use client';
+import ReviewerSelect, { DEFAULT_REVIEWER } from "@/components/reviewer-select";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -68,7 +69,7 @@ export default function ApprovalCard({
   onDecide: (item: ApprovalItem, approve: boolean, note: string, by: string) => Promise<void>;
 }) {
   const [note, setNote] = useState("");
-  const [by, setBy] = useState("");
+  const [by, setBy] = useState(DEFAULT_REVIEWER);
   const [busy, setBusy] = useState<"approve" | "reject" | null>(null);
   const [byErr, setByErr] = useState(false);
   const [noteErr, setNoteErr] = useState(false);
@@ -286,12 +287,9 @@ export default function ApprovalCard({
           <div className="grid items-start gap-4 md:grid-cols-[1fr_1fr_auto]">
             <Field data-invalid={byErr}>
               <FieldLabel htmlFor={`by-${item.id}`}>Reviewer (required)</FieldLabel>
-              <Input
+              <ReviewerSelect
                 id={`by-${item.id}`}
                 data-testid="approval-decided-by"
-                list="approval-reviewers"
-                placeholder="Select a reviewer"
-                required
                 aria-invalid={byErr}
                 value={by}
                 onChange={(e) => {

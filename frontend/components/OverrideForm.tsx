@@ -1,5 +1,6 @@
 'use client';
 // D4: a human picks a different path; the backend audits `override` and re-runs via the gate.
+import ReviewerSelect, { DEFAULT_REVIEWER } from "@/components/reviewer-select";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowBendUpRightIcon } from "@phosphor-icons/react";
@@ -16,7 +17,7 @@ const PATHS: OverridePath[] = ["RESOLVE", "ROUTE", "ESCALATE"];
 export default function OverrideForm({ ticketId, onDone }: { ticketId: string; onDone: () => void }) {
   const [path, setPath] = useState<OverridePath>("ROUTE");
   const [note, setNote] = useState("");
-  const [by, setBy] = useState("");
+  const [by, setBy] = useState(DEFAULT_REVIEWER);
   const [busy, setBusy] = useState(false);
   const [missingName, setMissingName] = useState(false);
   const [missingNote, setMissingNote] = useState(false);
@@ -77,8 +78,8 @@ export default function OverrideForm({ ticketId, onDone }: { ticketId: string; o
               {missingNote && <FieldError>Add a note.</FieldError>}
             </Field>
             <Field data-invalid={missingName || undefined}>
-              <FieldLabel htmlFor="override-decided-by">Your name</FieldLabel>
-              <Input
+              <FieldLabel htmlFor="override-decided-by">Reviewer</FieldLabel>
+              <ReviewerSelect
                 id="override-decided-by"
                 data-testid="override-decided-by"
                 value={by}
