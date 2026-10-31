@@ -62,7 +62,6 @@ export default function Approvals() {
   const approvedList = approved ? [...approved].sort(byDecided) : null;
   const rejectedList = rejected ? [...rejected].sort(byDecided) : null;
   const recent = approvedList && rejectedList ? [...approvedList, ...rejectedList].sort(byDecided).slice(0, 5) : null;
-  const reviewers = [...new Set([...(approved ?? []), ...(rejected ?? [])].map((a) => a.decided_by).filter((x): x is string => !!x))];
   const topTxn = sorted?.map((a) => actionParts(a.action_json)).find((p) => p.refKey === "txn_id")?.ref ?? null;
   const count = (l: ApprovalItem[] | null | undefined) => (l ? ` (${l.length})` : "");
 
@@ -87,10 +86,6 @@ export default function Approvals() {
         <h2 className="text-2xl font-semibold tracking-tight">Human review required</h2>
         <p className="text-muted-foreground">Actions outside deterministic policy limits.</p>
       </div>
-
-      <datalist id="approval-reviewers">
-        {reviewers.map((r) => <option key={r} value={r} />)}
-      </datalist>
 
       <div className="grid items-start gap-6 xl:grid-cols-12">
         <Tabs value={tab} onValueChange={setTab} className="gap-4 xl:col-span-8">
