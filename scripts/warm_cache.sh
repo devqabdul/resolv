@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
-# T25: warm the replay cache with a LIVE run (needs ANTHROPIC_API_KEY + network), then switch to replay.
+# T25: warm the replay cache with a LIVE run (needs SARVAM_API_KEY or ANTHROPIC_API_KEY + network), then switch to replay.
 # Does not commit; it prints the git hint at the end.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-: "${ANTHROPIC_API_KEY:?ANTHROPIC_API_KEY is required for the live warm-up}"
 BASE="${NEXT_PUBLIC_API_BASE:-http://localhost:8000}"
 
 # (decision: FIX4) pin the clock in .env so the warm run and the pitch hash identical prompts.
 [ -f .env ] || cp .env.example .env
+# (decision: SARVAM-1) either provider key works; read from the shell or from .env.
+envkey() { sed -n "s/^$1=\([^#[:space:]]*\).*/\1/p" .env | tail -1; }
+if [ -z "${SARVAM_API_KEY:-$(envkey SARVAM_API_KEY)}" ] && [ -z "${ANTHROPIC_API_KEY:-$(envkey ANTHROPIC_API_KEY)}" ]; then
+  echo "SARVAM_API_KEY (or ANTHROPIC_API_KEY) is required for the live warm-up; set it in .env" >&2
+  exit 1
+fi
 PIN="$(sed -n 's/^DEMO_NOW_OVERRIDE=\([^#[:space:]]*\).*/\1/p' .env | tail -1)"
 PIN="${PIN:-2026-11-01T10:00:00Z}"
 if grep -q '^DEMO_NOW_OVERRIDE=' .env; then
