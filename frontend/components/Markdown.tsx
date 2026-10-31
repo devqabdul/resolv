@@ -1,5 +1,6 @@
 'use client';
 import ReactMarkdown, { type Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 // Markdown mapped onto shadcn table + semantic tokens; no typography plugin.
@@ -23,7 +24,7 @@ const components: Components = {
 export default function Markdown({ children, testId }: { children: string; testId?: string }) {
   return (
     <div data-testid={testId}>
-      <ReactMarkdown components={components}>{children}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>{children}</ReactMarkdown>
     </div>
   );
 }

@@ -59,7 +59,8 @@ function CommandDialog({
         )}
         showCloseButton={showCloseButton}
       >
-        {children}
+        {/* cmdk items need a <Command> root for their context; the palette crashed without it. */}
+        <Command className="**:data-[slot=command-input-wrapper]:h-12">{children}</Command>
       </DialogContent>
     </Dialog>
   )
