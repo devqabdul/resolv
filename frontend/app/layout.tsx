@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import KpiTile from "@/components/KpiTile";
+import NotificationsPanel from "@/components/NotificationsPanel";
 import { useMetrics } from "@/lib/api";
 import "./globals.css";
 
@@ -52,6 +53,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
         </div>
+        <footer className="px-6 pb-6">
+          <NotificationsPanel />
+        </footer>
       </body>
     </html>
   );
