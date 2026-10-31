@@ -1,56 +1,103 @@
 'use client';
+// D4: a human picks a different path; the backend audits `override` and re-runs via the gate.
 import { useState } from "react";
+import { toast } from "sonner";
+import { UserSwitchIcon } from "@phosphor-icons/react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { overrideTicket, type BlockedAction, type OverridePath } from "@/lib/api";
 
 const PATHS: OverridePath[] = ["RESOLVE", "ROUTE", "ESCALATE"];
 
-// D4: a human picks a different path; the backend audits `override` and re-runs via the gate.
 export default function OverrideForm({ ticketId, onDone }: { ticketId: string; onDone: () => void }) {
   const [path, setPath] = useState<OverridePath>("ROUTE");
   const [note, setNote] = useState("");
   const [by, setBy] = useState("");
   const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
+  const [missingName, setMissingName] = useState(false);
   const [blocked, setBlocked] = useState<BlockedAction[]>([]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!by.trim()) return setErr("Enter your name first.");
+    if (!by.trim()) return setMissingName(true);
     setBusy(true);
-    setErr(null);
     try {
       const r = await overrideTicket(ticketId, { path, note: note.trim() || undefined, decided_by: by.trim() });
       setBlocked(r.blocked);
       setNote("");
+      if (r.blocked.length) toast.warning(`Override saved, ${r.blocked.length} action${r.blocked.length > 1 ? "s" : ""} blocked by the gate`);
+      else toast.success(`Overridden to ${path}`, { description: `Ticket is now ${r.ticket.status}` });
       onDone();
     } catch (x) {
-      setErr(x instanceof Error ? x.message : "Override failed.");
+      toast.error("Override failed", { description: x instanceof Error ? x.message : undefined });
     } finally {
       setBusy(false);
     }
   }
 
-  const field = "rounded-lg border border-navy/30 px-3 py-2 text-lg";
   return (
-    <form data-testid="override-form" onSubmit={submit} className="space-y-3 rounded-xl bg-white p-5 shadow-sm">
-      <h2 className="text-xl font-bold text-navy">Override Resolv</h2>
-      <select data-testid="override-path" value={path} onChange={(e) => setPath(e.target.value as OverridePath)} className={`${field} w-full font-bold`}>
-        {PATHS.map((p) => <option key={p} value={p}>{p}</option>)}
-      </select>
-      <input data-testid="override-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why? (note)" className={`${field} w-full`} />
-      <div className="flex gap-3">
-        <input data-testid="override-decided-by" value={by} onChange={(e) => setBy(e.target.value)} placeholder="Your name" className={`${field} min-w-0 flex-1`} />
-        <button data-testid="override-submit" disabled={busy} className="rounded-lg bg-navy px-6 py-2 text-lg font-bold text-white disabled:opacity-50">Override</button>
-      </div>
-      {err && <p role="alert" className="font-semibold text-red-600">{err}</p>}
-      {blocked.length > 0 && (
-        <div data-testid="override-blocked" className="rounded-lg bg-red-50 p-3 text-base">
-          <b className="text-red-600">Blocked by the gate (not executed):</b>
-          <ul className="list-disc pl-6">
-            {blocked.map((b, i) => <li key={i}><span className="font-mono">{b.action.name}</span> {b.outcome}: {b.reasons.join("; ")}</li>)}
-          </ul>
-        </div>
-      )}
+    <form data-testid="override-form" onSubmit={submit}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Override Resolv</CardTitle>
+          <CardDescription>Pick a different path. The gate still checks every action.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="override-path">Path</FieldLabel>
+              {/* Native select on purpose: verify recipes drive it with Playwright select_option. */}
+              <select
+                id="override-path"
+                data-testid="override-path"
+                value={path}
+                onChange={(e) => setPath(e.target.value as OverridePath)}
+                className="h-9 w-full rounded-lg border border-input bg-transparent px-2.5 font-mono text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 dark:[color-scheme:dark]"
+              >
+                {PATHS.map((p) => <option key={p} value={p}>{p}</option>)}
+              </select>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="override-note">Note</FieldLabel>
+              <Input id="override-note" data-testid="override-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why the change" className="h-9" />
+            </Field>
+            <Field data-invalid={missingName || undefined}>
+              <FieldLabel htmlFor="override-decided-by">Your name</FieldLabel>
+              <Input
+                id="override-decided-by"
+                data-testid="override-decided-by"
+                value={by}
+                aria-invalid={missingName || undefined}
+                onChange={(e) => { setBy(e.target.value); setMissingName(false); }}
+                className="h-9"
+              />
+              {missingName && <FieldError>Enter your name first.</FieldError>}
+            </Field>
+          </FieldGroup>
+          {blocked.length > 0 && (
+            <Alert data-testid="override-blocked" variant="destructive" className="mt-4">
+              <AlertTitle>Blocked by the gate, not executed</AlertTitle>
+              <AlertDescription>
+                <ul className="list-disc pl-5">
+                  {blocked.map((b, i) => (
+                    <li key={i}><span className="font-mono">{b.action.name}</span> {b.outcome}: {b.reasons.join("; ")}</li>
+                  ))}
+                </ul>
+              </AlertDescription>
+            </Alert>
+          )}
+        </CardContent>
+        <CardFooter>
+          <Button data-testid="override-submit" type="submit" size="lg" disabled={busy}>
+            {busy ? <Spinner data-icon="inline-start" /> : <UserSwitchIcon data-icon="inline-start" />}
+            Override
+          </Button>
+        </CardFooter>
+      </Card>
     </form>
   );
 }

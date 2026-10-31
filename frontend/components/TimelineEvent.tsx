@@ -1,5 +1,17 @@
 'use client';
+// One audit event on the timeline rail: kind icon, actor chip, mono time, kind-specific body.
+import type { ComponentType, ReactNode } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import {
+  ArrowElbowDownLeftIcon, ArrowRightIcon, BellIcon, BrainIcon, ChatCircleTextIcon, CheckCircleIcon, CircleIcon,
+  EyeSlashIcon, GavelIcon, LightningIcon, LinkSimpleIcon, ScalesIcon, SealCheckIcon, ShieldCheckIcon, SignpostIcon,
+  TrayArrowDownIcon, UserSwitchIcon, UsersIcon, WarningOctagonIcon, WrenchIcon, XCircleIcon,
+} from "@phosphor-icons/react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { GATE_TONE, PRIORITY_TONE, STATUS_TONE, toneBadge, type Tone } from "@/components/status-tone";
 import type { AuditEvent } from "@/lib/api";
+import { cn } from "@/lib/utils";
 import GateBadge from "./GateBadge";
 
 // Narrowing helpers for the untyped audit payloads (no `any`).
@@ -8,157 +20,312 @@ export const obj = (v: unknown): Obj | null => (v && typeof v === "object" && !A
 export const arr = (v: unknown): unknown[] => (Array.isArray(v) ? v : []);
 export const str = (v: unknown): string | undefined => (typeof v === "string" ? v : undefined);
 export const num = (v: unknown): number | undefined => (typeof v === "number" ? v : undefined);
+export const inr = (v: unknown) => (typeof v === "number" ? `₹${v.toLocaleString("en-IN", { maximumFractionDigits: 2 })}` : "-");
+const EASE = [0.16, 1, 0.3, 1] as const;
 const strs = (v: unknown): string[] => arr(v).map((x) => (typeof x === "string" ? x : JSON.stringify(x)));
-const inr = (v: unknown) => (typeof v === "number" ? `₹${v.toLocaleString("en-IN")}` : String(v ?? "-"));
 
-const DOT: Record<string, string> = {
-  understanding: "bg-cyan", decision: "bg-navy", gate: "bg-amber-500", gate_adjusted_amount: "bg-amber-500",
-  tool_call: "bg-slate-400", tool_result: "bg-slate-400", verify: "bg-green-600", reply_sent: "bg-cyan",
-  status_change: "bg-navy", handoff: "bg-purple-600", approval_created: "bg-amber-500", approval_requested: "bg-amber-500",
-  approval_decided: "bg-green-600", override: "bg-cyan", incident_linked: "bg-purple-600", incident_fast_path: "bg-purple-600",
-  notification: "bg-slate-500", error: "bg-red-600",
+type Icon = ComponentType<{ className?: string; weight?: "regular" | "bold" | "fill" }>;
+const TONE_TEXT: Record<Tone, string> = {
+  resolved: "text-status-resolved", processing: "text-status-processing", awaiting: "text-status-awaiting",
+  new: "text-status-new", routed: "text-status-routed", incident: "text-status-incident",
+  failed: "text-status-failed", closed: "text-status-closed",
+};
+const KIND: Record<string, { label: string; icon: Icon; tone: Tone }> = {
+  ingest: { label: "Ingest", icon: TrayArrowDownIcon, tone: "new" },
+  pii_masked: { label: "PII masked", icon: EyeSlashIcon, tone: "new" },
+  understanding: { label: "Understanding", icon: BrainIcon, tone: "processing" },
+  decision: { label: "Decision", icon: SignpostIcon, tone: "routed" },
+  gate: { label: "Policy gate", icon: ShieldCheckIcon, tone: "awaiting" },
+  gate_adjusted_amount: { label: "Gate adjusted amount", icon: ScalesIcon, tone: "awaiting" },
+  tool_call: { label: "Tool call", icon: WrenchIcon, tone: "new" },
+  tool_result: { label: "Tool result", icon: ArrowElbowDownLeftIcon, tone: "new" },
+  verify: { label: "Verify", icon: SealCheckIcon, tone: "resolved" },
+  reply_sent: { label: "Reply sent", icon: ChatCircleTextIcon, tone: "processing" },
+  status_change: { label: "Status change", icon: ArrowRightIcon, tone: "routed" },
+  handoff: { label: "Handoff", icon: UsersIcon, tone: "routed" },
+  approval_created: { label: "Approval requested", icon: GavelIcon, tone: "awaiting" },
+  approval_requested: { label: "Approval requested", icon: GavelIcon, tone: "awaiting" },
+  approval_decided: { label: "Approval decided", icon: GavelIcon, tone: "resolved" },
+  override: { label: "Human override", icon: UserSwitchIcon, tone: "processing" },
+  incident_linked: { label: "Incident linked", icon: LinkSimpleIcon, tone: "incident" },
+  incident_fast_path: { label: "Incident fast path", icon: LightningIcon, tone: "incident" },
+  notification: { label: "Notification", icon: BellIcon, tone: "new" },
+  error: { label: "Error", icon: WarningOctagonIcon, tone: "failed" },
 };
 
-function actorChip(actor: string) {
-  const cls = actor === "resolv" ? "bg-navy text-white" : actor.startsWith("human:") ? "bg-cyan text-navy" : "bg-gray-300 text-ink";
-  return <span className={`rounded px-2 py-0.5 text-sm font-bold ${cls}`}>{actor}</span>;
+function ActorChip({ actor }: { actor: string }) {
+  const cls = actor === "resolv"
+    ? "bg-primary text-primary-foreground"
+    : actor.startsWith("human:") ? "bg-highlight text-highlight-foreground" : "bg-muted text-muted-foreground";
+  return <Badge className={cn("h-6 px-2.5 font-mono text-sm font-normal", cls)}>{actor}</Badge>;
 }
 
-function Json({ label, value }: { label: string; value: unknown }) {
+function Pill({ tone, children, mono }: { tone: Tone | undefined; children: ReactNode; mono?: boolean }) {
+  return <Badge className={toneBadge({ tone, className: mono ? "font-mono" : undefined })}>{children}</Badge>;
+}
+
+// Styled <details>: no Collapsible in components/ui and it needs no JS.
+function Fold({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <details className="mt-1">
-      <summary className="cursor-pointer text-base font-semibold text-navy">{label}</summary>
-      <pre className="mt-1 max-h-80 overflow-auto rounded bg-ink p-3 text-sm text-white">{JSON.stringify(value, null, 2)}</pre>
+    <details className="group/fold">
+      <summary className="inline-flex cursor-pointer list-none items-center gap-1 text-sm font-medium text-primary hover:underline [&::-webkit-details-marker]:hidden">
+        <ArrowRightIcon className="size-3.5 transition-transform group-open/fold:rotate-90" />
+        {label}
+      </summary>
+      <div className="mt-2">{children}</div>
     </details>
   );
 }
 
-function actionLine(a: unknown): string {
-  const o = obj(a);
-  const p = obj(o?.params) ?? {};
-  return [str(o?.name) ?? "action", p.amount_inr !== undefined ? inr(p.amount_inr) : "", str(p.txn_id) ?? ""].filter(Boolean).join(" ");
+function Json({ label, value }: { label: string; value: unknown }) {
+  return (
+    <Fold label={label}>
+      <pre className="max-h-80 overflow-auto rounded-lg bg-muted p-3 font-mono text-xs leading-relaxed">{JSON.stringify(value, null, 2)}</pre>
+    </Fold>
+  );
 }
 
 function Body({ kind, p, replyDraft }: { kind: string; p: Obj; replyDraft?: string }) {
   switch (kind) {
-    case "understanding":
+    case "understanding": {
+      const conf = num(p.confidence);
       return (
-        <div className="space-y-1">
-          <div className="flex flex-wrap gap-2 text-base">
-            <b className="text-navy">{str(p.ticket_type)}</b>
-            <span>{Math.round((num(p.confidence) ?? 0) * 100)}% confident</span>
-            <span>· {str(p.sentiment)}</span><span>· {str(p.language)}</span>
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="outline" className="h-6 px-2.5 font-mono text-sm font-normal">{str(p.ticket_type) ?? "-"}</Badge>
+            <Pill tone={conf !== undefined && conf < 0.6 ? "failed" : "resolved"} mono>{conf === undefined ? "-" : `${Math.round(conf * 100)}%`} confidence</Pill>
+            {str(p.sentiment) && <Badge variant="secondary" className="h-6 px-2.5 text-sm">{str(p.sentiment)}</Badge>}
+            {str(p.language) && <Badge variant="secondary" className="h-6 px-2.5 font-mono text-sm">{str(p.language)}</Badge>}
           </div>
-          <p className="text-ink/80">{str(p.summary_for_agent)}</p>
+          {str(p.summary_for_agent) && <p className="text-muted-foreground">{str(p.summary_for_agent)}</p>}
         </div>
       );
-    case "decision":
+    }
+    case "decision": {
+      const actions = arr(p.proposed_actions).map(obj);
       return (
-        <div className="space-y-2">
-          <div className="flex gap-2"><b className="text-navy">{str(p.path)}</b><span>{str(p.priority)}</span>{str(p.route_to_team) && <span>→ {str(p.route_to_team)}</span>}</div>
-          <p className="text-ink/80">{str(p.reasoning)}</p>
-          <ul className="list-disc pl-6 font-mono text-base">{arr(p.proposed_actions).map((a, i) => <li key={i}>{actionLine(a)}</li>)}</ul>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <Pill tone="routed" mono>{str(p.path) ?? "-"}</Pill>
+            {str(p.priority) && <Pill tone={PRIORITY_TONE[str(p.priority) ?? ""]} mono>{str(p.priority)}</Pill>}
+            {str(p.route_to_team) && <span className="text-muted-foreground">to team <b className="font-medium text-foreground">{str(p.route_to_team)}</b></span>}
+          </div>
+          {str(p.reasoning) && <p className="text-base leading-relaxed">{str(p.reasoning)}</p>}
+          {actions.length > 0 && (
+            <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-x-4 rounded-lg border">
+              {actions.map((a, i) => {
+                const params = obj(a?.params) ?? {};
+                return (
+                  <div key={i} className="col-span-3 grid grid-cols-subgrid items-baseline border-b px-3 py-2 font-mono tabular-nums last:border-b-0">
+                    <span className="truncate font-medium">{str(a?.name) ?? "action"}</span>
+                    <span className="text-right">{params.amount_inr !== undefined ? inr(params.amount_inr) : ""}</span>
+                    <span className="text-muted-foreground">{str(params.txn_id) ?? ""}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
           {str(p.customer_reply_draft) && (
-            <details><summary className="cursor-pointer font-semibold text-navy">Reply draft</summary><p className="mt-1 italic">{str(p.customer_reply_draft)}</p></details>
+            <Fold label="Reply draft"><p className="rounded-lg bg-muted p-3 leading-relaxed">{str(p.customer_reply_draft)}</p></Fold>
           )}
         </div>
       );
+    }
     case "gate":
       return (
-        <div className="space-y-2">
-          <div className="text-base">Ticket outcome: <b>{str(p.ticket_outcome)}</b></div>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2 text-muted-foreground">Ticket outcome <Pill tone={GATE_TONE[str(p.ticket_outcome) ?? ""]} mono>{str(p.ticket_outcome) ?? "-"}</Pill></div>
           {arr(p.results).map(obj).map((r, i) => (
             <GateBadge key={i} action={str(obj(r?.action)?.name) ?? "action"} outcome={str(r?.outcome) ?? "?"} reasons={strs(r?.reasons)} />
           ))}
         </div>
       );
     case "gate_adjusted_amount":
-      return <p><b className="font-mono">{str(p.action)}</b>: {inr(p.from)} → <b>{inr(p.to)}</b></p>;
+      return (
+        <p className="flex flex-wrap items-center gap-2 font-mono tabular-nums">
+          <span className="font-medium">{str(p.action)}</span>
+          <span className="text-muted-foreground line-through">{inr(p.from)}</span>
+          <ArrowRightIcon className="size-4 text-muted-foreground" />
+          <b className="text-base">{inr(p.to)}</b>
+        </p>
+      );
     case "tool_call":
     case "tool_result": {
-      const ok = p.ok;
+      const result = kind === "tool_result";
+      const state = p.skipped ? "skipped" : String(p.status ?? (p.ok ? "ok" : "error"));
       return (
-        <div data-testid="tool-call" data-name={str(p.name)}>
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-lg font-bold text-navy">{str(p.name)}</span>
-            {kind === "tool_result" && (
-              <span className={`rounded-full px-2 py-0.5 text-sm font-bold text-white ${ok ? "bg-green-600" : "bg-red-600"}`}>
-                {p.skipped ? "skipped" : String(p.status ?? (ok ? "ok" : "error"))}
-              </span>
-            )}
+        <div data-testid="tool-call" data-name={str(p.name)} className="flex flex-col gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono font-medium">{str(p.name)}</span>
+            {result
+              ? <Pill tone={p.skipped ? "new" : p.ok ? "resolved" : "failed"} mono>{state}</Pill>
+              : <Badge variant="outline" className="h-6 px-2.5 text-sm font-normal text-muted-foreground">request</Badge>}
           </div>
-          {kind === "tool_call" ? <Json label="Request" value={p.params} /> : <Json label="Response" value={p.body ?? p.error} />}
+          {result ? <Json label="Response" value={p.body ?? p.error} /> : <Json label="Request" value={p.params} />}
         </div>
       );
     }
-    case "verify":
+    case "verify": {
+      const checks = arr(p.checks).map(obj);
+      if (checks.length === 0) return <Pill tone={p.ok ? "resolved" : "failed"}>{p.ok ? "Verified" : "Verification failed"}</Pill>;
       return (
-        <ul className="text-base">
-          {arr(p.checks).map(obj).map((c, i) => (
-            <li key={i}>{c?.ok ? "✔" : "✘"} <span className="font-mono">{str(c?.name)}</span> → {str(c?.observed)}{c?.retried ? " (retried)" : ""}</li>
+        <ul className="flex flex-col gap-1.5">
+          {checks.map((c, i) => (
+            <li key={i} className="flex flex-wrap items-center gap-2 font-mono">
+              {c?.ok ? <CheckCircleIcon weight="fill" className="size-4 text-status-resolved" /> : <XCircleIcon weight="fill" className="size-4 text-status-failed" />}
+              <span>{str(c?.name)}</span>
+              <ArrowRightIcon className="size-3.5 text-muted-foreground" />
+              <span className="font-medium">{str(c?.observed)}</span>
+              {c?.retried ? <span className="font-sans text-muted-foreground">(retried)</span> : null}
+            </li>
           ))}
-          {arr(p.checks).length === 0 && <li>{p.ok ? "✔ verified" : "✘ verification failed"}</li>}
         </ul>
       );
+    }
     case "reply_sent":
       return (
-        <div className="max-w-xl rounded-2xl rounded-bl-none bg-cyan/15 px-4 py-3">
-          <div className="text-sm font-semibold text-navy">{p.holding_reply ? "Holding reply" : "Reply"} via {str(p.channel)} ({str(p.language)})</div>
-          <p>{str(p.text) ?? replyDraft ?? "(reply text not stored)"}</p>
+        <div className="flex max-w-xl flex-col gap-1 rounded-2xl rounded-bl-sm border border-highlight/30 bg-highlight/10 px-4 py-3">
+          <div className="text-xs text-muted-foreground">
+            {p.holding_reply ? "Holding reply" : "Reply"} via <span className="font-mono">{str(p.channel)}</span>{str(p.language) ? `, ${str(p.language)}` : ""}
+          </div>
+          <p className="text-base leading-relaxed">{str(p.text) ?? replyDraft ?? "Reply text not stored."}</p>
         </div>
       );
     case "status_change":
-      return <p className="text-lg">{str(p.from)} → <b>{str(p.to)}</b></p>;
+      return (
+        <div className="flex flex-wrap items-center gap-2">
+          <Pill tone={STATUS_TONE[str(p.from) ?? ""]}>{str(p.from) ?? "-"}</Pill>
+          <ArrowRightIcon className="size-4 text-muted-foreground" />
+          <Pill tone={STATUS_TONE[str(p.to) ?? ""]}>{str(p.to) ?? "-"}</Pill>
+        </div>
+      );
     case "handoff":
       return (
-        <div className="space-y-1">
-          <div>Team <b>{str(p.assigned_team) ?? "-"}</b> · {str(p.outcome)}</div>
-          <p className="text-ink/80">{str(p.agent_summary)}</p>
-          {str(p.next_action_for_human) && <p>Next: <b>{str(p.next_action_for_human)}</b></p>}
-          {strs(p.errors).map((e, i) => <p key={i} className="text-red-600">{e}</p>)}
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="outline" className="h-6 px-2.5 text-sm">Team {str(p.assigned_team) ?? "-"}</Badge>
+            {str(p.outcome) && <Pill tone={STATUS_TONE[str(p.outcome) ?? ""]} mono>{str(p.outcome)}</Pill>}
+          </div>
+          {str(p.agent_summary) && <p className="leading-relaxed">{str(p.agent_summary)}</p>}
+          {str(p.next_action_for_human) && <p><span className="text-muted-foreground">Next action:</span> <b className="font-medium">{str(p.next_action_for_human)}</b></p>}
+          {strs(p.errors).map((e, i) => <p key={i} className="text-destructive">{e}</p>)}
         </div>
       );
     case "approval_created":
     case "approval_requested":
-      return <div><b className="font-mono">{str(p.action)}</b> needs approval <span className="text-ink/60">({str(p.approval_id)})</span><ul className="list-disc pl-6">{strs(p.reasons).map((r, i) => <li key={i}>{r}</li>)}</ul></div>;
+      return (
+        <div className="flex flex-col gap-1.5">
+          <p><span className="font-mono font-medium">{str(p.action)}</span> needs approval <span className="font-mono text-muted-foreground">{str(p.approval_id)}</span></p>
+          {strs(p.reasons).length > 0 && <ul className="list-disc pl-5 text-muted-foreground">{strs(p.reasons).map((r, i) => <li key={i}>{r}</li>)}</ul>}
+        </div>
+      );
     case "approval_decided":
-      return <p>{p.approve ? "Approved" : "Rejected"} by <b>{str(p.decided_by)}</b>{str(p.note) ? `: “${str(p.note)}”` : ""}{str(p.via) ? ` (via ${str(p.via)})` : ""}</p>;
+      return (
+        <div className="flex flex-wrap items-center gap-2">
+          <Pill tone={p.approve ? "resolved" : "failed"}>{p.approve ? "Approved" : "Rejected"}</Pill>
+          <span>by <b className="font-medium">{str(p.decided_by) ?? "-"}</b>{str(p.via) ? ` via ${str(p.via)}` : ""}</span>
+          {str(p.note) && <p className="w-full text-muted-foreground">Note: {str(p.note)}</p>}
+        </div>
+      );
     case "override": {
       const r = obj(p.resolv_decision);
       const h = obj(p.human_decision);
       return (
         <div className="grid grid-cols-2 gap-3">
-          <div className="rounded bg-light p-2"><div className="text-sm text-ink/60">Resolv</div><b>{str(r?.path) ?? "-"}</b></div>
-          <div className="rounded bg-cyan/15 p-2"><div className="text-sm text-ink/60">Human</div><b>{str(h?.path)}</b>{str(h?.note) && <p>{str(h?.note)}</p>}</div>
+          <div className="flex flex-col gap-1.5 rounded-lg border bg-muted/40 p-3">
+            <span className="text-xs text-muted-foreground">Resolv decided</span>
+            <Pill tone="routed" mono>{str(r?.path) ?? "-"}</Pill>
+          </div>
+          <div className="flex flex-col gap-1.5 rounded-lg border border-highlight/40 bg-highlight/10 p-3">
+            <span className="text-xs text-muted-foreground">Human decided</span>
+            <Pill tone="processing" mono>{str(h?.path) ?? "-"}</Pill>
+            {str(h?.note) && <p className="text-sm">{str(h?.note)}</p>}
+          </div>
         </div>
       );
     }
-    case "error":
-      return <p className="font-semibold text-red-600">{str(p.node) ? `${str(p.node)}: ` : ""}{str(p.error) ?? str(p.engine) ?? JSON.stringify(p)}</p>;
-    case "pii_masked":
-      return <p>Masked: {strs(p.classes).join(", ") || "nothing"}</p>;
-    case "ingest":
-      return <p className="font-mono text-base">{str(p.signature) ?? "no signature"} · txn {str(p.candidate_txn_id) ?? "-"}</p>;
+    case "incident_linked":
+    case "incident_fast_path":
+      return (
+        <div className="flex flex-col gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono font-medium">{str(p.incident_id) ?? "-"}</span>
+            {str(p.via) && <Badge variant="outline" className="h-6 px-2.5 text-sm font-normal">via {str(p.via)}</Badge>}
+          </div>
+          {str(p.signature) && <p className="break-all font-mono text-muted-foreground">{str(p.signature)}</p>}
+          {kind === "incident_fast_path" && <p className="text-muted-foreground">Known incident, no LLM call.</p>}
+        </div>
+      );
     case "notification":
-      return <p>{str(p.channel)} → <b>{str(p.target)}</b></p>;
-    default: // incident_linked, incident_fast_path and any unknown kind
+      return (
+        <p className="flex flex-wrap items-center gap-2">
+          <Badge variant="outline" className="h-6 px-2.5 font-mono text-sm font-normal">{str(p.channel) ?? "-"}</Badge>
+          {str(p.target) && <><ArrowRightIcon className="size-4 text-muted-foreground" /><b className="font-medium">{str(p.target)}</b></>}
+        </p>
+      );
+    case "error":
+      return (
+        <Alert variant="destructive">
+          <WarningOctagonIcon />
+          <AlertTitle>{str(p.node) ? `Node ${str(p.node)} failed` : "Error"}</AlertTitle>
+          <AlertDescription className="break-words font-mono">{str(p.error) ?? str(p.engine) ?? JSON.stringify(p)}</AlertDescription>
+        </Alert>
+      );
+    case "pii_masked": {
+      const classes = strs(p.classes);
+      return (
+        <div className="flex flex-wrap items-center gap-2">
+          {classes.length === 0 ? <span className="text-muted-foreground">Nothing to mask</span>
+            : classes.map((c) => <Badge key={c} variant="secondary" className="h-6 px-2.5 font-mono text-sm font-normal">{c}</Badge>)}
+        </div>
+      );
+    }
+    case "ingest":
+      return (
+        <div className="flex flex-col gap-1 font-mono">
+          <span className="break-all">{str(p.signature) ?? "no signature"}</span>
+          <span className="text-muted-foreground">txn {str(p.candidate_txn_id) ?? "-"}</span>
+        </div>
+      );
+    default:
       return <Json label="Payload" value={p} />;
   }
 }
 
-export default function TimelineEvent({ e, replyDraft }: { e: AuditEvent; replyDraft?: string }) {
-  const isErr = e.kind === "error";
+// Motion: `enter` staggers first-load events; `fresh` marks events that arrived by polling
+// (slide in plus a cyan left border fading over 1.2 s). Both are off under reduced motion.
+export default function TimelineEvent({ e, replyDraft, enter, fresh }: { e: AuditEvent; replyDraft?: string; enter?: number; fresh?: boolean }) {
+  const reduce = useReducedMotion();
+  const k = KIND[e.kind];
+  const I = k?.icon ?? CircleIcon;
+  const animate = !reduce && (fresh || enter !== undefined);
   return (
-    <li data-testid="timeline-event" data-kind={e.kind} className="relative pb-5 pl-8">
-      <span className={`absolute -left-[9px] top-5 h-4 w-4 rounded-full ring-4 ring-light ${DOT[e.kind] ?? "bg-gray-400"}`} />
-      <div className={`rounded-lg bg-white p-4 shadow-sm ${isErr ? "ring-2 ring-red-500" : ""}`}>
-        <div className="mb-2 flex flex-wrap items-center gap-2">
-          <span className={`text-lg font-bold ${isErr ? "text-red-600" : "text-navy"}`}>{e.kind}</span>
-          {actorChip(e.actor)}
-          <span className="ml-auto text-sm text-ink/60">{new Date(e.ts).toLocaleTimeString("en-IN")}</span>
+    <motion.li
+      data-testid="timeline-event"
+      data-kind={e.kind}
+      className="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-3 pb-6 last:pb-0"
+      initial={animate ? { opacity: 0, y: 8 } : false}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: EASE, delay: fresh ? 0 : (enter ?? 0) * 0.03 }}
+    >
+      <span className={cn("relative z-10 flex size-8 items-center justify-center rounded-full border bg-card", TONE_TEXT[k?.tone ?? "new"])}>
+        <I weight="bold" className="size-4" />
+      </span>
+      <motion.div
+        className="-ml-1 flex min-w-0 flex-col gap-2 border-l-2 pt-1 pl-3"
+        initial={animate && fresh ? { borderLeftColor: "rgba(0,186,242,1)" } : false}
+        animate={{ borderLeftColor: "rgba(0,186,242,0)" }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      >
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={cn("font-medium", e.kind === "error" && "text-destructive")}>{k?.label ?? e.kind}</span>
+          <ActorChip actor={e.actor} />
+          <time dateTime={e.ts} className="ml-auto font-mono text-xs text-muted-foreground tabular-nums">
+            {new Date(e.ts).toLocaleTimeString("en-IN", { hour12: false })}
+          </time>
         </div>
         <Body kind={e.kind} p={e.payload} replyDraft={replyDraft} />
-      </div>
-    </li>
+      </motion.div>
+    </motion.li>
   );
 }
