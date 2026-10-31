@@ -22,12 +22,11 @@ def ingest(state: AgentState) -> AgentState:
     audit.record(tid, AuditKind.pii_masked, {"classes": found}, run_id=run_id)
 
     # Incident signature from the ledger, before any LLM call (CLAUDE.md, decision 30 Oct).
-    cand = context.candidate_txn(context.list_ledger(context.get_tools(), ticket, run_id))
-    sig = f"failed_payment_reversal|{cand.issuer_bank}|{cand.failure_reason}" if cand else None
+    cand_id, sig = incidents.signature_for(ticket, run_id)
     fields = {
         "masked_text": masked,
         "language": _language(masked),
-        "candidate_txn_id": cand.id if cand else None,
+        "candidate_txn_id": cand_id,
         "signature": sig,
     }
     context.update_ticket(tid, **fields)

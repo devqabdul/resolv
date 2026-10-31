@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from app.agent import runner
 from app.config import settings
 from app.domain.enums import AuditKind
-from app.services import audit, tickets
+from app.services import audit, incidents, tickets
 
 log = logging.getLogger(__name__)
 _stop = threading.Event()
@@ -26,7 +26,8 @@ def process_queue() -> list[str]:
 
 
 def cluster_incidents() -> None:
-    """Placeholder until T15/T16 (services/incidents.py)."""
+    """Group recent tickets by ledger signature into incidents (docs/02 §8)."""
+    incidents.cluster()
 
 
 def sla_guard() -> None:
