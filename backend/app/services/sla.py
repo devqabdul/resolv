@@ -52,9 +52,7 @@ def guard() -> list[str]:
             (t.id, t.assigned_team or "l1_support", t.priority, minutes_to_breach(t)) for t in due
         ]
     for tid, team, prio, mins in rows:
-        text = (
-            f"{tid} breaches in {max(mins or 0, 0):.0f} min — http://localhost:3000/tickets/{tid}"
-        )
+        text = f"{tid} breaches in {max(mins or 0, 0):.0f} min. Open http://localhost:3000/tickets/{tid}"
         with session.SessionLocal() as db:
             row = db.get(Ticket, tid)
             if row is not None:

@@ -1,5 +1,6 @@
 'use client';
 // One stat block per metric, hairline separators, dashes when /api/metrics is unreachable.
+// Labels never wrap; blocks size to content and the strip wraps as a whole on narrow screens.
 import { Fragment } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -20,15 +21,15 @@ const KPIS: { id: string; label: string; pick: (m: Metrics) => number; format?: 
 export default function KpiStrip() {
   const { data: m } = useMetrics(); // undefined on 404 / network error -> dashes
   return (
-    <section data-testid="kpi-strip" className="flex items-stretch gap-4 border-b pb-5">
+    <section data-testid="kpi-strip" className="flex flex-wrap items-stretch gap-x-4 gap-y-3 border-b pb-5">
       {KPIS.map((k, i) => (
         <Fragment key={k.id}>
           {i > 0 && <Separator orientation="vertical" />}
-          <div data-testid={`kpi-${k.id}`} className="flex min-w-0 flex-1 flex-col gap-1">
+          <div data-testid={`kpi-${k.id}`} className="flex flex-auto flex-col gap-1">
             <div className="font-mono text-3xl font-semibold tracking-tight tabular-nums">
               {m ? <AnimatedNumber value={k.pick(m)} format={k.format} /> : "-"}
             </div>
-            <div className="text-sm leading-snug text-muted-foreground">{k.label}</div>
+            <div className="text-sm leading-snug whitespace-nowrap text-muted-foreground">{k.label}</div>
           </div>
         </Fragment>
       ))}
