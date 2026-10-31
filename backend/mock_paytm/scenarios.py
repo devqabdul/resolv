@@ -18,7 +18,7 @@ def eval_fixtures() -> dict:
     from evals.make_dataset import build
 
     _, fx = build()
-    t = store.now()
+    t = store._base_now()  # (decision: FIX4) replay-stable anchor
     for cid in fx["customers"]:
         store.customers[cid] = {"id": cid, "name": f"Eval Customer {cid[-2:]}", "tier": "standard",
                                 "since": "2024-01-01", "language": "en", "phone_masked": "+91 90XXXXXX00"}  # fmt: skip
