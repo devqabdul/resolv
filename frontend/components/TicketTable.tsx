@@ -8,9 +8,9 @@ import PriorityBadge from "./PriorityBadge";
 import StatusBadge from "./StatusBadge";
 import TypeBadge from "./TypeBadge";
 
-export default function TicketTable() {
+export default function TicketTable({ incidentId }: { incidentId?: string }) {
   const router = useRouter();
-  const { data, error } = useTickets({ limit: 50 });
+  const { data, error } = useTickets({ limit: 50, incident_id: incidentId });
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const t = setInterval(() => setNow(Date.now()), 1000);
